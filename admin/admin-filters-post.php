@@ -26,7 +26,6 @@ class PLL_Admin_Filters_Post extends PLL_Admin_Filters_Post_Base {
 	public function __construct( &$polylang ) {
 		parent::__construct( $polylang );
 		$this->curlang = &$polylang->curlang;
-
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
 		// Filters posts, pages and media by language
@@ -39,6 +38,15 @@ class PLL_Admin_Filters_Post extends PLL_Admin_Filters_Post_Base {
 
 		// Sets the language in Tiny MCE
 		add_filter( 'tiny_mce_before_init', array( $this, 'tiny_mce_before_init' ) );
+
+		// Add language counts to post type views
+		add_filter( 'views_edit-post', array( $this, 'add_language_counts' ), 10, 1 );
+		add_filter( 'views_edit-page', array( $this, 'add_language_counts' ), 10, 1 );
+		add_action( 'admin_init', array( $this, 'add_custom_post_type_counts' ) );
+
+		// Filter post counts in list table
+		add_filter( 'wp_count_posts', array( $this, 'filter_count_posts' ), 10, 3 );
+		add_filter( 'wp_count_attachments', array( $this, 'filter_count_posts' ), 10, 2 );
 	}
 
 	/**
@@ -219,5 +227,118 @@ class PLL_Admin_Filters_Post extends PLL_Admin_Filters_Post_Base {
 			$mce_init['directionality'] = $this->curlang->is_rtl ? 'rtl' : 'ltr';
 		}
 		return $mce_init;
+	}
+
+	/**
+	 * Filter post counts in list table
+	 *
+	 * @since 3.7
+	 *
+	 * @param stdClass $counts An object containing the post counts by status
+	 * @param string   $type   Post type
+	 * @param string   $perm   The permission to determine if the posts are 'readable' by the current user
+	 * @return stdClass Modified counts object
+	 */
+	public function filter_count_posts( $counts, $type, $perm = '' ) {
+		global $wpdb;
+
+		// Only filter if we have a language selected
+		if ( empty( $this->curlang ) ) {
+			return $counts;
+		}
+
+		// Get the counts for the current language
+		$query = $wpdb->prepare(
+			"SELECT post_status, COUNT(*) AS num_posts 
+			FROM $wpdb->posts p
+			INNER JOIN {$wpdb->term_relationships} tr ON p.ID = tr.object_id
+			INNER JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
+			INNER JOIN {$wpdb->terms} t ON tt.term_id = t.term_id
+			WHERE p.post_type = %s
+			AND tt.taxonomy = 'language'
+			AND t.slug = %s
+			GROUP BY post_status",
+			$type,
+			$this->curlang->slug
+		);
+
+		$results = $wpdb->get_results( $query, ARRAY_A );
+
+		// Reset all counts to 0
+		foreach ( $counts as $status => $count ) {
+			$counts->$status = 0;
+		}
+
+		// Update counts with language-specific values
+		foreach ( $results as $row ) {
+			$counts->{$row['post_status']} = (int) $row['num_posts'];
+		}
+
+		return $counts;
+	}
+
+	/**
+	 * Add language counts to post type views
+	 *
+	 * @since 3.7
+	 *
+	 * @param array $views Array of views
+	 * @return array Modified views array
+	 */
+	public function add_language_counts( $views ) {
+		global $wpdb;
+
+		$post_type = get_current_screen()->post_type;
+		if ( ! $this->model->is_translated_post_type( $post_type ) ) {
+			return $views;
+		}
+
+		$languages = $this->model->get_languages_list();
+		if ( empty( $languages ) ) {
+			return $views;
+		}
+
+		// Get counts for each language
+		foreach ( $languages as $lang ) {
+			$count = $wpdb->get_var( $wpdb->prepare(
+				"SELECT COUNT(*) FROM $wpdb->posts p
+				INNER JOIN {$wpdb->term_relationships} tr ON p.ID = tr.object_id
+				INNER JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
+				INNER JOIN {$wpdb->terms} t ON tt.term_id = t.term_id
+				WHERE p.post_type = %s
+				AND p.post_status = 'publish'
+				AND tt.taxonomy = 'language'
+				AND t.slug = %s",
+				$post_type,
+				$lang->slug
+			) );
+
+			if ( $count >= 0 ) {
+				$views['lang_' . $lang->slug] = sprintf(
+					'<a href="%s" class="lang-filter %s">%s <span class="count">(%d)</span></a>',
+					esc_url( add_query_arg( 'lang', $lang->slug ) ),
+					isset( $_GET['lang'] ) && $_GET['lang'] === $lang->slug ? 'current' : '',
+					esc_html( $lang->name ),
+					$count
+				);
+			}
+		}
+
+		return $views;
+	}
+
+	/**
+	 * Add counts for custom post types
+	 *
+	 * @since 3.7
+	 */
+	public function add_custom_post_type_counts() {
+		$screen = get_current_screen();
+		if ( ! $screen ) {
+			return;
+		}
+		if ( $screen->base === 'edit' && post_type_exists( $screen->post_type ) ) {
+			add_filter( 'views_' . $screen->id, array( $this, 'add_language_counts' ) );
+		}
 	}
 }
