@@ -26,6 +26,9 @@ class PLL_Admin_Nav_Menu extends PLL_Nav_Menu {
 
 		// Integration in the WP menu interface
 		add_action( 'admin_init', array( $this, 'admin_init' ) ); // after Polylang upgrade
+
+		// Add filter to update menu locations when language changes
+		add_action( 'admin_init', array( $this, 'maybe_update_menu_locations' ) );
 	}
 
 	/**
@@ -290,5 +293,54 @@ class PLL_Admin_Nav_Menu extends PLL_Nav_Menu {
 		}
 
 		$this->options->set( 'nav_menus', $nav_menus );
+	}
+
+	/**
+	 * Create temporary nav menu locations ( one per location and per language ) for all non-default language
+	 * to do only one time
+	 *
+	 * @since 1.2
+	 *
+	 * @return void
+	 */
+	public function create_nav_menu_locations() {
+		static $once;
+		global $_wp_registered_nav_menus;
+
+		$arr = array();
+
+		if ( isset( $_wp_registered_nav_menus ) && ! $once ) {
+			// Get current language filter
+			$current_lang = $this->model->get_language( get_user_meta( get_current_user_id(), 'pll_filter_content', true ) );
+
+			foreach ( $_wp_registered_nav_menus as $loc => $name ) {
+				if ( $current_lang ) {
+					// If a language is selected, only show locations for that language
+					$arr[ $this->combine_location( $loc, $current_lang ) ] = $name . ' ' . $current_lang->name;
+				} else {
+					// If no language is selected, show all locations
+					foreach ( $this->model->get_languages_list() as $lang ) {
+						$arr[ $this->combine_location( $loc, $lang ) ] = $name . ' ' . $lang->name;
+					}
+				}
+			}
+
+			$_wp_registered_nav_menus = $arr;
+			$once = true;
+		}
+	}
+
+	/**
+	 * Updates menu locations when language filter changes
+	 *
+	 * @since 1.2
+	 *
+	 * @return void
+	 */
+	public function maybe_update_menu_locations() {
+		if ( ! empty( $_GET['lang'] ) && ! is_numeric( sanitize_key( $_GET['lang'] ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			// Reset the static variable to force recreation of menu locations
+			$this->create_nav_menu_locations();
+		}
 	}
 }
