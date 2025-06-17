@@ -42,6 +42,14 @@ class PLL_Table_String extends WP_List_Table {
 	 */
 	protected $selected_group;
 
+	
+	/**
+	 * The selected translation status filter or -1 if none is selected.
+	 *
+	 * @var string|int
+	 */
+	protected $selected_status;
+
 	/**
 	 * Constructor.
 	 *
@@ -67,6 +75,15 @@ class PLL_Table_String extends WP_List_Table {
 			$group = sanitize_text_field( wp_unslash( $_GET['group'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
 			if ( in_array( $group, $this->groups ) ) {
 				$this->selected_group = $group;
+			}
+		}
+
+		$this->selected_status = -1;
+
+		if ( ! empty( $_GET['status'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			$status = sanitize_text_field( wp_unslash( $_GET['status'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
+			if ( in_array( $status, array( 'translated', 'untranslated' ) ) ) {
+				$this->selected_status = $status;
 			}
 		}
 
@@ -238,6 +255,41 @@ class PLL_Table_String extends WP_List_Table {
 	}
 
 	/**
+	 * Filters strings by translation status.
+	 *
+	 * @since 3.7.3
+	 *
+	 * @param array           $items     The array of string items to filter.
+	 * @param PLL_Language[]  $languages An array of language objects.
+	 * @param string          $status    The translation status to filter by ('translated' or 'untranslated').
+	 * @return array Filtered array of string items.
+	 */
+	protected function filter_by_translation_status( $items, $languages, $status ) {
+		$filtered_items = array();
+
+		foreach ( $items as $key => $item ) {
+			$has_translations = false;
+
+			// Check if the string has any translations
+			foreach ( $languages as $language ) {
+				if ( ! empty( $item['translations'][ $language->slug ] ) ) {
+					$has_translations = true;
+					break;
+				}
+			}
+
+			// Include item based on status filter
+			if ( 'translated' === $status && $has_translations ) {
+				$filtered_items[ $key ] = $item;
+			} elseif ( 'untranslated' === $status && ! $has_translations ) {
+				$filtered_items[ $key ] = $item;
+			}
+		}
+
+		return $filtered_items;
+	}
+
+	/**
 	 * Prepares the list of registered strings for display.
 	 *
 	 * @since 0.6
@@ -273,6 +325,21 @@ class PLL_Table_String extends WP_List_Table {
 			}
 		}
 
+		// Translate strings for status filtering (if needed)
+		// This is needed for status filtering but it's a slow process
+		if ( -1 !== $this->selected_status ) {
+			foreach ( $languages as $language ) {
+				$mo = new PLL_MO();
+				$mo->import_from_db( $language );
+				foreach ( $data as $key => $row ) {
+					$data[ $key ]['translations'][ $language->slug ] = $mo->translate_if_any( $row['string'] );
+				}
+			}
+			
+			// Filter by translation status
+			$data = $this->filter_by_translation_status( $data, $languages, $this->selected_status );
+		}
+
 		// Sorting
 		uasort( $data, array( $this, 'usort_reorder' ) );
 
@@ -291,14 +358,16 @@ class PLL_Table_String extends WP_List_Table {
 			)
 		);
 
-		// Translate strings
+		// Translate strings for items that weren't already translated
 		// Kept for the end as it is a slow process
 		foreach ( $languages as $language ) {
 			$mo = new PLL_MO();
 			$mo->import_from_db( $language );
 			foreach ( $this->items as $key => $row ) {
-				$this->items[ $key ]['translations'][ $language->slug ] = $mo->translate_if_any( $row['string'] );
-				$this->items[ $key ]['row']                             = $key; // Store the row number for convenience
+				if ( ! isset( $this->items[ $key ]['translations'][ $language->slug ] ) ) {
+					$this->items[ $key ]['translations'][ $language->slug ] = $mo->translate_if_any( $row['string'] );
+				}
+				$this->items[ $key ]['row'] = $key; // Store the row number for convenience
 			}
 		}
 	}
@@ -327,7 +396,7 @@ class PLL_Table_String extends WP_List_Table {
 	}
 
 	/**
-	 * Displays the dropdown list to filter strings per group
+	 * Displays the dropdown list to filter strings per group and translation status
 	 *
 	 * @since 1.1
 	 *
@@ -340,6 +409,8 @@ class PLL_Table_String extends WP_List_Table {
 		}
 
 		echo '<div class="alignleft actions">';
+		
+		// Group filter dropdown
 		printf(
 			'<label class="screen-reader-text" for="select-group" >%s</label>',
 			/* translators: accessibility text */
@@ -360,6 +431,30 @@ class PLL_Table_String extends WP_List_Table {
 				esc_html( $group )
 			);
 		}
+		echo '</select>' . "\n";
+
+		// Translation status filter dropdown
+		printf(
+			'<label class="screen-reader-text" for="select-status" >%s</label>',
+			/* translators: accessibility text */
+			esc_html__( 'Filter by status', 'polylang' )
+		);
+		echo '<select id="select-status" name="status">' . "\n";
+		printf(
+			'<option value="-1"%s>%s</option>' . "\n",
+			selected( $this->selected_status, -1, false ),
+			esc_html__( 'All strings', 'polylang' )
+		);
+		printf(
+			'<option value="translated"%s>%s</option>' . "\n",
+			selected( $this->selected_status, 'translated', false ),
+			esc_html__( 'Translated', 'polylang' )
+		);
+		printf(
+			'<option value="untranslated"%s>%s</option>' . "\n",
+			selected( $this->selected_status, 'untranslated', false ),
+			esc_html__( 'Untranslated', 'polylang' )
+		);
 		echo '</select>' . "\n";
 
 		submit_button( __( 'Filter', 'polylang' ), 'button', 'filter_action', false, array( 'id' => 'post-query-submit' ) );
@@ -441,7 +536,7 @@ class PLL_Table_String extends WP_List_Table {
 		}
 
 		// To refresh the page ( possible thanks to the $_GET['noheader']=true )
-		$args = array_intersect_key( $_REQUEST, array_flip( array( 's', 'paged', 'group' ) ) );
+		$args = array_intersect_key( $_REQUEST, array_flip( array( 's', 'paged', 'group', 'status' ) ) );
 		if ( ! empty( $_GET['paged'] ) && ! empty( $_POST['submit'] ) ) {
 			$args['paged'] = (int) $_GET['paged']; // Don't rely on $_REQUEST['paged'] or $_POST['paged']. See #14
 		}
