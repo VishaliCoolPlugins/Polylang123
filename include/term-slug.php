@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,10 +8,10 @@
  *
  * @since 3.7
  */
-class PLL_Term_Slug {
+class LMAT_Term_Slug {
 
 	/**
-	 * @var PLL_Model
+	 * @var LMAT_Model
 	 */
 	private $model;
 
@@ -36,7 +36,7 @@ class PLL_Term_Slug {
 	private $term_id;
 
 	/**
-	 * @var PLL_Language
+	 * @var LMAT_Language
 	 */
 	private $lang;
 
@@ -50,13 +50,13 @@ class PLL_Term_Slug {
 	 *
 	 * @since 3.7
 	 *
-	 * @param PLL_Model $model    Instance of PLL_Model.
+	 * @param LMAT_Model $model    Instance of LMAT_Model.
 	 * @param string    $slug     The term slug.
 	 * @param string    $taxonomy The term taxonomy.
 	 * @param string    $name     The term name.
 	 * @param int       $term_id  The term ID if exists, or 0 if there's no need to know that we are editing an existing term.
 	 */
-	public function __construct( PLL_Model $model, string $slug, string $taxonomy, string $name, int $term_id = 0 ) {
+	public function __construct( LMAT_Model $model, string $slug, string $taxonomy, string $name, int $term_id = 0 ) {
 		$this->model    = $model;
 		$this->slug     = $slug;
 		$this->taxonomy = $taxonomy;
@@ -77,12 +77,12 @@ class PLL_Term_Slug {
 		 *
 		 * @since 3.3
 		 *
-		 * @param PLL_Language|null $lang     Found language object, null otherwise.
+		 * @param LMAT_Language|null $lang     Found language object, null otherwise.
 		 * @param string            $taxonomy Term taxonomy.
 		 * @param string            $slug     Term slug
 		 */
-		$lang = apply_filters( 'pll_inserted_term_language', null, $this->taxonomy, $this->slug );
-		if ( ! $lang instanceof PLL_Language ) {
+		$lang = apply_filters( 'lmat_inserted_term_language', null, $this->taxonomy, $this->slug );
+		if ( ! $lang instanceof LMAT_Language ) {
 			return false;
 		}
 		$this->lang = $lang;
@@ -98,7 +98,7 @@ class PLL_Term_Slug {
 			 * @param string       $taxonomy Term taxonomy.
 			 * @param string       $slug     Term slug
 			 */
-			$this->parent = apply_filters( 'pll_inserted_term_parent', 0, $this->taxonomy, $this->slug );
+			$this->parent = apply_filters( 'lmat_inserted_term_parent', 0, $this->taxonomy, $this->slug );
 
 			$this->slug .= $this->maybe_get_parent_suffix();
 		}
@@ -125,7 +125,7 @@ class PLL_Term_Slug {
 	 * Recursively appends the parents slugs like WordPress does.
 	 *
 	 * @since 3.3
-	 * @since 3.7 Moved from `PLL_Share_Term_Slug`to `PLL_Term_Slug`.
+	 * @since 3.7 Moved from `LMAT_Share_Term_Slug`to `LMAT_Term_Slug`.
 	 *
 	 * @return string Parents slugs if they are the same as the child slug, empty string otherwise.
 	 */

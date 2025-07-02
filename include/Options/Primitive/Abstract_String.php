@@ -1,11 +1,11 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
-namespace WP_Syntex\Polylang\Options\Primitive;
+namespace WP_Syntex\Linguator\Options\Primitive;
 
-use WP_Syntex\Polylang\Options\Abstract_Option;
+use WP_Syntex\Linguator\Options\Abstract_Option;
 
 defined( 'ABSPATH' ) || exit;
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,7 +8,7 @@
  *
  * @since 1.5
  */
-abstract class PLL_Links_Model {
+abstract class LMAT_Links_Model {
 	/**
 	 * True if the child class uses pretty permalinks, false otherwise.
 	 *
@@ -24,7 +24,7 @@ abstract class PLL_Links_Model {
 	public $options;
 
 	/**
-	 * @var PLL_Model
+	 * @var LMAT_Model
 	 */
 	public $model;
 
@@ -47,7 +47,7 @@ abstract class PLL_Links_Model {
 	 *
 	 * @since 1.5
 	 *
-	 * @param PLL_Model $model PLL_Model instance.
+	 * @param LMAT_Model $model LMAT_Model instance.
 	 */
 	public function __construct( &$model ) {
 		$this->model   = &$model;
@@ -56,19 +56,19 @@ abstract class PLL_Links_Model {
 		$this->home = home_url();
 
 		// Hooked with normal priority because it needs to be run after static pages is set in language data. Must be done early (before languages objects are created).
-		add_filter( 'pll_additional_language_data', array( $this, 'set_language_home_urls' ), 10, 2 );
+		add_filter( 'lmat_additional_language_data', array( $this, 'set_language_home_urls' ), 10, 2 );
 
 		// Adds our domains or subdomains to allowed hosts for safe redirection.
 		add_filter( 'allowed_redirect_hosts', array( $this, 'allowed_redirect_hosts' ) );
 
-		// Allows secondary domains for home and search URLs in `PLL_Language`.
-		add_filter( 'pll_language_home_url', array( $this, 'set_language_home_url' ), 10, 2 );
-		add_filter( 'pll_language_search_url', array( $this, 'set_language_search_url' ), 10, 2 );
+		// Allows secondary domains for home and search URLs in `LMAT_Language`.
+		add_filter( 'lmat_language_home_url', array( $this, 'set_language_home_url' ), 10, 2 );
+		add_filter( 'lmat_language_search_url', array( $this, 'set_language_search_url' ), 10, 2 );
 
-		if ( did_action( 'pll_init' ) ) {
+		if ( did_action( 'lmat_init' ) ) {
 			$this->init();
 		} else {
-			add_action( 'pll_init', array( $this, 'init' ) );
+			add_action( 'lmat_init', array( $this, 'init' ) );
 		}
 	}
 
@@ -89,7 +89,7 @@ abstract class PLL_Links_Model {
 	 * @since 3.4 Accepts now a language slug.
 	 *
 	 * @param string                    $url  The url to modify.
-	 * @param PLL_Language|string|false $lang Language object or slug.
+	 * @param LMAT_Language|string|false $lang Language object or slug.
 	 * @return string The modified url.
 	 */
 	abstract public function add_language_to_link( $url, $lang );
@@ -142,7 +142,7 @@ abstract class PLL_Links_Model {
 	 * @since 1.8
 	 * @since 3.4 Accepts now an array of language properties.
 	 *
-	 * @param PLL_Language|array $language Language object or array of language properties.
+	 * @param LMAT_Language|array $language Language object or array of language properties.
 	 * @return string The static front page url.
 	 */
 	abstract public function front_page_url( $language );
@@ -153,7 +153,7 @@ abstract class PLL_Links_Model {
 	 * @since 1.5
 	 *
 	 * @param string       $url  The url to modify.
-	 * @param PLL_Language $lang The language object.
+	 * @param LMAT_Language $lang The language object.
 	 * @return string The modified url.
 	 */
 	public function switch_language_in_link( $url, $lang ) {
@@ -178,11 +178,11 @@ abstract class PLL_Links_Model {
 	 * @since 1.3.1
 	 * @since 3.4 Accepts now a language slug.
 	 *
-	 * @param PLL_Language|string $language Language object or slug.
+	 * @param LMAT_Language|string $language Language object or slug.
 	 * @return string
 	 */
 	public function home_url( $language ) {
-		if ( $language instanceof PLL_Language ) {
+		if ( $language instanceof LMAT_Language ) {
 			$language = $language->slug;
 		}
 
@@ -251,7 +251,7 @@ abstract class PLL_Links_Model {
 	}
 
 	/**
-	 * Used to remove hooks in child classes, called when switching blog @see {PLL_Base::switch_blog()}.
+	 * Used to remove hooks in child classes, called when switching blog @see {LMAT_Base::switch_blog()}.
 	 * Does nothing by default.
 	 *
 	 * @since 3.5

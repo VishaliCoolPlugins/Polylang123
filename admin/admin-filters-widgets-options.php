@@ -1,21 +1,21 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
- * Class PLL_Widgets_Filters
+ * Class LMAT_Widgets_Filters
  *
  * @since 3.0
  *
  * Adds new options to {@see https://developer.wordpress.org/reference/classes/wp_widget/ WP_Widget} and saves them.
  */
-class PLL_Admin_Filters_Widgets_Options extends PLL_Filters_Widgets_Options {
+class LMAT_Admin_Filters_Widgets_Options extends LMAT_Filters_Widgets_Options {
 	/**
 	 * Modifies the widgets forms to add our language dropdown list.
 	 *
 	 * @since 0.3
-	 * @since 3.0 Moved from PLL_Admin_Filters
+	 * @since 3.0 Moved from LMAT_Admin_Filters
 	 *
 	 * @param WP_Widget $widget Widget instance.
 	 * @param null      $return Not used.

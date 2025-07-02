@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -10,28 +10,28 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 2.4
  */
-class PLL_Admin_Classic_Editor {
+class LMAT_Admin_Classic_Editor {
 	/**
-	 * @var PLL_Model
+	 * @var LMAT_Model
 	 */
 	public $model;
 
 	/**
-	 * @var PLL_Admin_Links
+	 * @var LMAT_Admin_Links
 	 */
 	public $links;
 
 	/**
 	 * Current language (used to filter the content).
 	 *
-	 * @var PLL_Language|null
+	 * @var LMAT_Language|null
 	 */
 	public $curlang;
 
 	/**
 	 * Preferred language to assign to new contents.
 	 *
-	 * @var PLL_Language|null
+	 * @var LMAT_Language|null
 	 */
 	public $pref_lang;
 
@@ -40,20 +40,20 @@ class PLL_Admin_Classic_Editor {
 	 *
 	 * @since 2.4
 	 *
-	 * @param object $polylang The Polylang object.
+	 * @param object $linguator The Linguator object.
 	 */
-	public function __construct( &$polylang ) {
-		$this->model = &$polylang->model;
-		$this->links = &$polylang->links;
-		$this->curlang = &$polylang->curlang;
-		$this->pref_lang = &$polylang->pref_lang;
+	public function __construct( &$linguator ) {
+		$this->model = &$linguator->model;
+		$this->links = &$linguator->links;
+		$this->curlang = &$linguator->curlang;
+		$this->pref_lang = &$linguator->pref_lang;
 
 		// Adds the Languages box in the 'Edit Post' and 'Edit Page' panels
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 
 		// Ajax response for changing the language in the post metabox
 		add_action( 'wp_ajax_post_lang_choice', array( $this, 'post_lang_choice' ) );
-		add_action( 'wp_ajax_pll_posts_not_translated', array( $this, 'ajax_posts_not_translated' ) );
+		add_action( 'wp_ajax_lmat_posts_not_translated', array( $this, 'ajax_posts_not_translated' ) );
 
 		// Filters the pages by language in the parent dropdown list in the page attributes metabox
 		add_filter( 'page_attributes_dropdown_pages_args', array( $this, 'page_attributes_dropdown_pages_args' ), 10, 2 );
@@ -74,13 +74,13 @@ class PLL_Admin_Classic_Editor {
 		if ( $this->model->is_translated_post_type( $post_type ) ) {
 			add_meta_box(
 				'ml_box',
-				__( 'Languages', 'polylang' ),
+				__( 'Languages', 'linguator' ),
 				array( $this, 'post_language' ),
 				$post_type,
 				'side',
 				'high',
 				array(
-					'__back_compat_meta_box' => pll_use_block_editor_plugin(),
+					'__back_compat_meta_box' => lmat_use_block_editor_plugin(),
 				)
 			);
 		}
@@ -104,7 +104,7 @@ class PLL_Admin_Classic_Editor {
 			( isset( $_GET['new_lang'] ) ? $this->model->get_language( sanitize_key( $_GET['new_lang'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification
 			$this->pref_lang );
 
-		$dropdown = new PLL_Walker_Dropdown();
+		$dropdown = new LMAT_Walker_Dropdown();
 
 		$id = ( 'attachment' === $post_type ) ? sprintf( 'attachments[%d][language]', (int) $post_ID ) : 'post_lang_choice';
 
@@ -119,14 +119,14 @@ class PLL_Admin_Classic_Editor {
 			)
 		);
 
-		wp_nonce_field( 'pll_language', '_pll_nonce' );
+		wp_nonce_field( 'lmat_language', '_lmat_nonce' );
 
 		// NOTE: the class "tags-input" allows to include the field in the autosave $_POST ( see autosave.js )
 		printf(
 			'<p><strong>%1$s</strong></p>
 			<label class="screen-reader-text" for="%2$s">%1$s</label>
 			<div id="select-%3$s-language">%4$s</div>',
-			esc_html__( 'Language', 'polylang' ),
+			esc_html__( 'Language', 'linguator' ),
 			esc_attr( $id ),
 			( 'attachment' === $post_type ? 'media' : 'post' ),
 			$dropdown_html // phpcs:ignore WordPress.Security.EscapeOutput
@@ -137,7 +137,7 @@ class PLL_Admin_Classic_Editor {
 		 *
 		 * @since 1.8
 		 */
-		do_action( 'pll_before_post_translations', $post_type );
+		do_action( 'lmat_before_post_translations', $post_type );
 
 		echo '<div id="post-translations" class="translations">';
 		if ( $lang ) {
@@ -158,7 +158,7 @@ class PLL_Admin_Classic_Editor {
 	 * @return void
 	 */
 	public function post_lang_choice() {
-		check_ajax_referer( 'pll_language', '_pll_nonce' );
+		check_ajax_referer( 'lmat_language', '_lmat_nonce' );
 
 		if ( ! isset( $_POST['post_id'], $_POST['lang'], $_POST['post_type'] ) ) {
 			wp_die( 'The request is missing the parameter "post_type", "lang" and/or "post_id".' );
@@ -242,7 +242,7 @@ class PLL_Admin_Classic_Editor {
 					'exclude_tree'     => $post->ID,
 					'selected'         => $post->post_parent,
 					'name'             => 'parent_id',
-					'show_option_none' => __( '(no parent)', 'polylang' ),
+					'show_option_none' => __( '(no parent)', 'linguator' ),
 					'sort_column'      => 'menu_order, post_title',
 					'echo'             => 0,
 				);
@@ -275,9 +275,9 @@ class PLL_Admin_Classic_Editor {
 	 * @return void
 	 */
 	public function ajax_posts_not_translated() {
-		check_ajax_referer( 'pll_language', '_pll_nonce' );
+		check_ajax_referer( 'lmat_language', '_lmat_nonce' );
 
-		if ( ! isset( $_GET['post_type'], $_GET['post_language'], $_GET['translation_language'], $_GET['term'], $_GET['pll_post_id'] ) ) {
+		if ( ! isset( $_GET['post_type'], $_GET['post_language'], $_GET['translation_language'], $_GET['term'], $_GET['lmat_post_id'] ) ) {
 			wp_die( 0 );
 		}
 
@@ -306,7 +306,7 @@ class PLL_Admin_Classic_Editor {
 		}
 
 		// Add current translation in list
-		if ( $post_id = $this->model->post->get_translation( (int) $_GET['pll_post_id'], $translation_language ) ) {
+		if ( $post_id = $this->model->post->get_translation( (int) $_GET['lmat_post_id'], $translation_language ) ) {
 			$post = get_post( $post_id );
 
 			if ( ! empty( $post ) ) {
@@ -358,12 +358,12 @@ class PLL_Admin_Classic_Editor {
 	public function edit_form_top( $post ) {
 		if ( ! $this->model->post->current_user_can_synchronize( $post->ID ) ) {
 			?>
-			<div class="pll-notice notice notice-warning">
+			<div class="lmat-notice notice notice-warning">
 				<p>
 					<?php
-					esc_html_e( 'Some taxonomies or metadata may be synchronized with existing translations that you are not allowed to modify.', 'polylang' );
+					esc_html_e( 'Some taxonomies or metadata may be synchronized with existing translations that you are not allowed to modify.', 'linguator' );
 					echo ' ';
-					esc_html_e( 'If you attempt to modify them anyway, your changes will not be saved.', 'polylang' );
+					esc_html_e( 'If you attempt to modify them anyway, your changes will not be saved.', 'linguator' );
 					?>
 				</p>
 			</div>

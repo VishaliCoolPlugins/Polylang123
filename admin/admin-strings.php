@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,7 +8,7 @@
  *
  * @since 1.6
  */
-class PLL_Admin_Strings {
+class LMAT_Admin_Strings {
 	/**
 	 * Stores the strings to translate.
 	 *
@@ -37,7 +37,7 @@ class PLL_Admin_Strings {
 	 */
 	public static function init() {
 		// default strings translations sanitization
-		add_filter( 'pll_sanitize_string_translation', array( self::class, 'sanitize_string_translation' ), 10, 2 );
+		add_filter( 'lmat_sanitize_string_translation', array( self::class, 'sanitize_string_translation' ), 10, 2 );
 	}
 
 	/**
@@ -47,11 +47,11 @@ class PLL_Admin_Strings {
 	 *
 	 * @param string $name      A unique name for the string
 	 * @param string $string    The string to register
-	 * @param string $context   Optional, the group in which the string is registered, defaults to 'polylang'
+	 * @param string $context   Optional, the group in which the string is registered, defaults to 'linguator'
 	 * @param bool   $multiline Optional, whether the string table should display a multiline textarea or a single line input, defaults to single line
 	 * @return void
 	 */
-	public static function register_string( $name, $string, $context = 'Polylang', $multiline = false ) {
+	public static function register_string( $name, $string, $context = 'Linguator', $multiline = false ) {
 		if ( $string && is_scalar( $string ) ) {
 			self::$strings[ md5( $string ) ] = compact( 'name', 'string', 'context', 'multiline' );
 		}
@@ -66,8 +66,8 @@ class PLL_Admin_Strings {
 	 */
 	public static function &get_strings() {
 		self::$default_strings = array(
-			'widget_title' => __( 'Widget title', 'polylang' ),
-			'widget_text'  => __( 'Widget text', 'polylang' ),
+			'widget_title' => __( 'Widget title', 'linguator' ),
+			'widget_text'  => __( 'Widget text', 'linguator' ),
 		);
 
 		global $wp_registered_widgets;
@@ -88,7 +88,7 @@ class PLL_Admin_Strings {
 				$number          = $wp_registered_widgets[ $widget ]['params'][0]['number'];
 
 				// Don't enable widget translation if the widget is visible in only one language or if there is no title.
-				if ( ! empty( $widget_settings[ $number ]['pll_lang'] ) ) {
+				if ( ! empty( $widget_settings[ $number ]['lmat_lang'] ) ) {
 					continue;
 				}
 
@@ -111,13 +111,13 @@ class PLL_Admin_Strings {
 
 		/**
 		 * Filter the list of strings registered for translation
-		 * Mainly for use by our PLL_WPML_Compat class
+		 * Mainly for use by our LMAT_WPML_Compat class
 		 *
 		 * @since 1.0.2
 		 *
 		 * @param array $strings list of strings
 		 */
-		self::$strings = apply_filters( 'pll_get_strings', self::$strings );
+		self::$strings = apply_filters( 'lmat_get_strings', self::$strings );
 		return self::$strings;
 	}
 

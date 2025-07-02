@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,7 +8,7 @@
  *
  * @since 2.8
  */
-class PLL_Duplicate_Post {
+class LMAT_Duplicate_Post {
 	/**
 	 * Setups actions.
 	 *

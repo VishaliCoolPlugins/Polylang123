@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
  *     default_alias: non-empty-string
  * }
  */
-interface PLL_Translatable_Object_With_Types_Interface {
+interface LMAT_Translatable_Object_With_Types_Interface {
 
 	/**
 	 * Returns object types that need to be translated.
@@ -25,14 +25,14 @@ interface PLL_Translatable_Object_With_Types_Interface {
 	 * @since 3.4
 	 *
 	 * @param bool $filter True if we should return only valid registered object types.
-	 * @return string[] Object type names for which Polylang manages languages.
+	 * @return string[] Object type names for which Linguator manages languages.
 	 *
 	 * @phpstan-return array<non-empty-string, non-empty-string>
 	 */
 	public function get_translated_object_types( $filter = true );
 
 	/**
-	 * Returns true if Polylang manages languages for this object type.
+	 * Returns true if Linguator manages languages for this object type.
 	 *
 	 * @since 3.4
 	 *

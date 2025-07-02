@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,18 +8,18 @@
  *
  * @since 1.2
  */
-class PLL_Frontend_Filters_Search {
+class LMAT_Frontend_Filters_Search {
 	/**
-	 * Instance of a child class of PLL_Links_Model.
+	 * Instance of a child class of LMAT_Links_Model.
 	 *
-	 * @var PLL_Links_Model
+	 * @var LMAT_Links_Model
 	 */
 	public $links_model;
 
 	/**
 	 * Current language.
 	 *
-	 * @var PLL_Language|null
+	 * @var LMAT_Language|null
 	 */
 	public $curlang;
 
@@ -28,11 +28,11 @@ class PLL_Frontend_Filters_Search {
 	 *
 	 * @since 1.2
 	 *
-	 * @param object $polylang The Polylang object.
+	 * @param object $linguator The Linguator object.
 	 */
-	public function __construct( &$polylang ) {
-		$this->links_model = &$polylang->links_model;
-		$this->curlang = &$polylang->curlang;
+	public function __construct( &$linguator ) {
+		$this->links_model = &$linguator->links_model;
+		$this->curlang = &$linguator->curlang;
 
 		// Adds the language information in the search form
 		// Low priority in case the search form is created using the same filter as described in http://codex.wordpress.org/Function_Reference/get_search_form
@@ -47,7 +47,7 @@ class PLL_Frontend_Filters_Search {
 
 		// Adds javascript at the end of the document
 		// Was used for WP < 3.6. kept just in case
-		if ( defined( 'PLL_SEARCH_FORM_JS' ) && PLL_SEARCH_FORM_JS ) {
+		if ( defined( 'LMAT_SEARCH_FORM_JS' ) && LMAT_SEARCH_FORM_JS ) {
 			add_action( 'wp_footer', array( $this, 'wp_print_footer_scripts' ) );
 		}
 	}
@@ -119,9 +119,9 @@ class PLL_Frontend_Filters_Search {
 		$form .= '<input class="adminbar-input" name="s" id="adminbar-search" type="text" value="" maxlength="150" />';
 		$form .= '<label for="adminbar-search" class="screen-reader-text">' .
 					/* translators: Hidden accessibility text. */
-					esc_html__( 'Search', 'polylang' ) .
+					esc_html__( 'Search', 'linguator' ) .
 				'</label>';
-		$form .= '<input type="submit" class="adminbar-button" value="' . esc_attr__( 'Search', 'polylang' ) . '" />';
+		$form .= '<input type="submit" class="adminbar-button" value="' . esc_attr__( 'Search', 'linguator' ) . '" />';
 		$form .= '</form>';
 
 		$wp_admin_bar->add_node(
@@ -149,7 +149,7 @@ class PLL_Frontend_Filters_Search {
 		 * Don't use directly e[0] just in case there is somewhere else an element named 's'
 		 * Check before if the hidden input has not already been introduced by get_search_form ( FIXME: is there a way to improve this ) ?
 		 * Thanks to AndyDeGroo for improving the code for compatibility with old browsers
-		 * http://wordpress.org/support/topic/development-of-polylang-version-08?replies=6#post-2645559
+		 * http://wordpress.org/support/topic/development-of-linguator-version-08?replies=6#post-2645559
 		 */
 		$lang = esc_js( $this->curlang->slug );
 		$js = "e = document.getElementsByName( 's' );

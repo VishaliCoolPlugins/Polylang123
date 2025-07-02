@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -19,7 +19,7 @@
  *     hide_if_no_translation: 0|1
  * }
  */
-class PLL_Widget_Languages extends WP_Widget {
+class LMAT_Widget_Languages extends WP_Widget {
 
 	/**
 	 * Constructor
@@ -28,10 +28,10 @@ class PLL_Widget_Languages extends WP_Widget {
 	 */
 	public function __construct() {
 		parent::__construct(
-			'polylang',
-			__( 'Language switcher', 'polylang' ),
+			'linguator',
+			__( 'Language switcher', 'linguator' ),
 			array(
-				'description'                 => __( 'Displays a language switcher', 'polylang' ),
+				'description'                 => __( 'Displays a language switcher', 'linguator' ),
 				'customize_selective_refresh' => true,
 			)
 		);
@@ -68,7 +68,7 @@ class PLL_Widget_Languages extends WP_Widget {
 		$instance['dropdown'] = empty( $instance['dropdown'] ) ? 0 : $this->id;
 		$instance['echo']     = 0;
 		$instance['raw']      = 0;
-		$list                 = pll_the_languages( $instance );
+		$list                 = lmat_the_languages( $instance );
 
 		if ( $list ) {
 			$title = empty( $instance['title'] ) ? '' : $instance['title'];
@@ -85,7 +85,7 @@ class PLL_Widget_Languages extends WP_Widget {
 			// The title may be filtered: Strip out HTML and make sure the aria-label is never empty.
 			$aria_label = trim( wp_strip_all_tags( $title ) );
 			if ( ! $aria_label ) {
-				$aria_label = __( 'Choose a language', 'polylang' );
+				$aria_label = __( 'Choose a language', 'linguator' );
 			}
 
 			if ( $instance['dropdown'] ) {
@@ -126,7 +126,7 @@ class PLL_Widget_Languages extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		$instance = array( 'title' => sanitize_text_field( $new_instance['title'] ) );
-		foreach ( array_keys( PLL_Switcher::get_switcher_options( 'widget' ) ) as $key ) {
+		foreach ( array_keys( LMAT_Switcher::get_switcher_options( 'widget' ) ) as $key ) {
 			$instance[ $key ] = ! empty( $new_instance[ $key ] ) ? 1 : 0;
 		}
 
@@ -145,18 +145,18 @@ class PLL_Widget_Languages extends WP_Widget {
 	 */
 	public function form( $instance ) {
 		// Default values
-		$instance = wp_parse_args( (array) $instance, array_merge( array( 'title' => '' ), PLL_Switcher::get_switcher_options( 'widget', 'default' ) ) );
+		$instance = wp_parse_args( (array) $instance, array_merge( array( 'title' => '' ), LMAT_Switcher::get_switcher_options( 'widget', 'default' ) ) );
 
 		// Title
 		printf(
 			'<p><label for="%1$s">%2$s</label><input class="widefat" id="%1$s" name="%3$s" type="text" value="%4$s" /></p>',
 			esc_attr( $this->get_field_id( 'title' ) ),
-			esc_html__( 'Title:', 'polylang' ),
+			esc_html__( 'Title:', 'linguator' ),
 			esc_attr( $this->get_field_name( 'title' ) ),
 			esc_attr( $instance['title'] )
 		);
 
-		foreach ( PLL_Switcher::get_switcher_options( 'widget' ) as $key => $str ) {
+		foreach ( LMAT_Switcher::get_switcher_options( 'widget' ) as $key => $str ) {
 			printf(
 				'<div%5$s%6$s><input type="checkbox" class="checkbox %7$s" id="%1$s" name="%2$s"%3$s /><label for="%1$s">%4$s</label></div>',
 				esc_attr( $this->get_field_id( $key ) ),
@@ -165,7 +165,7 @@ class PLL_Widget_Languages extends WP_Widget {
 				esc_html( $str ),
 				in_array( $key, array( 'show_names', 'show_flags', 'hide_current' ) ) ? sprintf( ' class="no-dropdown-%s"', esc_attr( $this->id ) ) : '',
 				( ! empty( $instance['dropdown'] ) && in_array( $key, array( 'show_names', 'show_flags', 'hide_current' ) ) ? ' style="display:none;"' : '' ),
-				esc_attr( 'pll-' . $key )
+				esc_attr( 'lmat-' . $key )
 			);
 		}
 

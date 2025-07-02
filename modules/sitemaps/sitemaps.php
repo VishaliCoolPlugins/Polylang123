@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,14 +8,14 @@
  *
  * @since 2.8
  */
-class PLL_Sitemaps extends PLL_Abstract_Sitemaps {
+class LMAT_Sitemaps extends LMAT_Abstract_Sitemaps {
 	/**
-	 * @var PLL_Links_Model
+	 * @var LMAT_Links_Model
 	 */
 	protected $links_model;
 
 	/**
-	 * @var PLL_Model
+	 * @var LMAT_Model
 	 */
 	protected $model;
 
@@ -31,12 +31,12 @@ class PLL_Sitemaps extends PLL_Abstract_Sitemaps {
 	 *
 	 * @since 2.8
 	 *
-	 * @param object $polylang Main Polylang object.
+	 * @param object $linguator Main Linguator object.
 	 */
-	public function __construct( &$polylang ) {
-		$this->links_model = &$polylang->links_model;
-		$this->model = &$polylang->model;
-		$this->options = &$polylang->options;
+	public function __construct( &$linguator ) {
+		$this->links_model = &$linguator->links_model;
+		$this->model = &$linguator->model;
+		$this->options = &$linguator->options;
 	}
 
 	/**
@@ -49,7 +49,7 @@ class PLL_Sitemaps extends PLL_Abstract_Sitemaps {
 	public function init() {
 		parent::init();
 
-		add_filter( 'pll_set_language_from_query', array( $this, 'set_language_from_query' ), 10, 2 );
+		add_filter( 'lmat_set_language_from_query', array( $this, 'set_language_from_query' ), 10, 2 );
 		add_filter( 'rewrite_rules_array', array( $this, 'rewrite_rules' ) );
 		add_filter( 'wp_sitemaps_add_provider', array( $this, 'replace_provider' ) );
 	}
@@ -121,7 +121,7 @@ class PLL_Sitemaps extends PLL_Abstract_Sitemaps {
 	 */
 	public function replace_provider( $provider ) {
 		if ( $provider instanceof WP_Sitemaps_Provider ) {
-			$provider = new PLL_Multilingual_Sitemaps_Provider( $provider, $this->links_model );
+			$provider = new LMAT_Multilingual_Sitemaps_Provider( $provider, $this->links_model );
 		}
 		return $provider;
 	}

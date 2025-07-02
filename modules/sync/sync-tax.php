@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,7 +8,7 @@
  *
  * @since 2.3
  */
-class PLL_Sync_Tax {
+class LMAT_Sync_Tax {
 
 	/**
 	 * Stores the plugin options.
@@ -18,7 +18,7 @@ class PLL_Sync_Tax {
 	protected $options;
 
 	/**
-	 * @var PLL_Model
+	 * @var LMAT_Model
 	 */
 	protected $model;
 
@@ -27,14 +27,14 @@ class PLL_Sync_Tax {
 	 *
 	 * @since 2.3
 	 *
-	 * @param object $polylang The Polylang object.
+	 * @param object $linguator The Linguator object.
 	 */
-	public function __construct( &$polylang ) {
-		$this->model   = &$polylang->model;
-		$this->options = &$polylang->options;
+	public function __construct( &$linguator ) {
+		$this->model   = &$linguator->model;
+		$this->options = &$linguator->options;
 
 		add_action( 'set_object_terms', array( $this, 'set_object_terms' ), 10, 5 );
-		add_action( 'pll_save_term', array( $this, 'create_term' ), 10, 3 );
+		add_action( 'lmat_save_term', array( $this, 'create_term' ), 10, 3 );
 		add_action( 'pre_delete_term', array( $this, 'pre_delete_term' ) );
 		add_action( 'delete_term', array( $this, 'delete_term' ) );
 	}
@@ -70,7 +70,7 @@ class PLL_Sync_Tax {
 		 * @param int      $to         Id of the post to which we paste information.
 		 * @param string   $lang       Language slug.
 		 */
-		return array_unique( apply_filters( 'pll_copy_taxonomies', $taxonomies, $sync, $from, $to, $lang ) );
+		return array_unique( apply_filters( 'lmat_copy_taxonomies', $taxonomies, $sync, $from, $to, $lang ) );
 	}
 
 	/**
@@ -105,7 +105,7 @@ class PLL_Sync_Tax {
 				 * @param int    $term    Source term id
 				 * @param string $lang    Language slug
 				 */
-				if ( $term_id = apply_filters( 'pll_maybe_translate_term', (int) $this->model->term->get_translation( $term, $lang ), $term, $lang ) ) {
+				if ( $term_id = apply_filters( 'lmat_maybe_translate_term', (int) $this->model->term->get_translation( $term, $lang ), $term, $lang ) ) {
 					$newterms[] = (int) $term_id; // Cast is important otherwise we get 'numeric' tags
 				}
 			}

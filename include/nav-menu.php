@@ -1,9 +1,9 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
-use WP_Syntex\Polylang\Options\Options;
+use WP_Syntex\Linguator\Options\Options;
 
 /**
  * Manages custom menus translations
@@ -11,7 +11,7 @@ use WP_Syntex\Polylang\Options\Options;
  *
  * @since 1.7.7
  */
-class PLL_Nav_Menu {
+class LMAT_Nav_Menu {
 	/**
 	 * Stores the plugin options.
 	 *
@@ -20,7 +20,7 @@ class PLL_Nav_Menu {
 	public $options;
 
 	/**
-	 * @var PLL_Model
+	 * @var LMAT_Model
 	 */
 	public $model;
 
@@ -43,11 +43,11 @@ class PLL_Nav_Menu {
 	 *
 	 * @since 1.7.7
 	 *
-	 * @param object $polylang The Polylang object.
+	 * @param object $linguator The Linguator object.
 	 */
-	public function __construct( &$polylang ) {
-		$this->model = &$polylang->model;
-		$this->options = &$polylang->options;
+	public function __construct( &$linguator ) {
+		$this->model = &$linguator->model;
+		$this->options = &$linguator->options;
 
 		$this->theme = get_option( 'stylesheet' );
 
@@ -69,9 +69,9 @@ class PLL_Nav_Menu {
 	 * @return stdClass
 	 */
 	public function wp_setup_nav_menu_item( $item ) {
-		if ( isset( $item->url ) && '#pll_switcher' === $item->url ) {
-			$item->post_title = __( 'Languages', 'polylang' );
-			$item->type_label = __( 'Language switcher', 'polylang' );
+		if ( isset( $item->url ) && '#lmat_switcher' === $item->url ) {
+			$item->post_title = __( 'Languages', 'linguator' );
+			$item->type_label = __( 'Language switcher', 'linguator' );
 		}
 		return $item;
 	}
@@ -108,7 +108,7 @@ class PLL_Nav_Menu {
 	 * @since 1.8
 	 *
 	 * @param string       $loc  Nav menu location.
-	 * @param PLL_Language $lang Language object.
+	 * @param LMAT_Language $lang Language object.
 	 * @return string
 	 */
 	public function combine_location( $loc, $lang ) {

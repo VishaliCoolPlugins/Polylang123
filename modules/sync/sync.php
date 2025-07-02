@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,19 +8,19 @@
  *
  * @since 2.4
  */
-class PLL_Sync {
+class LMAT_Sync {
 	/**
-	 * @var PLL_Sync_Tax
+	 * @var LMAT_Sync_Tax
 	 */
 	public $taxonomies;
 
 	/**
-	 * @var PLL_Sync_Post_Metas
+	 * @var LMAT_Sync_Post_Metas
 	 */
 	public $post_metas;
 
 	/**
-	 * @var PLL_Sync_Term_Metas
+	 * @var LMAT_Sync_Term_Metas
 	 */
 	public $term_metas;
 
@@ -32,7 +32,7 @@ class PLL_Sync {
 	protected $options;
 
 	/**
-	 * @var PLL_Model
+	 * @var LMAT_Model
 	 */
 	protected $model;
 
@@ -41,28 +41,28 @@ class PLL_Sync {
 	 *
 	 * @since 1.2
 	 *
-	 * @param object $polylang The Polylang object.
+	 * @param object $linguator The Linguator object.
 	 */
-	public function __construct( &$polylang ) {
-		$this->model   = &$polylang->model;
-		$this->options = &$polylang->options;
+	public function __construct( &$linguator ) {
+		$this->model   = &$linguator->model;
+		$this->options = &$linguator->options;
 
-		$this->taxonomies = new PLL_Sync_Tax( $polylang );
-		$this->post_metas = new PLL_Sync_Post_Metas( $polylang );
-		$this->term_metas = new PLL_Sync_Term_Metas( $polylang );
+		$this->taxonomies = new LMAT_Sync_Tax( $linguator );
+		$this->post_metas = new LMAT_Sync_Post_Metas( $linguator );
+		$this->term_metas = new LMAT_Sync_Term_Metas( $linguator );
 
 		add_filter( 'wp_insert_post_parent', array( $this, 'can_sync_post_parent' ), 10, 3 );
 		add_filter( 'wp_insert_post_data', array( $this, 'can_sync_post_data' ), 10, 2 );
 
-		add_action( 'pll_save_post', array( $this, 'pll_save_post' ), 10, 3 );
+		add_action( 'lmat_save_post', array( $this, 'lmat_save_post' ), 10, 3 );
 		add_action( 'created_term', array( $this, 'sync_term_parent' ), 10, 3 );
 		add_action( 'edited_term', array( $this, 'sync_term_parent' ), 10, 3 );
 
-		add_action( 'pll_duplicate_term', array( $this->term_metas, 'copy' ), 10, 3 );
+		add_action( 'lmat_duplicate_term', array( $this->term_metas, 'copy' ), 10, 3 );
 
 		if ( $this->options['media_support'] ) {
-			add_action( 'pll_translate_media', array( $this->taxonomies, 'copy' ), 10, 3 );
-			add_action( 'pll_translate_media', array( $this->post_metas, 'copy' ), 10, 3 );
+			add_action( 'lmat_translate_media', array( $this->taxonomies, 'copy' ), 10, 3 );
+			add_action( 'lmat_translate_media', array( $this->post_metas, 'copy' ), 10, 3 );
 			add_action( 'edit_attachment', array( $this, 'edit_attachment' ) );
 		}
 
@@ -153,7 +153,7 @@ class PLL_Sync {
 	 * @param int[]   $translations Post translations.
 	 * @return void
 	 */
-	public function pll_save_post( $post_id, $post, $translations ) {
+	public function lmat_save_post( $post_id, $post, $translations ) {
 		global $wpdb;
 
 		if ( $this->model->post->current_user_can_synchronize( $post_id ) ) {
@@ -246,7 +246,7 @@ class PLL_Sync {
 	 * @return void
 	 */
 	public function edit_attachment( $post_id ) {
-		$this->pll_save_post( $post_id, get_post( $post_id ), $this->model->post->get_translations( $post_id ) );
+		$this->lmat_save_post( $post_id, get_post( $post_id ), $this->model->post->get_translations( $post_id ) );
 	}
 
 	/**

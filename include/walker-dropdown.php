@@ -1,15 +1,15 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
  * Displays languages in a dropdown list
  *
  * @since 1.2
- * @since 3.4 Extends `PLL_Walker` now.
+ * @since 3.4 Extends `LMAT_Walker` now.
  */
-class PLL_Walker_Dropdown extends PLL_Walker {
+class LMAT_Walker_Dropdown extends LMAT_Walker {
 	/**
 	 * Database fields to use.
 	 *
@@ -68,12 +68,12 @@ class PLL_Walker_Dropdown extends PLL_Walker {
 	 * class    => the class attribute
 	 * disabled => disables the dropdown if set to 1
 	 *
-	 * @param array $elements  An array of `PLL_language` or `stdClass` elements.
+	 * @param array $elements  An array of `LMAT_language` or `stdClass` elements.
 	 * @param int   $max_depth The maximum hierarchical depth.
 	 * @param mixed ...$args   Additional arguments.
 	 * @return string The hierarchical item output.
 	 *
-	 * @phpstan-param array<PLL_Language|stdClass> $elements
+	 * @phpstan-param array<LMAT_Language|stdClass> $elements
 	 */
 	public function walk( $elements, $max_depth, ...$args ) { // // phpcs:ignore WordPressVIPMinimum.Classes.DeclarationCompatibility.DeclarationCompatibility
 		$output = '';
@@ -86,7 +86,7 @@ class PLL_Walker_Dropdown extends PLL_Walker {
 			$current = wp_list_filter( $elements, array( $args['value'] => $args['selected'] ) );
 			$lang = reset( $current );
 			$output = sprintf(
-				'<span class="pll-select-flag">%s</span>',
+				'<span class="lmat-select-flag">%s</span>',
 				empty( $lang->flag ) ? esc_html( $lang->slug ) : $lang->flag
 			);
 		}

@@ -1,17 +1,17 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
-namespace WP_Syntex\Polylang\Model;
+namespace WP_Syntex\Linguator\Model;
 
-use PLL_Cache;
-use PLL_Language;
-use PLL_Language_Factory;
-use PLL_Translatable_Objects;
+use LMAT_Cache;
+use LMAT_Language;
+use LMAT_Language_Factory;
+use LMAT_Translatable_Objects;
 use WP_Error;
 use WP_Term;
-use WP_Syntex\Polylang\Options\Options;
+use WP_Syntex\Linguator\Options\Options;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -27,11 +27,11 @@ class Languages {
 	public const LOCALE_PATTERN = '^' . self::INNER_LOCALE_PATTERN . '$';
 	public const SLUG_PATTERN   = '^' . self::INNER_SLUG_PATTERN . '$';
 
-	public const TRANSIENT_NAME = 'pll_languages_list';
+	public const TRANSIENT_NAME = 'lmat_languages_list';
 	private const CACHE_KEY     = 'languages';
 
 	/**
-	 * Polylang's options.
+	 * Linguator's options.
 	 *
 	 * @var Options
 	 */
@@ -40,14 +40,14 @@ class Languages {
 	/**
 	 * Translatable objects registry.
 	 *
-	 * @var PLL_Translatable_Objects
+	 * @var LMAT_Translatable_Objects
 	 */
 	private $translatable_objects;
 
 	/**
 	 * Internal non persistent cache object.
 	 *
-	 * @var PLL_Cache<mixed>
+	 * @var LMAT_Cache<mixed>
 	 */
 	private $cache;
 
@@ -59,7 +59,7 @@ class Languages {
 	private $is_creating_list = false;
 
 	/**
-	 * Tells if {@see WP_Syntex\Polylang\Model\Languages::get_list()} can be used.
+	 * Tells if {@see WP_Syntex\Linguator\Model\Languages::get_list()} can be used.
 	 *
 	 * @var bool
 	 */
@@ -70,13 +70,13 @@ class Languages {
 	 *
 	 * @since 3.7
 	 *
-	 * @param Options                  $options              Polylang's options.
-	 * @param PLL_Translatable_Objects $translatable_objects Translatable objects registry.
-	 * @param PLL_Cache                $cache                Internal non persistent cache object.
+	 * @param Options                  $options              Linguator's options.
+	 * @param LMAT_Translatable_Objects $translatable_objects Translatable objects registry.
+	 * @param LMAT_Cache                $cache                Internal non persistent cache object.
 	 *
-	 * @phpstan-param PLL_Cache<mixed> $cache
+	 * @phpstan-param LMAT_Cache<mixed> $cache
 	 */
-	public function __construct( Options $options, PLL_Translatable_Objects $translatable_objects, PLL_Cache $cache ) {
+	public function __construct( Options $options, LMAT_Translatable_Objects $translatable_objects, LMAT_Cache $cache ) {
 		$this->options              = $options;
 		$this->translatable_objects = $translatable_objects;
 		$this->cache                = $cache;
@@ -87,29 +87,29 @@ class Languages {
 	 *
 	 * @since 0.1
 	 * @since 3.4 Allow to get a language by `term_taxonomy_id`.
-	 * @since 3.7 Moved from `PLL_Model::get_language()` to `WP_Syntex\Polylang\Model\Languages::get()`.
+	 * @since 3.7 Moved from `LMAT_Model::get_language()` to `WP_Syntex\Linguator\Model\Languages::get()`.
 	 *
 	 * @param mixed $value `term_id`, `term_taxonomy_id`, `slug`, `locale`, or `w3c` of the queried language.
 	 *                     `term_id` and `term_taxonomy_id` can be fetched for any language taxonomy.
 	 *                     /!\ For the `term_taxonomy_id`, prefix the ID by `tt:` (ex: `"tt:{$tt_id}"`),
 	 *                     this is to prevent confusion between `term_id` and `term_taxonomy_id`.
-	 * @return PLL_Language|false Language object, false if no language found.
+	 * @return LMAT_Language|false Language object, false if no language found.
 	 *
-	 * @phpstan-param PLL_Language|WP_Term|int|string $value
+	 * @phpstan-param LMAT_Language|WP_Term|int|string $value
 	 */
 	public function get( $value ) {
-		if ( $value instanceof PLL_Language ) {
+		if ( $value instanceof LMAT_Language ) {
 			return $value;
 		}
 
-		// Cast WP_Term to PLL_Language.
+		// Cast WP_Term to LMAT_Language.
 		if ( $value instanceof WP_Term ) {
 			return $this->get( $value->term_id );
 		}
 
 		$return = $this->cache->get( 'language:' . $value );
 
-		if ( $return instanceof PLL_Language ) {
+		if ( $return instanceof LMAT_Language ) {
 			return $return;
 		}
 
@@ -123,7 +123,7 @@ class Languages {
 			$this->cache->set( 'language:' . $lang->w3c, $lang );
 		}
 
-		/** @var PLL_Language|false */
+		/** @var LMAT_Language|false */
 		return $this->cache->get( 'language:' . $value );
 	}
 
@@ -131,7 +131,7 @@ class Languages {
 	 * Adds a new language and creates a default category for this language.
 	 *
 	 * @since 1.2
-	 * @since 3.7 Moved from `PLL_Admin_Model::add_language()` to `WP_Syntex\Polylang\Model\Languages::add()`.
+	 * @since 3.7 Moved from `LMAT_Admin_Model::add_language()` to `WP_Syntex\Linguator\Model\Languages::add()`.
 	 *
 	 * @param array $args {
 	 *   Arguments used to create the language.
@@ -185,7 +185,7 @@ class Languages {
 		);
 		if ( is_wp_error( $r ) ) {
 			// Avoid an ugly fatal error if something went wrong (reported once in the forum).
-			return new WP_Error( 'pll_add_language', __( 'Impossible to add the language.', 'polylang' ) );
+			return new WP_Error( 'lmat_add_language', __( 'Impossible to add the language.', 'linguator' ) );
 		}
 		wp_update_term( (int) $r['term_id'], 'language', array( 'term_group' => (int) $args['term_group'] ) ); // Can't set the term group directly in `wp_insert_term()`.
 
@@ -221,7 +221,7 @@ class Languages {
 		 *   @type bool   $no_default_cat Optional. If set, no default category will be created for this language.
 		 * }
 		 */
-		do_action( 'pll_add_language', $args );
+		do_action( 'lmat_add_language', $args );
 
 		return true;
 	}
@@ -230,7 +230,7 @@ class Languages {
 	 * Updates language properties.
 	 *
 	 * @since 1.2
-	 * @since 3.7 Moved from `PLL_Admin_Model::update_language()` to `WP_Syntex\Polylang\Model\Languages::update()`.
+	 * @since 3.7 Moved from `LMAT_Admin_Model::update_language()` to `WP_Syntex\Linguator\Model\Languages::update()`.
 	 *
 	 * @param array $args {
 	 *   Arguments used to modify the language.
@@ -260,7 +260,7 @@ class Languages {
 		$lang = $this->get( (int) $args['lang_id'] );
 
 		if ( empty( $lang ) ) {
-			return new WP_Error( 'pll_invalid_language_id', __( 'The language does not seem to exist.', 'polylang' ) );
+			return new WP_Error( 'lmat_invalid_language_id', __( 'The language does not seem to exist.', 'linguator' ) );
 		}
 
 		$errors = $this->validate_lang( $args, $lang );
@@ -308,8 +308,8 @@ class Languages {
 					$number = $widget['params'][0]['number'];
 					if ( is_object( $obj ) && method_exists( $obj, 'get_settings' ) && method_exists( $obj, 'save_settings' ) ) {
 						$settings = $obj->get_settings();
-						if ( isset( $settings[ $number ]['pll_lang'] ) && $settings[ $number ]['pll_lang'] == $old_slug ) {
-							$settings[ $number ]['pll_lang'] = $slug;
+						if ( isset( $settings[ $number ]['lmat_lang'] ) && $settings[ $number ]['lmat_lang'] == $old_slug ) {
+							$settings[ $number ]['lmat_lang'] = $slug;
 							$obj->save_settings( $settings );
 						}
 					}
@@ -367,7 +367,7 @@ class Languages {
 		 * @since 3.2 Added $lang parameter.
 		 *
 		 * @param array $args {
-		 *   Arguments used to modify the language. @see WP_Syntex\Polylang\Model\Languages::update().
+		 *   Arguments used to modify the language. @see WP_Syntex\Linguator\Model\Languages::update().
 		 *
 		 *   @type string $name           Language name (used only for display).
 		 *   @type string $slug           Language code (ideally 2-letters ISO 639-1 language code).
@@ -377,9 +377,9 @@ class Languages {
 		 *   @type string $no_default_cat Optional, if set, no default category has been created for this language.
 		 *   @type string $flag           Optional, country code, @see flags.php.
 		 * }
-		 * @param PLL_Language $lang Previous value of the language being edited.
+		 * @param LMAT_Language $lang Previous value of the language being edited.
 		 */
-		do_action( 'pll_update_language', $args, $lang );
+		do_action( 'lmat_update_language', $args, $lang );
 
 		return true;
 	}
@@ -388,7 +388,7 @@ class Languages {
 	 * Deletes a language.
 	 *
 	 * @since 1.2
-	 * @since 3.7 Moved from `PLL_Admin_Model::delete_language()` to `WP_Syntex\Polylang\Model\Languages::delete()`.
+	 * @since 3.7 Moved from `LMAT_Admin_Model::delete_language()` to `WP_Syntex\Linguator\Model\Languages::delete()`.
 	 *
 	 * @param int $lang_id Language term_id.
 	 * @return bool
@@ -423,8 +423,8 @@ class Languages {
 				$number = $widget['params'][0]['number'];
 				if ( is_object( $obj ) && method_exists( $obj, 'get_settings' ) && method_exists( $obj, 'save_settings' ) ) {
 					$settings = $obj->get_settings();
-					if ( isset( $settings[ $number ]['pll_lang'] ) && $settings[ $number ]['pll_lang'] == $lang->slug ) {
-						unset( $settings[ $number ]['pll_lang'] );
+					if ( isset( $settings[ $number ]['lmat_lang'] ) && $settings[ $number ]['lmat_lang'] == $lang->slug ) {
+						unset( $settings[ $number ]['lmat_lang'] );
 						$obj->save_settings( $settings );
 					}
 				}
@@ -445,7 +445,7 @@ class Languages {
 		}
 
 		// Delete users options.
-		delete_metadata( 'user', 0, 'pll_filter_content', '', true );
+		delete_metadata( 'user', 0, 'lmat_filter_content', '', true );
 		delete_metadata( 'user', 0, "description_{$lang->slug}", '', true );
 
 		// Delete domain.
@@ -458,8 +458,8 @@ class Languages {
 		 *
 		 * Reverses the language taxonomies order is required to make sure 'language' is deleted in last.
 		 *
-		 * The initial order with the 'language' taxonomy at the beginning of 'PLL_Language::term_props' property
-		 * is done by {@see PLL_Model::filter_terms_orderby()}
+		 * The initial order with the 'language' taxonomy at the beginning of 'LMAT_Language::term_props' property
+		 * is done by {@see LMAT_Model::filter_terms_orderby()}
 		 */
 		foreach ( array_reverse( $lang->get_tax_props( 'term_id' ) ) as $taxonomy_name => $term_id ) {
 			wp_delete_term( $term_id, $taxonomy_name );
@@ -477,7 +477,7 @@ class Languages {
 	 * Checks if there are languages or not.
 	 *
 	 * @since 3.3
-	 * @since 3.7 Moved from `PLL_Model::has_languages()` to `WP_Syntex\Polylang\Model\Languages::has()`.
+	 * @since 3.7 Moved from `LMAT_Model::has_languages()` to `WP_Syntex\Linguator\Model\Languages::has()`.
 	 *
 	 * @return bool True if there are, false otherwise.
 	 */
@@ -495,24 +495,24 @@ class Languages {
 
 	/**
 	 * Returns the list of available languages.
-	 * - Stores the list in a db transient (except flags), unless `PLL_CACHE_LANGUAGES` is set to false.
-	 * - Caches the list (with flags) in a `PLL_Cache` object.
+	 * - Stores the list in a db transient (except flags), unless `LMAT_CACHE_LANGUAGES` is set to false.
+	 * - Caches the list (with flags) in a `LMAT_Cache` object.
 	 *
 	 * @since 0.1
-	 * @since 3.7 Moved from `PLL_Model::get_languages_list()` to `WP_Syntex\Polylang\Model\Languages::get_list()`.
+	 * @since 3.7 Moved from `LMAT_Model::get_languages_list()` to `WP_Syntex\Linguator\Model\Languages::get_list()`.
 	 *
 	 * @param array $args {
 	 *   @type bool   $hide_empty   Hides languages with no posts if set to `true` (defaults to `false`).
 	 *   @type bool   $hide_default Hides default language from the list (default to `false`).
-	 *   @type string $fields       Returns only that field if set; {@see PLL_Language} for a list of fields.
+	 *   @type string $fields       Returns only that field if set; {@see LMAT_Language} for a list of fields.
 	 * }
-	 * @return array List of PLL_Language objects or PLL_Language object properties.
+	 * @return array List of LMAT_Language objects or LMAT_Language object properties.
 	 */
 	public function get_list( $args = array() ): array {
 		if ( ! $this->are_ready() ) {
 			_doing_it_wrong(
 				__METHOD__ . '()',
-				"It must not be called before the hook 'pll_pre_init'.",
+				"It must not be called before the hook 'lmat_pre_init'.",
 				'3.4'
 			);
 		}
@@ -527,7 +527,7 @@ class Languages {
 
 			$this->is_creating_list = true;
 
-			if ( ! pll_get_constant( 'PLL_CACHE_LANGUAGES', true ) ) {
+			if ( ! lmat_get_constant( 'LMAT_CACHE_LANGUAGES', true ) ) {
 				// Create the languages from taxonomies.
 				$languages = $this->get_from_taxonomies();
 			} else {
@@ -539,7 +539,7 @@ class Languages {
 				} else {
 					// Create the languages directly from arrays stored in the transient.
 					$languages = array_map(
-						array( new PLL_Language_Factory( $this->options ), 'get' ),
+						array( new LMAT_Language_Factory( $this->options ), 'get' ),
 						$languages
 					);
 
@@ -553,15 +553,15 @@ class Languages {
 
 			/**
 			 * Filters the list of languages *after* it is stored in the persistent cache.
-			 * /!\ This filter is fired *before* the $polylang object is available.
+			 * /!\ This filter is fired *before* the $linguator object is available.
 			 *
 			 * @since 1.8
 			 * @since 3.4 Deprecated. If you used this hook to filter URLs, you may hook `'site_url'` instead.
 			 * @deprecated
 			 *
-			 * @param PLL_Language[] $languages The list of language objects.
+			 * @param LMAT_Language[] $languages The list of language objects.
 			 */
-			$languages = apply_filters_deprecated( 'pll_after_languages_cache', array( $languages ), '3.4' );
+			$languages = apply_filters_deprecated( 'lmat_after_languages_cache', array( $languages ), '3.4' );
 
 			if ( $this->are_ready() ) {
 				$this->cache->set( self::CACHE_KEY, $languages );
@@ -585,10 +585,10 @@ class Languages {
 	}
 
 	/**
-	 * Tells if {@see WP_Syntex\Polylang\Model\Languages::get_list()} can be used.
+	 * Tells if {@see WP_Syntex\Linguator\Model\Languages::get_list()} can be used.
 	 *
 	 * @since 3.4
-	 * @since 3.7 Moved from `PLL_Model::are_languages_ready()` to `WP_Syntex\Polylang\Model\Languages::are_ready()`.
+	 * @since 3.7 Moved from `LMAT_Model::are_languages_ready()` to `WP_Syntex\Linguator\Model\Languages::are_ready()`.
 	 *
 	 * @return bool
 	 */
@@ -597,10 +597,10 @@ class Languages {
 	}
 
 	/**
-	 * Sets the internal property `$languages_ready` to `true`, telling that {@see WP_Syntex\Polylang\Model\Languages::get_list()} can be used.
+	 * Sets the internal property `$languages_ready` to `true`, telling that {@see WP_Syntex\Linguator\Model\Languages::get_list()} can be used.
 	 *
 	 * @since 3.4
-	 * @since 3.7 Moved from `PLL_Model::set_languages_ready()` to `WP_Syntex\Polylang\Model\Languages::set_ready()`.
+	 * @since 3.7 Moved from `LMAT_Model::set_languages_ready()` to `WP_Syntex\Linguator\Model\Languages::set_ready()`.
 	 *
 	 * @return void
 	 */
@@ -612,9 +612,9 @@ class Languages {
 	 * Returns the default language.
 	 *
 	 * @since 3.4
-	 * @since 3.7 Moved from `PLL_Model::get_default_language()` to `WP_Syntex\Polylang\Model\Languages::get_default()`.
+	 * @since 3.7 Moved from `LMAT_Model::get_default_language()` to `WP_Syntex\Linguator\Model\Languages::get_default()`.
 	 *
-	 * @return PLL_Language|false Default language object, `false` if no language found.
+	 * @return LMAT_Language|false Default language object, `false` if no language found.
 	 */
 	public function get_default() {
 		if ( empty( $this->options['default_lang'] ) ) {
@@ -629,7 +629,7 @@ class Languages {
 	 * Takes care to update default category, nav menu locations, and flushes cache and rewrite rules.
 	 *
 	 * @since 1.8
-	 * @since 3.7 Moved from `PLL_Admin_Model::update_default_lang()` to `WP_Syntex\Polylang\Model\Languages::update_default()`.
+	 * @since 3.7 Moved from `LMAT_Admin_Model::update_default_lang()` to `WP_Syntex\Linguator\Model\Languages::update_default()`.
 	 *            Returns a `WP_Error` object.
 	 *
 	 * @param string $slug New language slug.
@@ -669,7 +669,7 @@ class Languages {
 		 * @param string $slug              New default language's slug.
 		 * @param string $prev_default_lang Previous default language's slug.
 		 */
-		do_action( 'pll_update_default_lang', $slug, $prev_default_lang );
+		do_action( 'lmat_update_default_lang', $slug, $prev_default_lang );
 
 		// Update options.
 
@@ -683,7 +683,7 @@ class Languages {
 	 * Maybe adds the missing language terms for 3rd party language taxonomies.
 	 *
 	 * @since 3.4
-	 * @since 3.7 Moved from `PLL_Model::maybe_create_language_terms()` to `WP_Syntex\Polylang\Model\Languages::maybe_create_terms()`.
+	 * @since 3.7 Moved from `LMAT_Model::maybe_create_language_terms()` to `WP_Syntex\Linguator\Model\Languages::maybe_create_terms()`.
 	 *
 	 * @return void
 	 */
@@ -738,7 +738,7 @@ class Languages {
 	 * Builds the language metas into an array and serializes it, to be stored in the term description.
 	 *
 	 * @since 3.4
-	 * @since 3.7 Moved from `PLL_Admin_Model::build_language_metas()` to `WP_Syntex\Polylang\Model\Languages::build_metas()`.
+	 * @since 3.7 Moved from `LMAT_Admin_Model::build_language_metas()` to `WP_Syntex\Linguator\Model\Languages::build_metas()`.
 	 *
 	 * @param array $args {
 	 *   Arguments used to build the language metas.
@@ -813,7 +813,7 @@ class Languages {
 		 *     @type string $flag_code Country code.
 		 * }
 		 */
-		$add_data = apply_filters( 'pll_language_metas', array(), $args, $new_data, $old_data );
+		$add_data = apply_filters( 'lmat_language_metas', array(), $args, $new_data, $old_data );
 		// Don't allow to overwrite `$locale`, `$rtl`, and `$flag_code`.
 		$new_data = array_merge( $old_data, $add_data, $new_data );
 
@@ -826,10 +826,10 @@ class Languages {
 	 * Validates data entered when creating or updating a language.
 	 *
 	 * @since 0.4
-	 * @since 3.7 Moved from `PLL_Admin_Model::validate_lang()` to `WP_Syntex\Polylang\Model\Languages::validate_lang()`.
+	 * @since 3.7 Moved from `LMAT_Admin_Model::validate_lang()` to `WP_Syntex\Linguator\Model\Languages::validate_lang()`.
 	 *
-	 * @param array             $args Parameters of {@see WP_Syntex\Polylang\Model\Languages::add() or @see WP_Syntex\Polylang\Model\Languages::update()}.
-	 * @param PLL_Language|null $lang Optional the language currently updated, the language is created if not set.
+	 * @param array             $args Parameters of {@see WP_Syntex\Linguator\Model\Languages::add() or @see WP_Syntex\Linguator\Model\Languages::update()}.
+	 * @param LMAT_Language|null $lang Optional the language currently updated, the language is created if not set.
 	 * @return WP_Error
 	 *
 	 * @phpstan-param array{
@@ -839,42 +839,42 @@ class Languages {
 	 *     flag?: string
 	 * } $args
 	 */
-	protected function validate_lang( $args, ?PLL_Language $lang = null ): WP_Error {
+	protected function validate_lang( $args, ?LMAT_Language $lang = null ): WP_Error {
 		$errors = new WP_Error();
 
 		// Validate locale with the same pattern as WP 4.3. See #28303.
 		if ( ! preg_match( '#' . self::LOCALE_PATTERN . '#', $args['locale'], $matches ) ) {
-			$errors->add( 'pll_invalid_locale', __( 'Enter a valid WordPress locale', 'polylang' ) );
+			$errors->add( 'lmat_invalid_locale', __( 'Enter a valid WordPress locale', 'linguator' ) );
 		}
 
 		// Validate slug characters.
 		if ( ! preg_match( '#' . self::SLUG_PATTERN . '#', $args['slug'] ) ) {
-			$errors->add( 'pll_invalid_slug', __( 'The language code contains invalid characters', 'polylang' ) );
+			$errors->add( 'lmat_invalid_slug', __( 'The language code contains invalid characters', 'linguator' ) );
 		}
 
 		// Validate slug is unique.
 		foreach ( $this->get_list() as $language ) {
 			if ( $language->slug === $args['slug'] && ( null === $lang || $lang->term_id !== $language->term_id ) ) {
-				$errors->add( 'pll_non_unique_slug', __( 'The language code must be unique', 'polylang' ) );
+				$errors->add( 'lmat_non_unique_slug', __( 'The language code must be unique', 'linguator' ) );
 			}
 		}
 
 		// Validate name.
 		// No need to sanitize it as `wp_insert_term()` will do it for us.
 		if ( empty( $args['name'] ) ) {
-			$errors->add( 'pll_invalid_name', __( 'The language must have a name', 'polylang' ) );
+			$errors->add( 'lmat_invalid_name', __( 'The language must have a name', 'linguator' ) );
 		}
 
 		// Validate flag.
-		if ( ! empty( $args['flag'] ) && ! is_readable( POLYLANG_DIR . '/flags/' . $args['flag'] . '.png' ) ) {
-			$flag = PLL_Language::get_flag_information( $args['flag'] );
+		if ( ! empty( $args['flag'] ) && ! is_readable( LINGUATOR_DIR . '/flags/' . $args['flag'] . '.png' ) ) {
+			$flag = LMAT_Language::get_flag_information( $args['flag'] );
 
 			if ( ! empty( $flag['url'] ) ) {
 				$response = function_exists( 'vip_safe_wp_remote_get' ) ? vip_safe_wp_remote_get( sanitize_url( $flag['url'] ) ) : wp_remote_get( sanitize_url( $flag['url'] ) );
 			}
 
 			if ( empty( $response ) || is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
-				$errors->add( 'pll_invalid_flag', __( 'The flag does not exist', 'polylang' ) );
+				$errors->add( 'lmat_invalid_flag', __( 'The flag does not exist', 'linguator' ) );
 			}
 		}
 
@@ -885,7 +885,7 @@ class Languages {
 	 * Updates the translations when a language slug has been modified in settings or deletes them when a language is removed.
 	 *
 	 * @since 0.5
-	 * @since 3.7 Moved from `PLL_Admin_Model::update_translations()` to `WP_Syntex\Polylang\Model\Languages::update_translations()`.
+	 * @since 3.7 Moved from `LMAT_Admin_Model::update_translations()` to `WP_Syntex\Linguator\Model\Languages::update_translations()`.
 	 *            Visibility changed from public to protected.
 	 *
 	 * @param string $old_slug The old language slug.
@@ -1010,11 +1010,11 @@ class Languages {
 	 * Updates or adds new terms for a secondary language taxonomy (aka not 'language').
 	 *
 	 * @since 3.4
-	 * @since 3.7 Moved from `PLL_Model::update_secondary_language_terms()` to `WP_Syntex\Polylang\Model\Languages::update_secondary_language_terms()`.
+	 * @since 3.7 Moved from `LMAT_Model::update_secondary_language_terms()` to `WP_Syntex\Linguator\Model\Languages::update_secondary_language_terms()`.
 	 *
-	 * @param string            $slug       Language term slug (with or without the `pll_` prefix).
+	 * @param string            $slug       Language term slug (with or without the `lmat_` prefix).
 	 * @param string            $name       Language name (label).
-	 * @param PLL_Language|null $language   Optional. A language object. Required to update the existing terms.
+	 * @param LMAT_Language|null $language   Optional. A language object. Required to update the existing terms.
 	 * @param string[]          $taxonomies Optional. List of language taxonomies to deal with. An empty value means
 	 *                                      all of them. Defaults to all taxonomies.
 	 * @return void
@@ -1023,8 +1023,8 @@ class Languages {
 	 * @phpstan-param non-empty-string $name
 	 * @phpstan-param array<non-empty-string> $taxonomies
 	 */
-	protected function update_secondary_language_terms( $slug, $name, ?PLL_Language $language = null, array $taxonomies = array() ): void {
-		$slug = 0 === strpos( $slug, 'pll_' ) ? $slug : "pll_$slug";
+	protected function update_secondary_language_terms( $slug, $name, ?LMAT_Language $language = null, array $taxonomies = array() ): void {
+		$slug = 0 === strpos( $slug, 'lmat_' ) ? $slug : "lmat_$slug";
 
 		foreach ( $this->translatable_objects->get_secondary_translatable_objects() as $object ) {
 			if ( ! empty( $taxonomies ) && ! in_array( $object->get_tax_language(), $taxonomies, true ) ) {
@@ -1044,8 +1044,8 @@ class Languages {
 				continue;
 			}
 
-			/** @var PLL_Language $language */
-			if ( "pll_{$language->slug}" !== $slug || $language->name !== $name ) {
+			/** @var LMAT_Language $language */
+			if ( "lmat_{$language->slug}" !== $slug || $language->name !== $name ) {
 				// Something has changed.
 				wp_update_term( $term_id, $object->get_tax_language(), array( 'slug' => $slug, 'name' => $name ) );
 			}
@@ -1054,20 +1054,20 @@ class Languages {
 
 	/**
 	 * Returns the list of available languages, based on the language taxonomy terms.
-	 * Stores the list in a db transient and in a `PLL_Cache` object.
+	 * Stores the list in a db transient and in a `LMAT_Cache` object.
 	 *
 	 * @since 3.4
-	 * @since 3.7 Moved from `PLL_Model::get_languages_from_taxonomies()` to `WP_Syntex\Polylang\Model\Languages::get_from_taxonomies()`.
+	 * @since 3.7 Moved from `LMAT_Model::get_languages_from_taxonomies()` to `WP_Syntex\Linguator\Model\Languages::get_from_taxonomies()`.
 	 *
-	 * @return PLL_Language[] An array of `PLL_Language` objects, array keys are the type.
+	 * @return LMAT_Language[] An array of `LMAT_Language` objects, array keys are the type.
 	 *
-	 * @phpstan-return list<PLL_Language>
+	 * @phpstan-return list<LMAT_Language>
 	 */
 	protected function get_from_taxonomies(): array {
 		$terms_by_slug = array();
 
 		foreach ( $this->get_terms() as $term ) {
-			// Except for language taxonomy term slugs, remove 'pll_' prefix from the other language taxonomy term slugs.
+			// Except for language taxonomy term slugs, remove 'lmat_' prefix from the other language taxonomy term slugs.
 			$key = 'language' === $term->taxonomy ? $term->slug : substr( $term->slug, 4 );
 			$terms_by_slug[ $key ][ $term->taxonomy ] = $term;
 		}
@@ -1083,27 +1083,27 @@ class Languages {
 		 */
 		$languages = array_filter(
 			array_map(
-				array( new PLL_Language_Factory( $this->options ), 'get_from_terms' ),
+				array( new LMAT_Language_Factory( $this->options ), 'get_from_terms' ),
 				array_values( $terms_by_slug )
 			)
 		);
 
 		/**
 		 * Filters the list of languages *before* it is stored in the persistent cache.
-		 * /!\ This filter is fired *before* the $polylang object is available.
+		 * /!\ This filter is fired *before* the $linguator object is available.
 		 *
 		 * @since 1.7.5
 		 * @since 3.4 Deprecated.
 		 * @deprecated
 		 *
-		 * @param PLL_Language[]       $languages The list of language objects.
+		 * @param LMAT_Language[]       $languages The list of language objects.
 		 * @param Language $model     `Language` object.
 		 */
-		$languages = apply_filters_deprecated( 'pll_languages_list', array( $languages, $this ), '3.4', 'pll_additional_language_data' );
+		$languages = apply_filters_deprecated( 'lmat_languages_list', array( $languages, $this ), '3.4', 'lmat_additional_language_data' );
 
 		if ( ! $this->are_ready() ) {
 			// Do not cache an incomplete list.
-			/** @var list<PLL_Language> $languages */
+			/** @var list<LMAT_Language> $languages */
 			return $languages;
 		}
 
@@ -1111,7 +1111,7 @@ class Languages {
 		 * Don't store directly objects as it badly break with some hosts ( GoDaddy ) due to race conditions when using object cache.
 		 * Thanks to captin411 for catching this!
 		 *
-		 * @see https://wordpress.org/support/topic/fatal-error-pll_model_languages_list?replies=8#post-6782255
+		 * @see https://wordpress.org/support/topic/fatal-error-lmat_model_languages_list?replies=8#post-6782255
 		 */
 		$languages_data = array_map(
 			function ( $language ) {
@@ -1122,17 +1122,17 @@ class Languages {
 
 		set_transient( self::TRANSIENT_NAME, $languages_data );
 
-		/** @var list<PLL_Language> $languages */
+		/** @var list<LMAT_Language> $languages */
 		return $languages;
 	}
 
 	/**
 	 * Returns the list of existing language terms.
 	 * - Returns all terms, that are or not assigned to posts.
-	 * - Terms are ordered by `term_group` and `term_id` (see `WP_Syntex\Polylang\Model\Languages::filter_terms_orderby()`).
+	 * - Terms are ordered by `term_group` and `term_id` (see `WP_Syntex\Linguator\Model\Languages::filter_terms_orderby()`).
 	 *
 	 * @since 3.2.3
-	 * @since 3.7 Moved from `PLL_Model::get_language_terms()` to `WP_Syntex\Polylang\Model\Languages::get_terms()`.
+	 * @since 3.7 Moved from `LMAT_Model::get_language_terms()` to `WP_Syntex\Linguator\Model\Languages::get_terms()`.
 	 *
 	 * @return WP_Term[]
 	 */
@@ -1156,10 +1156,10 @@ class Languages {
 	 *
 	 * This allows to order languages terms by `taxonomy` first then by `term_group` and `term_id`.
 	 * Ordering terms by taxonomy allows not to mix terms between all language taxomonomies.
-	 * Having the "language' taxonomy first is important for {@see PLL_Admin_Model:delete_language()}.
+	 * Having the "language' taxonomy first is important for {@see LMAT_Admin_Model:delete_language()}.
 	 *
 	 * @since 3.2.3
-	 * @since 3.7 Moved from `PLL_Model::filter_language_terms_orderby()` to `WP_Syntex\Polylang\Model\Languages::filter_terms_orderby()`.
+	 * @since 3.7 Moved from `LMAT_Model::filter_language_terms_orderby()` to `WP_Syntex\Linguator\Model\Languages::filter_terms_orderby()`.
 	 *            Visibility changed from `public` to `protected`.
 	 *
 	 * @param  string   $orderby    `ORDERBY` clause of the terms query.

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -10,7 +10,7 @@
  *
  * @template TCacheData
  */
-class PLL_Cache {
+class LMAT_Cache {
 	/**
 	 * Current site id.
 	 *

@@ -2,11 +2,11 @@
 /**
  * Loads the integration with WordPress MU Domain Mapping.
  *
- * @package Polylang
+ * @package Linguator
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Don't access directly.
 }
 
-PLL_Integrations::instance()->dm = new PLL_Domain_Mapping();
+LMAT_Integrations::instance()->dm = new LMAT_Domain_Mapping();

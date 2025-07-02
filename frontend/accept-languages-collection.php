@@ -1,18 +1,18 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
- * Class PLL_Accept_Languages_Collection.
+ * Class LMAT_Accept_Languages_Collection.
  *
  * Represents a collection of values parsed from an Accept-Language HTTP header.
  *
  * @since 3.0
  */
-class PLL_Accept_Languages_Collection {
+class LMAT_Accept_Languages_Collection {
 	/**
-	 * @var PLL_Accept_Language[]
+	 * @var LMAT_Accept_Language[]
 	 */
 	protected $accept_languages = array();
 
@@ -22,12 +22,12 @@ class PLL_Accept_Languages_Collection {
 	 * @since 3.0
 	 *
 	 * @param string $http_header Value of the Accept-Language HTTP Header. Formatted as stated BCP 47 for language tags {@see https://tools.ietf.org/html/bcp47}.
-	 * @return PLL_Accept_Languages_Collection
+	 * @return LMAT_Accept_Languages_Collection
 	 */
 	public static function from_accept_language_header( $http_header ) {
 		$lang_parse = array();
 		// Break up string into pieces ( languages and q factors ).
-		$language_pattern = implode( '', PLL_Accept_Language::SUBTAG_PATTERNS );
+		$language_pattern = implode( '', LMAT_Accept_Language::SUBTAG_PATTERNS );
 		$quality_pattern = '\s*;\s*q\s*=\s*((?>1|0)(?>\.[0-9]+)?)';
 		$full_pattern = "/{$language_pattern}(?:{$quality_pattern})?/i";
 
@@ -38,20 +38,20 @@ class PLL_Accept_Languages_Collection {
 			PREG_SET_ORDER
 		);
 
-		return new PLL_Accept_Languages_Collection(
+		return new LMAT_Accept_Languages_Collection(
 			array_map(
-				array( PLL_Accept_Language::class, 'from_array' ),
+				array( LMAT_Accept_Language::class, 'from_array' ),
 				$lang_parse
 			)
 		);
 	}
 
 	/**
-	 * PLL_Accept_Languages_Collection constructor.
+	 * LMAT_Accept_Languages_Collection constructor.
 	 *
 	 * @since 3.0
 	 *
-	 * @param PLL_Accept_Language[] $accept_languages Objects representing Accept-Language HTTP headers.
+	 * @param LMAT_Accept_Language[] $accept_languages Objects representing Accept-Language HTTP headers.
 	 */
 	public function __construct( $accept_languages = array() ) {
 		$this->accept_languages = $accept_languages;
@@ -105,7 +105,7 @@ class PLL_Accept_Languages_Collection {
 	 *
 	 * @since 3.0
 	 *
-	 * @param PLL_Language[] $languages The language list.
+	 * @param LMAT_Language[] $languages The language list.
 	 * @return string|false A language slug if there's a match, false otherwise.
 	 */
 	public function find_best_match( $languages = array() ) {

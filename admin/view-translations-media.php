@@ -3,16 +3,16 @@
  * Displays the translations fields for media
  * Needs WP 3.5+
  *
- * @package Polylang
+ * @package Linguator
  *
- * @var PLL_Admin_Classic_Editor $this    PLL_Admin_Classic_Editor object.
- * @var PLL_Language             $lang    The media language. Default language if no language assigned yet.
+ * @var LMAT_Admin_Classic_Editor $this    LMAT_Admin_Classic_Editor object.
+ * @var LMAT_Language             $lang    The media language. Default language if no language assigned yet.
  * @var int                      $post_ID The media Id.
  */
 
 defined( 'ABSPATH' ) || exit;
 ?>
-<p><strong><?php esc_html_e( 'Translations', 'polylang' ); ?></strong></p>
+<p><strong><?php esc_html_e( 'Translations', 'linguator' ); ?></strong></p>
 <table>
 	<?php
 	foreach ( $this->model->get_languages_list() as $language ) {
@@ -21,8 +21,8 @@ defined( 'ABSPATH' ) || exit;
 		}
 		?>
 		<tr>
-			<td class = "pll-media-language-column"><span class = "pll-translation-flag"><?php echo $language->flag; // phpcs:ignore WordPress.Security.EscapeOutput ?></span><?php echo esc_html( $language->name ); ?></td>
-			<td class = "pll-media-edit-column">
+			<td class = "lmat-media-language-column"><span class = "lmat-translation-flag"><?php echo $language->flag; // phpcs:ignore WordPress.Security.EscapeOutput ?></span><?php echo esc_html( $language->name ); ?></td>
+			<td class = "lmat-media-edit-column">
 				<?php
 				$translation_id = $this->model->post->get_translation( $post_ID, $language );
 				if ( ! empty( $translation_id ) && $translation_id !== $post_ID ) {

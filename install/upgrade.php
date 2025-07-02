@@ -1,16 +1,16 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
-use WP_Syntex\Polylang\Options\Options;
+use WP_Syntex\Linguator\Options\Options;
 
 /**
- * Manages Polylang upgrades
+ * Manages Linguator upgrades
  *
  * @since 1.2
  */
-class PLL_Upgrade {
+class LMAT_Upgrade {
 	/**
 	 * Stores the plugin options.
 	 *
@@ -23,7 +23,7 @@ class PLL_Upgrade {
 	 *
 	 * @since 1.2
 	 *
-	 * @param array $options Polylang options
+	 * @param array $options Linguator options
 	 */
 	public function __construct( &$options ) {
 		$this->options = &$options;
@@ -45,7 +45,7 @@ class PLL_Upgrade {
 	}
 
 	/**
-	 * Upgrades if possible otherwise returns false to stop Polylang loading
+	 * Upgrades if possible otherwise returns false to stop Linguator loading
 	 *
 	 * @since 1.2
 	 *
@@ -57,7 +57,7 @@ class PLL_Upgrade {
 			return false;
 		}
 
-		delete_transient( 'pll_languages_list' );
+		delete_transient( 'lmat_languages_list' );
 		add_action( 'admin_init', array( $this, '_upgrade' ) );
 		return true;
 	}
@@ -85,15 +85,15 @@ class PLL_Upgrade {
 	 * @return void
 	 */
 	public function admin_notices() {
-		load_plugin_textdomain( 'polylang' );
+		load_plugin_textdomain( 'linguator' );
 		printf(
 			'<div class="error"><p>%s</p><p>%s</p></div>',
-			esc_html__( 'Polylang has been deactivated because you upgraded from a too old version.', 'polylang' ),
+			esc_html__( 'Linguator has been deactivated because you upgraded from a too old version.', 'linguator' ),
 			sprintf(
-				/* translators: %1$s and %2$s are Polylang version numbers */
-				esc_html__( 'Before upgrading to %2$s, please upgrade to %1$s.', 'polylang' ),
+				/* translators: %1$s and %2$s are Linguator version numbers */
+				esc_html__( 'Before upgrading to %2$s, please upgrade to %1$s.', 'linguator' ),
 				'<strong>2.9</strong>',
-				POLYLANG_VERSION // phpcs:ignore WordPress.Security.EscapeOutput
+				LINGUATOR_VERSION // phpcs:ignore WordPress.Security.EscapeOutput
 			)
 		);
 	}
@@ -116,14 +116,14 @@ class PLL_Upgrade {
 		}
 
 		/**
-		 * Fires after Polylang has been upgraded and before the new version is saved in options.
+		 * Fires after Linguator has been upgraded and before the new version is saved in options.
 		 *
 		 * @since 3.7
 		 */
-		do_action( 'pll_upgrade' );
+		do_action( 'lmat_upgrade' );
 
-		$this->options['previous_version'] = $this->options['version']; // Remember the previous version of Polylang since v1.7.7
-		$this->options['version'] = POLYLANG_VERSION;
+		$this->options['previous_version'] = $this->options['version']; // Remember the previous version of Linguator since v1.7.7
+		$this->options['version'] = LINGUATOR_VERSION;
 	}
 
 	/**
@@ -141,7 +141,7 @@ class PLL_Upgrade {
 
 	/**
 	 * Upgrades if the previous version is < 2.1.
-	 * Moves strings translations from polylang_mo post_content to post meta _pll_strings_translations.
+	 * Moves strings translations from linguator_mo post_content to post meta _lmat_strings_translations.
 	 *
 	 * @since 2.1
 	 *
@@ -150,7 +150,7 @@ class PLL_Upgrade {
 	protected function upgrade_2_1() {
 		$posts = get_posts(
 			array(
-				'post_type'   => 'polylang_mo',
+				'post_type'   => 'linguator_mo',
 				'post_status' => 'any',
 				'numberposts' => -1,
 				'nopaging'    => true,
@@ -159,12 +159,12 @@ class PLL_Upgrade {
 
 		if ( is_array( $posts ) ) {
 			foreach ( $posts as $post ) {
-				$meta = get_post_meta( $post->ID, '_pll_strings_translations', true );
+				$meta = get_post_meta( $post->ID, '_lmat_strings_translations', true );
 
 				if ( empty( $meta ) ) {
 					$strings = maybe_unserialize( $post->post_content );
 					if ( is_array( $strings ) ) {
-						update_post_meta( $post->ID, '_pll_strings_translations', $strings );
+						update_post_meta( $post->ID, '_lmat_strings_translations', $strings );
 					}
 				}
 			}
@@ -181,7 +181,7 @@ class PLL_Upgrade {
 	 * @return void
 	 */
 	protected function upgrade_2_7() {
-		$strings = get_option( 'polylang_wpml_strings' );
+		$strings = get_option( 'linguator_wpml_strings' );
 		if ( is_array( $strings ) ) {
 			$new_strings = array();
 
@@ -192,10 +192,10 @@ class PLL_Upgrade {
 				$key = md5( "$context | $name" );
 				$new_strings[ $key ] = $string;
 			}
-			update_option( 'polylang_wpml_strings', $new_strings );
+			update_option( 'linguator_wpml_strings', $new_strings );
 		}
 
-		PLL_Admin_Notices::dismiss( 'wizard' );
+		LMAT_Admin_Notices::dismiss( 'wizard' );
 	}
 
 	/**
@@ -226,7 +226,7 @@ class PLL_Upgrade {
 	}
 
 	/**
-	 * Moves strings translations from post meta to term meta _pll_strings_translations.
+	 * Moves strings translations from post meta to term meta _lmat_strings_translations.
 	 *
 	 * @since 3.4
 	 *
@@ -235,7 +235,7 @@ class PLL_Upgrade {
 	protected function migrate_strings_translations() {
 		$posts = get_posts(
 			array(
-				'post_type' => 'polylang_mo',
+				'post_type' => 'linguator_mo',
 				'post_status' => 'any',
 				'numberposts' => -1,
 				'nopaging' => true,
@@ -247,17 +247,17 @@ class PLL_Upgrade {
 		}
 
 		foreach ( $posts as $post ) {
-			$meta = get_post_meta( $post->ID, '_pll_strings_translations', true );
+			$meta = get_post_meta( $post->ID, '_lmat_strings_translations', true );
 
 			$term_id = (int) substr( $post->post_title, 12 );
 
-			// Do not delete post metas in case a user needs to rollback to Polylang < 3.4.
+			// Do not delete post metas in case a user needs to rollback to Linguator < 3.4.
 
 			if ( empty( $meta ) || ! is_array( $meta ) ) {
 				continue;
 			}
 
-			update_term_meta( $term_id, '_pll_strings_translations', wp_slash( $meta ) );
+			update_term_meta( $term_id, '_lmat_strings_translations', wp_slash( $meta ) );
 		}
 	}
 
@@ -317,7 +317,7 @@ class PLL_Upgrade {
 	 */
 	private function allow_to_hide_language_from_content() {
 		update_option(
-			'pll_language_from_content_available',
+			'lmat_language_from_content_available',
 			0 === $this->options['force_lang'] ? 'yes' : 'no'
 		);
 	}
@@ -342,7 +342,7 @@ class PLL_Upgrade {
 		}
 
 		foreach ( $terms as $term ) {
-			$strings = get_term_meta( $term->term_id, '_pll_strings_translations', true );
+			$strings = get_term_meta( $term->term_id, '_lmat_strings_translations', true );
 
 			if ( empty( $strings ) || ! is_array( $strings ) ) {
 				continue;
@@ -356,7 +356,7 @@ class PLL_Upgrade {
 				$strings[ $i ][1] = '';
 			}
 
-			update_term_meta( $term->term_id, '_pll_strings_translations', $strings );
+			update_term_meta( $term->term_id, '_lmat_strings_translations', $strings );
 		}
 	}
 }

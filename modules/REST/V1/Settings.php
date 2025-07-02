@@ -1,18 +1,18 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
-namespace WP_Syntex\Polylang\REST\V1;
+namespace WP_Syntex\Linguator\REST\V1;
 
-use PLL_Model;
+use LMAT_Model;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
-use WP_Syntex\Polylang\Model\Languages;
-use WP_Syntex\Polylang\Options\Options;
-use WP_Syntex\Polylang\REST\Abstract_Controller;
+use WP_Syntex\Linguator\Model\Languages;
+use WP_Syntex\Linguator\Options\Options;
+use WP_Syntex\Linguator\REST\Abstract_Controller;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -37,10 +37,10 @@ class Settings extends Abstract_Controller {
 	 *
 	 * @since 3.7
 	 *
-	 * @param PLL_Model $model Polylang's model.
+	 * @param LMAT_Model $model Linguator's model.
 	 */
-	public function __construct( PLL_Model $model ) {
-		$this->namespace = 'pll/v1';
+	public function __construct( LMAT_Model $model ) {
+		$this->namespace = 'lmat/v1';
 		$this->rest_base = 'settings';
 		$this->options   = $model->options;
 		$this->languages = $model->languages;
@@ -158,7 +158,7 @@ class Settings extends Abstract_Controller {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return new WP_Error(
 				'rest_forbidden_context',
-				__( 'Sorry, you are not allowed to edit options.', 'polylang' ),
+				__( 'Sorry, you are not allowed to edit options.', 'linguator' ),
 				array( 'status' => rest_authorization_required_code() )
 			);
 		}

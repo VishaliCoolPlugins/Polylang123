@@ -1,5 +1,5 @@
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 jQuery(
@@ -62,7 +62,7 @@ jQuery(
 			this._setText( wrapper, item.label );
 
 			// Add the flag from the data attribute in the selected element.
-			// `item.element` is the original `<option>` element, the data to prepend comes from a `data-html-flag` HTML attribute, filled by a method from `PLL_Language`.
+			// `item.element` is the original `<option>` element, the data to prepend comes from a `data-html-flag` HTML attribute, filled by a method from `LMAT_Language`.
 			wrapper.prepend( $( item.element ).data( 'flag-html' ) ); // phpcs:ignore WordPressVIPMinimum.JS.HTMLExecutingFunctions.prepend
 			wrapper.children( 'img' ).addClass( 'ui-icon' );
 
@@ -72,7 +72,7 @@ jQuery(
 		// Override selected item to inject flag for jQuery UI less than 1.12.
 		var selectmenuRefreshButtonText = function ( selectElement ) {
 			var buttonText = $( selectElement ).selectmenu( 'instance' ).buttonText;
-			// The data to prepend comes from a `data-html-flag` HTML attribute, filled by a method from `PLL_Language`.
+			// The data to prepend comes from a `data-html-flag` HTML attribute, filled by a method from `LMAT_Language`.
 			buttonText.prepend( $( selectElement ).children( ':selected' ).data( 'flag-html' ) ); // phpcs:ignore WordPressVIPMinimum.JS.HTMLExecutingFunctions.prepend
 			buttonText.children( 'img' ).addClass( 'ui-icon' );
 		};
@@ -84,7 +84,7 @@ jQuery(
 			this._addClass( buttonItem, "ui-selectmenu-text" );
 
 			// Add the flag from the data attribute in the selected element.
-			// The data to prepend comes from a `data-html-flag` HTML attribute, filled by a method from `PLL_Language`.
+			// The data to prepend comes from a `data-html-flag` HTML attribute, filled by a method from `LMAT_Language`.
 			buttonItem.prepend( $( selectElement.element ).data( 'flag-html' ) ); // phpcs:ignore WordPressVIPMinimum.JS.HTMLExecutingFunctions.prepend
 			buttonItem.children( 'img' ).addClass( 'ui-icon' );
 
@@ -119,8 +119,8 @@ jQuery(
 		var selectmenuOptions = {
 			width: defaultSelectmenuWidth,
 			classes: {
-				'ui-selectmenu-menu': 'pll-selectmenu-menu',
-				'ui-selectmenu-button': 'pll-selectmenu-button',
+				'ui-selectmenu-menu': 'lmat-selectmenu-menu',
+				'ui-selectmenu-button': 'lmat-selectmenu-button',
 			}
 		};
 
@@ -177,7 +177,7 @@ jQuery(
 		}
 
 		/**
-		 * Language choice in predefined languages in Polylang Languages settings page and wizard.
+		 * Language choice in predefined languages in Linguator Languages settings page and wizard.
 		 * Overrides the predefined language dropdown list with our customized jQuery ui selectmenu widget.
 		 */
 
@@ -223,7 +223,7 @@ jQuery(
 		// Create the jQuery UI selectmenu widget languages list dropdown and return its instance.
 		var selectmenuLangListCallbacks = {};
 		// For the wizard we need a 100% width. So we override the previous defined value of selectmenuOptions.
-		if ( $( '#lang_list' ).closest( '.pll-wizard-content' ).length > 0 ) {
+		if ( $( '#lang_list' ).closest( '.lmat-wizard-content' ).length > 0 ) {
 			selectmenuOptions = Object.assign( selectmenuOptions, { width: wizardSelectmenuWidth } );
 		}
 
@@ -261,7 +261,7 @@ jQuery(
 			'click',
 			'.configure>a',
 			function () {
-				$( '.pll-configure' ).hide().prev().show();
+				$( '.lmat-configure' ).hide().prev().show();
 				$( this ).closest( 'tr' ).hide().next().show();
 				return false;
 			}
@@ -285,10 +285,10 @@ jQuery(
 				var parts = tr.attr( 'id' ).split( '-' );
 
 				var data = {
-					action:            'pll_save_options',
-					pll_ajax_settings: true,
+					action:            'lmat_save_options',
+					lmat_ajax_settings: true,
 					module:            parts[parts.length - 1],
-					_pll_nonce:        $( '#_pll_nonce' ).val()
+					_lmat_nonce:        $( '#_lmat_nonce' ).val()
 				};
 
 				data = tr.find( ':input' ).serialize() + '&' + $.param( data );
@@ -298,7 +298,7 @@ jQuery(
 					data,
 					function ( response ) {
 						// Target a non existing WP HTML id to avoid a conflict with WP ajax requests.
-						var res = wpAjax.parseAjaxResponse( response, 'pll-ajax-response' );
+						var res = wpAjax.parseAjaxResponse( response, 'lmat-ajax-response' );
 						$.each(
 							res.responses,
 							function () {
@@ -310,18 +310,18 @@ jQuery(
 								 * @param {Object}      response The response from the AJAX call.
 								 * @param {HTMLElement} tr       The HTML element containing the fields.
 								 */
-								wp.hooks.doAction( 'pll_settings_saved', this, tr.get( 0 ) );
+								wp.hooks.doAction( 'lmat_settings_saved', this, tr.get( 0 ) );
 
 								switch ( this.what ) {
 									case 'license-update':
-										// Data comes from `PLL_License::get_form_field()`, where everything is escaped.
-										$( '#pll-license-' + this.data ).replaceWith( this.supplemental.html ); // phpcs:ignore WordPressVIPMinimum.JS.HTMLExecutingFunctions.replaceWith
+										// Data comes from `LMAT_License::get_form_field()`, where everything is escaped.
+										$( '#lmat-license-' + this.data ).replaceWith( this.supplemental.html ); // phpcs:ignore WordPressVIPMinimum.JS.HTMLExecutingFunctions.replaceWith
 									break;
 									case 'success':
 										tr.hide().prev().show(); // close only if there is no error
 									case 'error':
 										$( '.settings-error' ).remove(); // remove previous messages if any
-										// The data comes from `pll_add_notice()`, where message are passed through `wp_kses()`.
+										// The data comes from `lmat_add_notice()`, where message are passed through `wp_kses()`.
 										$( 'h1' ).after( this.data ); // phpcs:ignore WordPressVIPMinimum.JS.HTMLExecutingFunctions.after
 
 										// Make notices dismissible
@@ -330,7 +330,7 @@ jQuery(
 											function () {
 												var $this = $( this ),
 													$button = $( '<button type="button" class="notice-dismiss"><span class="screen-reader-text"></span></button>' ),
-													btnText = pll_settings.dismiss_notice || '';
+													btnText = lmat_settings.dismiss_notice || '';
 
 												// Ensure plain text
 												$button.find( '.screen-reader-text' ).text( btnText );
@@ -368,7 +368,7 @@ jQuery(
 		);
 
 		// act when pressing enter or esc in configurations
-		$( '.pll-configure' ).on(
+		$( '.lmat-configure' ).on(
 			'keydown',
 			function ( event ) {
 				if ( 'Enter' === event.key ) {
@@ -388,35 +388,35 @@ jQuery(
 		$( "input[name='force_lang']" ).on(
 			'change',
 			function () {
-				function pll_toggle( a, test ) {
+				function lmat_toggle( a, test ) {
 					test ? a.show() : a.hide();
 				}
 
 				var value = $( this ).val();
-				pll_toggle( $( '#pll-domains-table' ), 3 == value );
-				pll_toggle( $( "#pll-hide-default" ), 3 > value );
-				pll_toggle( $( "#pll-rewrite" ), 2 > value );
-				pll_toggle( $( "#pll-redirect-lang" ), 2 > value );
+				lmat_toggle( $( '#lmat-domains-table' ), 3 == value );
+				lmat_toggle( $( "#lmat-hide-default" ), 3 > value );
+				lmat_toggle( $( "#lmat-rewrite" ), 2 > value );
+				lmat_toggle( $( "#lmat-redirect-lang" ), 2 > value );
 			}
 		);
 
 		// settings license
 		// deactivate button
-		$( '.pll-deactivate-license' ).on(
+		$( '.lmat-deactivate-license' ).on(
 			'click',
 			function () {
 				var data = {
-					action:            'pll_deactivate_license',
-					pll_ajax_settings: true,
+					action:            'lmat_deactivate_license',
+					lmat_ajax_settings: true,
 					id:                $( this ).attr( 'id' ),
-					_pll_nonce:        $( '#_pll_nonce' ).val()
+					_lmat_nonce:        $( '#_lmat_nonce' ).val()
 				};
 				$.post(
 					ajaxurl,
 					data,
 					function ( response ) {
-						// Data comes from `PLL_License::get_form_field()`, where everything is escaped.
-						$( '#pll-license-' + response.id ).replaceWith( response.html ); // phpcs:ignore WordPressVIPMinimum.JS.HTMLExecutingFunctions.replaceWith
+						// Data comes from `LMAT_License::get_form_field()`, where everything is escaped.
+						$( '#lmat-license-' + response.id ).replaceWith( response.html ); // phpcs:ignore WordPressVIPMinimum.JS.HTMLExecutingFunctions.replaceWith
 					}
 				);
 			}

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,7 +8,7 @@
  *
  * @since 2.8
  */
-class PLL_Cft {
+class LMAT_Cft {
 	/**
 	 * Setups actions.
 	 *

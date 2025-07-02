@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,7 +8,7 @@
  *
  * @since 1.8
  */
-class PLL_Settings_Module {
+class LMAT_Settings_Module {
 	/**
 	 * Stores the plugin options.
 	 *
@@ -17,14 +17,14 @@ class PLL_Settings_Module {
 	public $options;
 
 	/**
-	 * @var PLL_Model
+	 * @var LMAT_Model
 	 */
 	public $model;
 
 	/**
-	 * Instance of a child class of PLL_Links_Model.
+	 * Instance of a child class of LMAT_Links_Model.
 	 *
-	 * @var PLL_Links_Model
+	 * @var LMAT_Links_Model
 	 */
 	public $links_model;
 
@@ -98,7 +98,7 @@ class PLL_Settings_Module {
 	 *
 	 * @since 1.8
 	 *
-	 * @param object $polylang The Polylang object.
+	 * @param object $linguator The Linguator object.
 	 * @param array  $args {
 	 *   @type string $module        Unique module name.
 	 *   @type string $title         The title of the settings module.
@@ -118,10 +118,10 @@ class PLL_Settings_Module {
 	 *   active_option?: non-falsy-string
 	 * } $args
 	 */
-	public function __construct( &$polylang, $args ) {
-		$this->options     = &$polylang->options;
-		$this->model       = &$polylang->model;
-		$this->links_model = &$polylang->links_model;
+	public function __construct( &$linguator, $args ) {
+		$this->options     = &$linguator->options;
+		$this->model       = &$linguator->model;
+		$this->links_model = &$linguator->links_model;
 
 		$args = wp_parse_args(
 			$args,
@@ -145,33 +145,33 @@ class PLL_Settings_Module {
 		$this->action_links = array(
 			'configure'   => sprintf(
 				'<a title="%s" href="%s">%s</a>',
-				esc_attr__( 'Configure this module', 'polylang' ),
+				esc_attr__( 'Configure this module', 'linguator' ),
 				'#',
-				esc_html__( 'Settings', 'polylang' )
+				esc_html__( 'Settings', 'linguator' )
 			),
 			'deactivate'  => sprintf(
 				'<a title="%s" href="%s">%s</a>',
-				esc_attr__( 'Deactivate this module', 'polylang' ),
-				esc_url( wp_nonce_url( '?page=mlang&tab=modules&pll_action=deactivate&noheader=true&module=' . $this->module, 'pll_deactivate' ) ),
-				esc_html__( 'Deactivate', 'polylang' )
+				esc_attr__( 'Deactivate this module', 'linguator' ),
+				esc_url( wp_nonce_url( '?page=mlang&tab=modules&lmat_action=deactivate&noheader=true&module=' . $this->module, 'lmat_deactivate' ) ),
+				esc_html__( 'Deactivate', 'linguator' )
 			),
 			'activate'    => sprintf(
 				'<a title="%s" href="%s">%s</a>',
-				esc_attr__( 'Activate this module', 'polylang' ),
-				esc_url( wp_nonce_url( '?page=mlang&tab=modules&pll_action=activate&noheader=true&module=' . $this->module, 'pll_activate' ) ),
-				esc_html__( 'Activate', 'polylang' )
+				esc_attr__( 'Activate this module', 'linguator' ),
+				esc_url( wp_nonce_url( '?page=mlang&tab=modules&lmat_action=activate&noheader=true&module=' . $this->module, 'lmat_activate' ) ),
+				esc_html__( 'Activate', 'linguator' )
 			),
-			'activated'   => esc_html__( 'Activated', 'polylang' ),
-			'deactivated' => esc_html__( 'Deactivated', 'polylang' ),
+			'activated'   => esc_html__( 'Activated', 'linguator' ),
+			'deactivated' => esc_html__( 'Deactivated', 'linguator' ),
 		);
 
 		$this->buttons = array(
-			'cancel' => sprintf( '<button type="button" class="button button-secondary cancel">%s</button>', esc_html__( 'Cancel', 'polylang' ) ),
-			'save'   => sprintf( '<button type="button" class="button button-primary save">%s</button>', esc_html__( 'Save Changes', 'polylang' ) ),
+			'cancel' => sprintf( '<button type="button" class="button button-secondary cancel">%s</button>', esc_html__( 'Cancel', 'linguator' ) ),
+			'save'   => sprintf( '<button type="button" class="button button-primary save">%s</button>', esc_html__( 'Save Changes', 'linguator' ) ),
 		);
 
 		// Ajax action to save options.
-		add_action( 'wp_ajax_pll_save_options', array( $this, 'save_options' ) );
+		add_action( 'wp_ajax_lmat_save_options', array( $this, 'save_options' ) );
 	}
 
 	/**
@@ -264,14 +264,14 @@ class PLL_Settings_Module {
 	 * @return void
 	 */
 	public function save_options() {
-		check_ajax_referer( 'pll_options', '_pll_nonce' );
+		check_ajax_referer( 'lmat_options', '_lmat_nonce' );
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die( -1 );
 		}
 
 		if ( isset( $_POST['module'] ) && $this->module === $_POST['module'] ) {
 			// It's up to the child class to decide which options are saved, whether there are errors or not
-			$posted_options   = array_diff_key( $_POST, array_flip( array( 'action', 'module', 'pll_ajax_backend', 'pll_ajax_settings', '_pll_nonce' ) ) );
+			$posted_options   = array_diff_key( $_POST, array_flip( array( 'action', 'module', 'lmat_ajax_backend', 'lmat_ajax_settings', '_lmat_nonce' ) ) );
 			$errors           = $this->options->merge( $this->prepare_raw_data( $posted_options ) );
 
 			// Refresh language cache in case home urls have been modified
@@ -285,14 +285,14 @@ class PLL_Settings_Module {
 
 			if ( ! $errors->has_errors() ) {
 				// Send update message
-				pll_add_notice( new WP_Error( 'settings_updated', __( 'Settings saved.', 'polylang' ), 'success' ) );
-				settings_errors( 'polylang' );
+				lmat_add_notice( new WP_Error( 'settings_updated', __( 'Settings saved.', 'linguator' ), 'success' ) );
+				settings_errors( 'linguator' );
 				$x = new WP_Ajax_Response( array( 'what' => 'success', 'data' => ob_get_clean() ) );
 				$x->send();
 			} else {
 				// Send error messages
-				pll_add_notice( $errors );
-				settings_errors( 'polylang' );
+				lmat_add_notice( $errors );
+				settings_errors( 'linguator' );
 				$x = new WP_Ajax_Response( array( 'what' => 'error', 'data' => ob_get_clean() ) );
 				$x->send();
 			}
@@ -345,9 +345,9 @@ class PLL_Settings_Module {
 	protected function default_upgrade_message() {
 		return sprintf(
 			'%s <a href="%s">%s</a>',
-			__( 'To enable this feature, you need Polylang Pro.', 'polylang' ),
-			'https://polylang.pro',
-			__( 'Upgrade now.', 'polylang' )
+			__( 'To enable this feature, you need Linguator Pro.', 'linguator' ),
+			'https://linguator.pro',
+			__( 'Upgrade now.', 'linguator' )
 		);
 	}
 

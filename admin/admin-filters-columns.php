@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -9,21 +9,21 @@
  *
  * @since 1.2
  */
-class PLL_Admin_Filters_Columns {
+class LMAT_Admin_Filters_Columns {
 	/**
-	 * @var PLL_Model
+	 * @var LMAT_Model
 	 */
 	public $model;
 
 	/**
-	 * @var PLL_Admin_Links|null
+	 * @var LMAT_Admin_Links|null
 	 */
 	public $links;
 
 	/**
 	 * Language selected in the admin language filter.
 	 *
-	 * @var PLL_Language|null
+	 * @var LMAT_Language|null
 	 */
 	public $filter_lang;
 
@@ -32,12 +32,12 @@ class PLL_Admin_Filters_Columns {
 	 *
 	 * @since 1.2
 	 *
-	 * @param object $polylang The Polylang object.
+	 * @param object $linguator The Linguator object.
 	 */
-	public function __construct( &$polylang ) {
-		$this->links = &$polylang->links;
-		$this->model = &$polylang->model;
-		$this->filter_lang = &$polylang->filter_lang;
+	public function __construct( &$linguator ) {
+		$this->links = &$linguator->links;
+		$this->model = &$linguator->model;
+		$this->filter_lang = &$linguator->filter_lang;
 
 		// Hide the column of the filtered language.
 		add_filter( 'hidden_columns', array( $this, 'hidden_columns' ) ); // Since WP 4.4.
@@ -61,8 +61,8 @@ class PLL_Admin_Filters_Columns {
 		}
 
 		// Ajax responses to update list table rows.
-		add_action( 'wp_ajax_pll_update_post_rows', array( $this, 'ajax_update_post_rows' ) );
-		add_action( 'wp_ajax_pll_update_term_rows', array( $this, 'ajax_update_term_rows' ) );
+		add_action( 'wp_ajax_lmat_update_post_rows', array( $this, 'ajax_update_post_rows' ) );
+		add_action( 'wp_ajax_lmat_update_term_rows', array( $this, 'ajax_update_term_rows' ) );
 	}
 
 	/**
@@ -166,13 +166,13 @@ class PLL_Admin_Filters_Columns {
 				$flag = '';
 				if ( $id === $post_id ) {
 					$flag = $this->get_flag_html( $language );
-					$class = 'pll_column_flag';
+					$class = 'lmat_column_flag';
 					/* translators: accessibility text, %s is a native language name */
-					$s = sprintf( __( 'Edit this item in %s', 'polylang' ), $language->name );
+					$s = sprintf( __( 'Edit this item in %s', 'linguator' ), $language->name );
 				} else {
-					$class = esc_attr( 'pll_icon_edit translation_' . $id );
+					$class = esc_attr( 'lmat_icon_edit translation_' . $id );
 					/* translators: accessibility text, %s is a native language name */
-					$s = sprintf( __( 'Edit the translation in %s', 'polylang' ), $language->name );
+					$s = sprintf( __( 'Edit the translation in %s', 'linguator' ), $language->name );
 				}
 
 				$post = get_post( $id );
@@ -189,9 +189,9 @@ class PLL_Admin_Filters_Columns {
 				}
 			} elseif ( $id === $post_id ) {
 				printf(
-					'<span class="pll_column_flag" style=""><span class="screen-reader-text">%1$s</span>%2$s</span>',
+					'<span class="lmat_column_flag" style=""><span class="screen-reader-text">%1$s</span>%2$s</span>',
 					/* translators: accessibility text, %s is a native language name */
-					esc_html( sprintf( __( 'This item is in %s', 'polylang' ), $language->name ) ),
+					esc_html( sprintf( __( 'This item is in %s', 'linguator' ), $language->name ) ),
 					$this->get_flag_html( $language ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				);
 			}
@@ -215,10 +215,10 @@ class PLL_Admin_Filters_Columns {
 
 			$elements = $this->model->get_languages_list();
 			if ( current_filter() == 'bulk_edit_custom_box' ) {
-				array_unshift( $elements, (object) array( 'slug' => -1, 'name' => __( '&mdash; No Change &mdash;', 'polylang' ) ) );
+				array_unshift( $elements, (object) array( 'slug' => -1, 'name' => __( '&mdash; No Change &mdash;', 'linguator' ) ) );
 			}
 
-			$dropdown = new PLL_Walker_Dropdown();
+			$dropdown = new LMAT_Walker_Dropdown();
 			// The hidden field 'old_lang' allows to pass the old language to ajax request
 			printf(
 				'<fieldset class="inline-edit-col-left">
@@ -229,7 +229,7 @@ class PLL_Admin_Filters_Columns {
 						</label>
 					</div>
 				</fieldset>',
-				esc_html__( 'Language', 'polylang' ),
+				esc_html__( 'Language', 'linguator' ),
 				$dropdown->walk( $elements, -1, array( 'name' => 'inline_lang_choice', 'id' => '' ) ) // phpcs:ignore WordPress.Security.EscapeOutput
 			);
 		}
@@ -304,13 +304,13 @@ class PLL_Admin_Filters_Columns {
 				$flag = '';
 				if ( $id === $term_id ) {
 					$flag = $this->get_flag_html( $language );
-					$class = 'pll_column_flag';
+					$class = 'lmat_column_flag';
 					/* translators: accessibility text, %s is a native language name */
-					$s = sprintf( __( 'Edit this item in %s', 'polylang' ), $language->name );
+					$s = sprintf( __( 'Edit this item in %s', 'linguator' ), $language->name );
 				} else {
-					$class = esc_attr( 'pll_icon_edit translation_' . $id );
+					$class = esc_attr( 'lmat_icon_edit translation_' . $id );
 					/* translators: accessibility text, %s is a native language name */
-					$s = sprintf( __( 'Edit the translation in %s', 'polylang' ), $language->name );
+					$s = sprintf( __( 'Edit the translation in %s', 'linguator' ), $language->name );
 				}
 				$out .= sprintf(
 					'<a class="%1$s" title="%2$s" href="%3$s"><span class="screen-reader-text">%4$s</span>%5$s</a>',
@@ -322,9 +322,9 @@ class PLL_Admin_Filters_Columns {
 				);
 			} elseif ( $id === $term_id ) {
 				$out .= sprintf(
-					'<span class="pll_column_flag"><span class="screen-reader-text">%1$s</span>%2$s</span>',
+					'<span class="lmat_column_flag"><span class="screen-reader-text">%1$s</span>%2$s</span>',
 					/* translators: accessibility text, %s is a native language name */
-					esc_html( sprintf( __( 'This item is in %s', 'polylang' ), $language->name ) ),
+					esc_html( sprintf( __( 'This item is in %s', 'linguator' ), $language->name ) ),
 					$this->get_flag_html( $language )
 				);
 			}
@@ -347,7 +347,7 @@ class PLL_Admin_Filters_Columns {
 			 * @param int    $term_id Term ID.
 			 * @param string $lang    Language code.
 			 */
-			$out = apply_filters( 'pll_first_language_term_column', $out, $term_id, $lang->slug );
+			$out = apply_filters( 'lmat_first_language_term_column', $out, $term_id, $lang->slug );
 		}
 
 		return $out;
@@ -361,7 +361,7 @@ class PLL_Admin_Filters_Columns {
 	 * @return void
 	 */
 	public function ajax_update_post_rows() {
-		check_ajax_referer( 'inlineeditnonce', '_pll_nonce' );
+		check_ajax_referer( 'inlineeditnonce', '_lmat_nonce' );
 
 		if ( ! isset( $_POST['post_type'], $_POST['post_id'], $_POST['screen'] ) ) {
 			wp_die( 0 );
@@ -405,7 +405,7 @@ class PLL_Admin_Filters_Columns {
 	 * @return void
 	 */
 	public function ajax_update_term_rows() {
-		check_ajax_referer( 'pll_language', '_pll_nonce' );
+		check_ajax_referer( 'lmat_language', '_lmat_nonce' );
 
 		if ( ! isset( $_POST['taxonomy'], $_POST['term_id'], $_POST['screen'] ) ) {
 			wp_die( 0 );
@@ -451,7 +451,7 @@ class PLL_Admin_Filters_Columns {
 	 *
 	 * @since 2.8
 	 *
-	 * @param PLL_Language $language PLL_Language object.
+	 * @param LMAT_Language $language LMAT_Language object.
 	 * @return string
 	 */
 	protected function get_flag_html( $language ) {

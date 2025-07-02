@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,7 +8,7 @@
  *
  * @since 1.2
  */
-class PLL_Switcher {
+class LMAT_Switcher {
 	public const DEFAULTS = array(
 		'dropdown'               => 0, // Display as list and not as dropdown.
 		'echo'                   => 1, // Echoes the list.
@@ -27,7 +27,7 @@ class PLL_Switcher {
 	);
 
 	/**
-	 * @var PLL_Links|null
+	 * @var LMAT_Links|null
 	 */
 	protected $links;
 
@@ -43,12 +43,12 @@ class PLL_Switcher {
 	 */
 	public static function get_switcher_options( $type = 'widget', $key = 'string' ) {
 		$options = array(
-			'dropdown'               => array( 'string' => __( 'Displays as a dropdown', 'polylang' ), 'default' => 0 ),
-			'show_names'             => array( 'string' => __( 'Displays language names', 'polylang' ), 'default' => 1 ),
-			'show_flags'             => array( 'string' => __( 'Displays flags', 'polylang' ), 'default' => 0 ),
-			'force_home'             => array( 'string' => __( 'Forces link to front page', 'polylang' ), 'default' => 0 ),
-			'hide_current'           => array( 'string' => __( 'Hides the current language', 'polylang' ), 'default' => 0 ),
-			'hide_if_no_translation' => array( 'string' => __( 'Hides languages with no translation', 'polylang' ), 'default' => 0 ),
+			'dropdown'               => array( 'string' => __( 'Displays as a dropdown', 'linguator' ), 'default' => 0 ),
+			'show_names'             => array( 'string' => __( 'Displays language names', 'linguator' ), 'default' => 1 ),
+			'show_flags'             => array( 'string' => __( 'Displays flags', 'linguator' ), 'default' => 0 ),
+			'force_home'             => array( 'string' => __( 'Forces link to front page', 'linguator' ), 'default' => 0 ),
+			'hide_current'           => array( 'string' => __( 'Hides the current language', 'linguator' ), 'default' => 0 ),
+			'hide_if_no_translation' => array( 'string' => __( 'Hides languages with no translation', 'linguator' ), 'default' => 0 ),
 		);
 		return wp_list_pluck( $options, $key );
 	}
@@ -58,7 +58,7 @@ class PLL_Switcher {
 	 *
 	 * @since 3.0
 	 *
-	 * @param array $args Arguments passed to {@see PLL_Switcher::the_languages()}.
+	 * @param array $args Arguments passed to {@see LMAT_Switcher::the_languages()}.
 	 * @return string
 	 */
 	protected function get_current_language( $args ) {
@@ -78,8 +78,8 @@ class PLL_Switcher {
 	 *
 	 * @since 3.0
 	 *
-	 * @param PLL_Language $language Language.
-	 * @param array        $args     Arguments passed to {@see PLL_Switcher::the_languages()}.
+	 * @param LMAT_Language $language Language.
+	 * @param array        $args     Arguments passed to {@see LMAT_Switcher::the_languages()}.
 	 * @return string|null
 	 */
 	protected function get_link( $language, $args ) {
@@ -94,7 +94,7 @@ class PLL_Switcher {
 		}
 
 		// If we are on frontend.
-		if ( $this->links instanceof PLL_Frontend_Links ) {
+		if ( $this->links instanceof LMAT_Frontend_Links ) {
 			return $this->links->get_translation_url( $language );
 		}
 
@@ -114,7 +114,7 @@ class PLL_Switcher {
 	 *
 	 * @since 1.2
 	 *
-	 * @param array $args  Arguments passed to {@see PLL_Switcher::the_languages()}.
+	 * @param array $args  Arguments passed to {@see LMAT_Switcher::the_languages()}.
 	 * @return array Language switcher elements.
 	 */
 	protected function get_elements( $args ) {
@@ -160,7 +160,7 @@ class PLL_Switcher {
 			 * @param string      $slug   The language code.
 			 * @param string      $locale The language locale
 			 */
-			$url = apply_filters( 'pll_the_language_link', $url, $slug, $language->locale );
+			$url = apply_filters( 'lmat_the_language_link', $url, $slug, $language->locale );
 
 			// Hide if no translation exists
 			if ( empty( $url ) && $args['hide_if_no_translation'] ) {
@@ -196,7 +196,7 @@ class PLL_Switcher {
 	 *
 	 * @since 0.1
 	 *
-	 * @param PLL_Links $links Instance of PLL_Links.
+	 * @param LMAT_Links $links Instance of LMAT_Links.
 	 * @param array     $args {
 	 *   Optional array of arguments.
 	 *
@@ -225,16 +225,16 @@ class PLL_Switcher {
 		$args = wp_parse_args( $args, self::DEFAULTS );
 
 		/**
-		 * Filter the arguments of the 'pll_the_languages' template tag
+		 * Filter the arguments of the 'lmat_the_languages' template tag
 		 *
 		 * @since 1.5
 		 *
 		 * @param array $args
 		 */
-		$args = apply_filters( 'pll_the_languages_args', $args );
+		$args = apply_filters( 'lmat_the_languages_args', $args );
 
 		// Force not to hide the language for the widget preview even if the option is checked.
-		if ( $this->links instanceof PLL_Admin_Links ) {
+		if ( $this->links instanceof LMAT_Admin_Links ) {
 			$args['hide_if_no_translation'] = 0;
 		}
 
@@ -251,12 +251,12 @@ class PLL_Switcher {
 
 		if ( $args['dropdown'] ) {
 			$args['name'] = 'lang_choice_' . $args['dropdown'];
-			$args['class'] = 'pll-switcher-select';
+			$args['class'] = 'lmat-switcher-select';
 			$args['value'] = 'url';
 			$args['selected'] = $this->get_link( $this->links->model->get_language( $this->get_current_language( $args ) ), $args );
-			$walker = new PLL_Walker_Dropdown();
+			$walker = new LMAT_Walker_Dropdown();
 		} else {
-			$walker = new PLL_Walker_List();
+			$walker = new LMAT_Walker_List();
 		}
 
 		// Cast each element to stdClass because $walker::walk() expects an array of objects.
@@ -265,14 +265,14 @@ class PLL_Switcher {
 		}
 
 		/**
-		 * Filter the whole html markup returned by the 'pll_the_languages' template tag
+		 * Filter the whole html markup returned by the 'lmat_the_languages' template tag
 		 *
 		 * @since 0.8
 		 *
 		 * @param string $html html returned/outputted by the template tag
 		 * @param array  $args arguments passed to the template tag
 		 */
-		$out = apply_filters( 'pll_the_languages', $walker->walk( $elements, -1, $args ), $args );
+		$out = apply_filters( 'lmat_the_languages', $walker->walk( $elements, -1, $args ), $args );
 
 		// Javascript to switch the language when using a dropdown list.
 		if ( $args['dropdown'] && 0 === $args['admin_render'] ) {

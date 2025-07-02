@@ -1,16 +1,16 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
-namespace WP_Syntex\Polylang\REST;
+namespace WP_Syntex\Linguator\REST;
 
-use PLL_Model;
+use LMAT_Model;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Sets all Polylang REST controllers up.
+ * Sets all Linguator REST controllers up.
  *
  * @since 3.7
  */
@@ -30,7 +30,7 @@ class API {
 	public $settings;
 
 	/**
-	 * @var PLL_Model
+	 * @var LMAT_Model
 	 */
 	private $model;
 
@@ -39,9 +39,9 @@ class API {
 	 *
 	 * @since 3.7
 	 *
-	 * @param PLL_Model $model Polylang's model.
+	 * @param LMAT_Model $model Linguator's model.
 	 */
-	public function __construct( PLL_Model $model ) {
+	public function __construct( LMAT_Model $model ) {
 		$this->model = $model;
 	}
 

@@ -2,11 +2,11 @@
 /**
  * Loads the integration with WordPress Importer.
  *
- * @package Polylang
+ * @package Linguator
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Don't access directly.
 }
 
-PLL_Integrations::instance()->wp_importer = new PLL_WordPress_Importer();
+LMAT_Integrations::instance()->wp_importer = new LMAT_WordPress_Importer();

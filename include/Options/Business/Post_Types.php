@@ -1,9 +1,9 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
-namespace WP_Syntex\Polylang\Options\Business;
+namespace WP_Syntex\Linguator\Options\Business;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -48,6 +48,6 @@ class Post_Types extends Abstract_Object_Types {
 	 * @return string
 	 */
 	protected function get_description(): string {
-		return __( 'List of post types to translate.', 'polylang' );
+		return __( 'List of post types to translate.', 'linguator' );
 	}
 }

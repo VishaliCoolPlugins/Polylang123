@@ -1,9 +1,9 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
-use WP_Syntex\Polylang\Options\Options;
+use WP_Syntex\Linguator\Options\Options;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -12,10 +12,10 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 1.8
  *
- * @phpstan-import-type DBInfoWithType from PLL_Translatable_Object_With_Types_Interface
+ * @phpstan-import-type DBInfoWithType from LMAT_Translatable_Object_With_Types_Interface
  */
-class PLL_Translated_Term extends PLL_Translated_Object implements PLL_Translatable_Object_With_Types_Interface {
-	use PLL_Translatable_Object_With_Types_Trait;
+class LMAT_Translated_Term extends LMAT_Translated_Object implements LMAT_Translatable_Object_With_Types_Interface {
+	use LMAT_Translatable_Object_With_Types_Trait;
 
 	/**
 	 * Taxonomy name for the languages.
@@ -69,9 +69,9 @@ class PLL_Translated_Term extends PLL_Translated_Object implements PLL_Translata
 	 *
 	 * @since 1.8
 	 *
-	 * @param PLL_Model $model Instance of `PLL_Model`.
+	 * @param LMAT_Model $model Instance of `LMAT_Model`.
 	 */
-	public function __construct( PLL_Model $model ) {
+	public function __construct( LMAT_Model $model ) {
 		parent::__construct( $model );
 
 		// Keep hooks in constructor for backward compatibility.
@@ -98,7 +98,7 @@ class PLL_Translated_Term extends PLL_Translated_Object implements PLL_Translata
 	 * @since 3.4 Renamed the parameter $term_id into $id.
 	 *
 	 * @param int                     $id   Term ID.
-	 * @param PLL_Language|string|int $lang Language (object, slug, or term ID).
+	 * @param LMAT_Language|string|int $lang Language (object, slug, or term ID).
 	 * @return bool True when successfully assigned. False otherwise (or if the given language is already assigned to
 	 *              the object).
 	 */
@@ -129,7 +129,7 @@ class PLL_Translated_Term extends PLL_Translated_Object implements PLL_Translata
 	 * @since 3.4 Deprecated to retrieve the language by term slug + taxonomy anymore.
 	 *
 	 * @param int $id Term ID.
-	 * @return PLL_Language|false A `PLL_Language` object. `false` if no language is associated to that term or if the
+	 * @return LMAT_Language|false A `LMAT_Language` object. `false` if no language is associated to that term or if the
 	 *                            ID is invalid.
 	 */
 	public function get_language( $id ) {
@@ -175,7 +175,7 @@ class PLL_Translated_Term extends PLL_Translated_Object implements PLL_Translata
 		}
 
 		// Always keep a group for terms to allow relationships remap when importing from a WXR file.
-		$group        = uniqid( 'pll_' );
+		$group        = uniqid( 'lmat_' );
 		$translations = array( $slug => $id );
 		wp_insert_term( $group, $this->tax_translations, array( 'description' => maybe_serialize( $translations ) ) );
 		wp_set_object_terms( $id, $group, $this->tax_translations );
@@ -189,7 +189,7 @@ class PLL_Translated_Term extends PLL_Translated_Object implements PLL_Translata
 	 * @since 3.4
 	 *
 	 * @param bool $filter True if we should return only valid registered object types.
-	 * @return string[] Object type names for which Polylang manages languages.
+	 * @return string[] Object type names for which Linguator manages languages.
 	 *
 	 * @phpstan-return array<non-empty-string, non-empty-string>
 	 */
@@ -212,9 +212,9 @@ class PLL_Translated_Term extends PLL_Translated_Object implements PLL_Translata
 			 * @since 0.8
 			 *
 			 * @param string[] $taxonomies  List of taxonomy names (as array keys and values).
-			 * @param bool     $is_settings True when displaying the list of custom taxonomies in Polylang settings.
+			 * @param bool     $is_settings True when displaying the list of custom taxonomies in Linguator settings.
 			 */
-			$taxonomies = (array) apply_filters( 'pll_get_taxonomies', $taxonomies, false );
+			$taxonomies = (array) apply_filters( 'lmat_get_taxonomies', $taxonomies, false );
 
 			if ( did_action( 'after_setup_theme' ) && ! doing_action( 'switch_blog' ) ) {
 				$this->cache->set( 'taxonomies', $taxonomies );
@@ -295,10 +295,10 @@ class PLL_Translated_Term extends PLL_Translated_Object implements PLL_Translata
 	 * Assigns a language to terms in mass.
 	 *
 	 * @since 1.2
-	 * @since 3.4 Moved from PLL_Admin_Model class.
+	 * @since 3.4 Moved from LMAT_Admin_Model class.
 	 *
 	 * @param int[]        $ids  Array of post ids or term ids.
-	 * @param PLL_Language $lang Language to assign to the posts or terms.
+	 * @param LMAT_Language $lang Language to assign to the posts or terms.
 	 * @return void
 	 */
 	public function set_language_in_mass( $ids, $lang ) {
@@ -319,20 +319,20 @@ class PLL_Translated_Term extends PLL_Translated_Object implements PLL_Translata
 	 * Returns the description to use for the "language properties" in the REST API.
 	 *
 	 * @since 3.7
-	 * @see WP_Syntex\Polylang\REST\V2\Languages::get_item_schema()
+	 * @see WP_Syntex\Linguator\REST\V2\Languages::get_item_schema()
 	 *
 	 * @return string
 	 */
 	public function get_rest_description(): string {
-		return __( 'Language taxonomy properties for terms.', 'polylang' );
+		return __( 'Language taxonomy properties for terms.', 'linguator' );
 	}
 
 	/**
 	 * Returns database-related information that can be used in some of this class methods.
 	 * These are specific to the table containing the objects.
 	 *
-	 * @see PLL_Translatable_Object::join_clause()
-	 * @see PLL_Translatable_Object::get_raw_objects_with_no_lang()
+	 * @see LMAT_Translatable_Object::join_clause()
+	 * @see LMAT_Translatable_Object::get_raw_objects_with_no_lang()
 	 *
 	 * @since 3.4.3
 	 *
@@ -360,7 +360,7 @@ class PLL_Translated_Term extends PLL_Translated_Object implements PLL_Translata
 	 *
 	 * @param string       $term     The term name to add.
 	 * @param string       $taxonomy The taxonomy to which to add the term.
-	 * @param PLL_Language $language The term language.
+	 * @param LMAT_Language $language The term language.
 	 * @param array        $args {
 	 *     Optional. Array of arguments for inserting a term.
 	 *
@@ -378,7 +378,7 @@ class PLL_Translated_Term extends PLL_Translated_Object implements PLL_Translata
 	 *     @type int|string $term_taxonomy_id The new term taxonomy ID. Can be a numeric string.
 	 * }
 	 */
-	public function insert( string $term, string $taxonomy, PLL_Language $language, $args = array() ) {
+	public function insert( string $term, string $taxonomy, LMAT_Language $language, $args = array() ) {
 		$parent = $args['parent'] ?? 0;
 		$this->toggle_inserted_term_filters( $language, $parent );
 		$term = wp_insert_term( $term, $taxonomy, $args );
@@ -412,7 +412,7 @@ class PLL_Translated_Term extends PLL_Translated_Object implements PLL_Translata
 	 *     @type string       $description  The term description. Default empty string.
 	 *     @type int          $parent       The id of the parent term. Default 0.
 	 *     @type string       $slug         The term slug to use. Default empty string.
-	 *     @type PLL_Language $lang         The term language object.
+	 *     @type LMAT_Language $lang         The term language object.
 	 *     @type string[]     $translations The translation group to assign to the term with language slug as keys and `term_id` as values.
 	 * }
 	 * @return array|WP_Error An array containing the `term_id` and `term_taxonomy_id`,
@@ -421,15 +421,15 @@ class PLL_Translated_Term extends PLL_Translated_Object implements PLL_Translata
 	public function update( int $term_id, array $args = array() ) {
 		$term = get_term( $term_id );
 		if ( ! $term instanceof WP_Term ) {
-			return new WP_Error( 'invalid_term', __( 'Empty Term.', 'polylang' ) );
+			return new WP_Error( 'invalid_term', __( 'Empty Term.', 'linguator' ) );
 		}
 
-		/** @var PLL_Language $language */
+		/** @var LMAT_Language $language */
 		$language = $this->get_language( $term_id );
 		if ( ! empty( $args['lang'] ) ) {
 			$language = $this->languages->get( $args['lang'] );
-			if ( ! $language instanceof PLL_Language ) {
-				return new WP_Error( 'invalid_language', __( 'Please provide a valid language.', 'polylang' ) );
+			if ( ! $language instanceof LMAT_Language ) {
+				return new WP_Error( 'invalid_language', __( 'Please provide a valid language.', 'linguator' ) );
 			}
 
 			$this->set_language( $term_id, $language );
@@ -453,21 +453,21 @@ class PLL_Translated_Term extends PLL_Translated_Object implements PLL_Translata
 	}
 
 	/**
-	 * Toggles Polylang term slug filters management.
+	 * Toggles Linguator term slug filters management.
 	 * Must be used before and after any term slug modification or insertion.
 	 *
 	 * @since 3.7
 	 *
-	 * @param PLL_Language $language The language to use.
+	 * @param LMAT_Language $language The language to use.
 	 * @param int          $parent   The parent term id to use.
 	 * @return void
 	 */
-	private function toggle_inserted_term_filters( PLL_Language $language, int $parent ): void {
+	private function toggle_inserted_term_filters( LMAT_Language $language, int $parent ): void {
 		static $callbacks = array();
 		if ( isset( $callbacks[ $language->slug ], $callbacks[ (string) $parent ] ) ) {
 			// Clean up!
-			remove_filter( 'pll_inserted_term_language', $callbacks[ $language->slug ] );
-			remove_filter( 'pll_inserted_term_parent', $callbacks[ (string) $parent ] );
+			remove_filter( 'lmat_inserted_term_language', $callbacks[ $language->slug ] );
+			remove_filter( 'lmat_inserted_term_parent', $callbacks[ (string) $parent ] );
 			unset( $callbacks[ $language->slug ], $callbacks[ (string) $parent ] );
 			return;
 		}
@@ -480,7 +480,7 @@ class PLL_Translated_Term extends PLL_Translated_Object implements PLL_Translata
 		};
 
 		// Set term parent and language for suffixed slugs.
-		add_filter( 'pll_inserted_term_language', $callbacks[ $language->slug ] );
-		add_filter( 'pll_inserted_term_parent', $callbacks[ (string) $parent ] );
+		add_filter( 'lmat_inserted_term_language', $callbacks[ $language->slug ] );
+		add_filter( 'lmat_inserted_term_parent', $callbacks[ (string) $parent ] );
 	}
 }

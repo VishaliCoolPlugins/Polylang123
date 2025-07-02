@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,9 +8,9 @@
  *
  * @since 2.2
  */
-class PLL_Query {
+class LMAT_Query {
 	/**
-	 * @var PLL_Model
+	 * @var LMAT_Model
 	 */
 	public $model;
 
@@ -25,7 +25,7 @@ class PLL_Query {
 	 * @since 2.2
 	 *
 	 * @param WP_Query  $query Reference to the WP_Query object.
-	 * @param PLL_Model $model Instance of PLL_Model.
+	 * @param LMAT_Model $model Instance of LMAT_Model.
 	 */
 	public function __construct( &$query, &$model ) {
 		$this->query = &$query;
@@ -102,7 +102,7 @@ class PLL_Query {
 	 * @since 2.2
 	 * @since 3.3 Accepts now an array of languages.
 	 *
-	 * @param PLL_Language|PLL_Language[] $languages Language object(s).
+	 * @param LMAT_Language|LMAT_Language[] $languages Language object(s).
 	 * @return void
 	 */
 	public function set_language( $languages ) {
@@ -147,7 +147,7 @@ class PLL_Query {
 	 *
 	 * @since 2.2
 	 *
-	 * @param PLL_Language|false $lang Language.
+	 * @param LMAT_Language|false $lang Language.
 	 * @return void
 	 */
 	public function filter_query( $lang ) {

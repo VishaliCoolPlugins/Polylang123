@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,18 +8,18 @@
  *
  * @since 2.9
  */
-class PLL_Cookie {
+class LMAT_Cookie {
 	/**
 	 * Parses the cookie parameters.
 	 *
 	 * @since 2.9
 	 *
-	 * @param array $args {@see PLL_Cookie::set()}
+	 * @param array $args {@see LMAT_Cookie::set()}
 	 * @return array
 	 */
 	protected static function parse_args( $args ) {
 		/**
-		 * Filters the Polylang cookie duration.
+		 * Filters the Linguator cookie duration.
 		 *
 		 * If a cookie duration of 0 is specified, a session cookie will be set.
 		 * If a negative cookie duration is specified, the cookie is removed.
@@ -29,7 +29,7 @@ class PLL_Cookie {
 		 *
 		 * @param int $duration Cookie duration in seconds.
 		 */
-		$expiration = (int) apply_filters( 'pll_cookie_expiration', YEAR_IN_SECONDS );
+		$expiration = (int) apply_filters( 'lmat_cookie_expiration', YEAR_IN_SECONDS );
 
 		$defaults = array(
 			'expires'  => 0 !== $expiration ? time() + $expiration : 0,
@@ -43,7 +43,7 @@ class PLL_Cookie {
 		$args = wp_parse_args( $args, $defaults );
 
 		/**
-		 * Filters the Polylang cookie arguments.
+		 * Filters the Linguator cookie arguments.
 		 * /!\ This filter may be fired *before* the theme is loaded.
 		 *
 		 * @since 3.6
@@ -61,7 +61,7 @@ class PLL_Cookie {
 		 *   @type string $samesite Either 'Strict', 'Lax' or 'None'.
 		 * }
 		 */
-		return (array) apply_filters( 'pll_cookie_args', $args );
+		return (array) apply_filters( 'lmat_cookie_args', $args );
 	}
 
 	/**
@@ -84,12 +84,12 @@ class PLL_Cookie {
 	public static function set( $lang, $args = array() ) {
 		$args = self::parse_args( $args );
 
-		if ( ! headers_sent() && PLL_COOKIE !== false && self::get() !== $lang ) {
+		if ( ! headers_sent() && LMAT_COOKIE !== false && self::get() !== $lang ) {
 			if ( version_compare( PHP_VERSION, '7.3', '<' ) ) {
 				$args['path'] .= '; SameSite=' . $args['samesite']; // Hack to set SameSite value in PHP < 7.3. Doesn't work with newer versions.
-				setcookie( PLL_COOKIE, $lang, $args['expires'], $args['path'], $args['domain'], $args['secure'], $args['httponly'] );
+				setcookie( LMAT_COOKIE, $lang, $args['expires'], $args['path'], $args['domain'], $args['secure'], $args['httponly'] );
 			} else {
-				setcookie( PLL_COOKIE, $lang, $args );
+				setcookie( LMAT_COOKIE, $lang, $args );
 			}
 		}
 	}
@@ -102,6 +102,6 @@ class PLL_Cookie {
 	 * @return string
 	 */
 	public static function get() {
-		return isset( $_COOKIE[ PLL_COOKIE ] ) ? sanitize_key( $_COOKIE[ PLL_COOKIE ] ) : '';
+		return isset( $_COOKIE[ LMAT_COOKIE ] ) ? sanitize_key( $_COOKIE[ LMAT_COOKIE ] ) : '';
 	}
 }

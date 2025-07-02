@@ -1,16 +1,16 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
-namespace WP_Syntex\Polylang\Model;
+namespace WP_Syntex\Linguator\Model;
 
-use PLL_Translated_Term;
+use LMAT_Translated_Term;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Model for taxonomies filtered/translated by Polylang.
+ * Model for taxonomies filtered/translated by Linguator.
  *
  * @since 3.7
  */
@@ -18,7 +18,7 @@ class Taxonomies {
 	/**
 	 * Translated term model.
 	 *
-	 * @var PLL_Translated_Term
+	 * @var LMAT_Translated_Term
 	 */
 	public $translated_object;
 
@@ -27,9 +27,9 @@ class Taxonomies {
 	 *
 	 * @since 3.7
 	 *
-	 * @param PLL_Translated_Term $translated_object Terms model.
+	 * @param LMAT_Translated_Term $translated_object Terms model.
 	 */
-	public function __construct( PLL_Translated_Term $translated_object ) {
+	public function __construct( LMAT_Translated_Term $translated_object ) {
 		$this->translated_object = $translated_object;
 	}
 
@@ -40,20 +40,20 @@ class Taxonomies {
 	 * to allow themes adding the filter in functions.php.
 	 *
 	 * @since 1.2
-	 * @since 3.7 Moved from `PLL_Model::get_translated_taxonomies()` to `WP_Syntex\Polylang\Model\Taxonomies::get_translated()`.
+	 * @since 3.7 Moved from `LMAT_Model::get_translated_taxonomies()` to `WP_Syntex\Linguator\Model\Taxonomies::get_translated()`.
 	 *
 	 * @param bool $filter True if we should return only valid registered taxonomies.
-	 * @return string[] Array of registered taxonomy names for which Polylang manages languages and translations.
+	 * @return string[] Array of registered taxonomy names for which Linguator manages languages and translations.
 	 */
 	public function get_translated( $filter = true ): array {
 		return $this->translated_object->get_translated_object_types( $filter );
 	}
 
 	/**
-	 * Returns true if Polylang manages languages and translations for this taxonomy.
+	 * Returns true if Linguator manages languages and translations for this taxonomy.
 	 *
 	 * @since 1.2
-	 * @since 3.7 Moved from `PLL_Model::is_translated_taxonomy()` to `WP_Syntex\Polylang\Model\Taxonomies::is_translated()`.
+	 * @since 3.7 Moved from `LMAT_Model::is_translated_taxonomy()` to `WP_Syntex\Linguator\Model\Taxonomies::is_translated()`.
 	 *
 	 * @param string|string[] $tax Taxonomy name or array of taxonomy names.
 	 * @return bool
@@ -71,7 +71,7 @@ class Taxonomies {
 	 * Return taxonomies that need to be filtered (post_format like).
 	 *
 	 * @since 1.7
-	 * @since 3.7 Moved from `PLL_Model::get_filtered_taxonomies()` to `WP_Syntex\Polylang\Model\Taxonomies::get_filtered()`.
+	 * @since 3.7 Moved from `LMAT_Model::get_filtered_taxonomies()` to `WP_Syntex\Linguator\Model\Taxonomies::get_filtered()`.
 	 *
 	 * @param bool $filter True if we should return only valid registered taxonomies.
 	 * @return string[] Array of registered taxonomy names.
@@ -93,19 +93,19 @@ class Taxonomies {
 			 * @since 1.7
 			 *
 			 * @param string[] $taxonomies  List of taxonomy names.
-			 * @param bool     $is_settings True when displaying the list of custom taxonomies in Polylang settings.
+			 * @param bool     $is_settings True when displaying the list of custom taxonomies in Linguator settings.
 			 */
-			$taxonomies = apply_filters( 'pll_filtered_taxonomies', $taxonomies, false );
+			$taxonomies = apply_filters( 'lmat_filtered_taxonomies', $taxonomies, false );
 		}
 
 		return $filter ? array_intersect( $taxonomies, get_taxonomies() ) : $taxonomies;
 	}
 
 	/**
-	 * Returns true if Polylang filters this taxonomy per language.
+	 * Returns true if Linguator filters this taxonomy per language.
 	 *
 	 * @since 1.7
-	 * @since 3.7 Moved from `PLL_Model::is_filtered_taxonomy()` to `WP_Syntex\Polylang\Model\Taxonomies::is_filtered()`.
+	 * @since 3.7 Moved from `LMAT_Model::is_filtered_taxonomy()` to `WP_Syntex\Linguator\Model\Taxonomies::is_filtered()`.
 	 *
 	 * @param string|string[] $tax Taxonomy name or array of taxonomy names.
 	 * @return bool
@@ -119,7 +119,7 @@ class Taxonomies {
 	 * Returns the query vars of all filtered taxonomies.
 	 *
 	 * @since 1.7
-	 * @since 3.7 Moved from `PLL_Model::get_filtered_taxonomies_query_vars()` to `WP_Syntex\Polylang\Model\Taxonomies::get_filtered_query_vars()`.
+	 * @since 3.7 Moved from `LMAT_Model::get_filtered_taxonomies_query_vars()` to `WP_Syntex\Linguator\Model\Taxonomies::get_filtered_query_vars()`.
 	 *
 	 * @return string[]
 	 */

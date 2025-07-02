@@ -2,7 +2,7 @@
 
 ;// ./js/src/lib/ajax-filter/index.js
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -49,10 +49,10 @@ function ajaxFilter( data ) {
 
 ;// ./js/src/admin.js
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 
 
-ajaxFilter( pll_admin?.ajax_filter );
+ajaxFilter( lmat_admin?.ajax_filter );
 

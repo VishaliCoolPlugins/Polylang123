@@ -1,11 +1,11 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
-namespace WP_Syntex\Polylang\Options\Business;
+namespace WP_Syntex\Linguator\Options\Business;
 
-use WP_Syntex\Polylang\Options\Abstract_Option;
+use WP_Syntex\Linguator\Options\Abstract_Option;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -51,7 +51,7 @@ class Force_Lang extends Abstract_Option {
 	protected function get_data_structure(): array {
 		return array(
 			'type' => 'integer',
-			'enum' => 'yes' === get_option( 'pll_language_from_content_available' ) ? array( 0, 1, 2, 3 ) : array( 1, 2, 3 ),
+			'enum' => 'yes' === get_option( 'lmat_language_from_content_available' ) ? array( 0, 1, 2, 3 ) : array( 1, 2, 3 ),
 		);
 	}
 
@@ -63,6 +63,6 @@ class Force_Lang extends Abstract_Option {
 	 * @return string
 	 */
 	protected function get_description(): string {
-		return __( 'Determine how the current language is defined.', 'polylang' );
+		return __( 'Determine how the current language is defined.', 'linguator' );
 	}
 }

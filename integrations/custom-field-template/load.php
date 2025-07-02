@@ -2,7 +2,7 @@
 /**
  * Loads the integration with Custom Field Template.
  *
- * @package Polylang
+ * @package Linguator
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -13,8 +13,8 @@ add_action(
 	'plugins_loaded',
 	function () {
 		if ( class_exists( 'custom_field_template' ) ) {
-			PLL_Integrations::instance()->cft = new PLL_Cft();
-			PLL_Integrations::instance()->cft->init();
+			LMAT_Integrations::instance()->cft = new LMAT_Cft();
+			LMAT_Integrations::instance()->cft->init();
 		}
 	},
 	0

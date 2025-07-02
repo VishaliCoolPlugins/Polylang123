@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,24 +8,24 @@
  *
  * @since 3.7
  */
-class PLL_Default_Term {
+class LMAT_Default_Term {
 
 	/**
-	 * A reference to the PLL_Model instance.
+	 * A reference to the LMAT_Model instance.
 	 *
-	 * @var PLL_Model
+	 * @var LMAT_Model
 	 */
 	protected $model;
 
 	/**
 	 * Preferred language to assign to new contents.
 	 *
-	 * @var PLL_Language|null
+	 * @var LMAT_Language|null
 	 */
 	protected $curlang;
 
 	/**
-	 * Array of registered taxonomy names for which Polylang manages languages and translations.
+	 * Array of registered taxonomy names for which Linguator manages languages and translations.
 	 *
 	 * @var string[]
 	 */
@@ -36,11 +36,11 @@ class PLL_Default_Term {
 	 *
 	 * @since 3.1
 	 *
-	 * @param object $polylang The Polylang object.
+	 * @param object $linguator The Linguator object.
 	 */
-	public function __construct( &$polylang ) {
-		$this->model      = &$polylang->model;
-		$this->curlang    = &$polylang->curlang;
+	public function __construct( &$linguator ) {
+		$this->model      = &$linguator->model;
+		$this->curlang    = &$linguator->curlang;
 		$this->taxonomies = $this->model->get_translated_taxonomies();
 	}
 
@@ -59,10 +59,10 @@ class PLL_Default_Term {
 				add_action( 'update_option_default_' . $taxonomy, array( $this, 'update_option_default_term' ), 10, 2 );
 			}
 		}
-		add_action( 'pll_add_language', array( $this, 'handle_default_term_on_create_language' ) );
+		add_action( 'lmat_add_language', array( $this, 'handle_default_term_on_create_language' ) );
 
 		// The default term should be in the default language.
-		add_action( 'pll_update_default_lang', array( $this, 'update_default_term_language' ) );
+		add_action( 'lmat_update_default_lang', array( $this, 'update_default_term_language' ) );
 
 		// Prevents deleting all the translations of the default term.
 		add_filter( 'map_meta_cap', array( $this, 'fix_delete_default_term' ), 10, 4 );
@@ -120,7 +120,7 @@ class PLL_Default_Term {
 	 *
 	 * @since 1.2
 	 *
-	 * @param PLL_Language|string|int $lang     Language.
+	 * @param LMAT_Language|string|int $lang     Language.
 	 * @param string                  $taxonomy The current taxonomy.
 	 * @return void
 	 */
@@ -129,7 +129,7 @@ class PLL_Default_Term {
 
 		// Create a new term.
 		// FIXME this is translated in admin language when we would like it in $lang
-		$cat_name = __( 'Uncategorized', 'polylang' );
+		$cat_name = __( 'Uncategorized', 'linguator' );
 		$cat_slug = sanitize_title( $cat_name . '-' . $lang->slug );
 		$cat = wp_insert_term( $cat_name, $taxonomy, array( 'slug' => $cat_slug ) );
 
@@ -151,7 +151,7 @@ class PLL_Default_Term {
 	 *
 	 * @since 3.1
 	 *
-	 * @param  array $args Argument used to create the language. @see PLL_Admin_Model::add_language().
+	 * @param  array $args Argument used to create the language. @see LMAT_Admin_Model::add_language().
 	 * @return void
 	 */
 	public function handle_default_term_on_create_language( $args ) {

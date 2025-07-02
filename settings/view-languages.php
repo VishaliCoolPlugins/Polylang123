@@ -2,9 +2,9 @@
 /**
  * Displays the Languages admin panel
  *
- * @package Polylang
+ * @package Linguator
  *
- * @var string $active_tab Active Polylang settings page.
+ * @var string $active_tab Active Linguator settings page.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -23,12 +23,12 @@ require ABSPATH . 'wp-admin/options-head.php'; // Displays the errors messages a
 
 		default:
 			/**
-			 * Fires when loading the active Polylang settings tab
+			 * Fires when loading the active Linguator settings tab
 			 * Allows plugins to add their own tab
 			 *
 			 * @since 1.5.1
 			 */
-			do_action( 'pll_settings_active_tab_' . $active_tab );
+			do_action( 'lmat_settings_active_tab_' . $active_tab );
 			break;
 	}
 	?>

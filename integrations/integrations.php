@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,14 +8,14 @@
  * This class is available as soon as the plugin is loaded.
  *
  * @since 1.0
- * @since 2.8 Renamed from PLL_Plugins_Compat to PLL_Integrations.
+ * @since 2.8 Renamed from LMAT_Plugins_Compat to LMAT_Integrations.
  */
 #[AllowDynamicProperties]
-class PLL_Integrations {
+class LMAT_Integrations {
 	/**
 	 * Singleton instance.
 	 *
-	 * @var PLL_Integrations|null
+	 * @var LMAT_Integrations|null
 	 */
 	protected static $instance = null;
 
@@ -57,4 +57,4 @@ class PLL_Integrations {
 	}
 }
 
-class_alias( 'PLL_Integrations', 'PLL_Plugins_Compat' ); // For Backward compatibility.
+class_alias( 'LMAT_Integrations', 'LMAT_Plugins_Compat' ); // For Backward compatibility.

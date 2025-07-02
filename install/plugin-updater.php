@@ -8,14 +8,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Allows plugins to use their own update API.
  * Modified version with:
- * - 'polylang' text domain,
+ * - 'linguator' text domain,
  * - missing comments for translators,
- * - a bug fix (https://github.com/polylang/polylang/pull/1629).
+ * - a bug fix (https://github.com/linguator/linguator/pull/1629).
  *
  * @author Easy Digital Downloads
  * @version 1.9.4
  */
-class PLL_Plugin_Updater {
+class LMAT_Plugin_Updater {
 
 	private $api_url     = '';
 	private $api_data    = array();
@@ -154,7 +154,7 @@ class PLL_Plugin_Updater {
 			$this->set_version_info_cache( $version_info );
 		}
 
-		// Added by Polylang.
+		// Added by Linguator.
 		$defaults = array(
 			'url'          => '',
 			'package'       => '',
@@ -167,7 +167,7 @@ class PLL_Plugin_Updater {
 		);
 
 		$version_info = (object) array_merge( $defaults, (array) $version_info );
-		// End of added by Polylang.
+		// End of added by Linguator.
 
 		return $version_info;
 	}
@@ -304,18 +304,18 @@ class PLL_Plugin_Updater {
 
 		printf(
 			/* translators: the plugin name. */
-			esc_html__( 'There is a new version of %1$s available.', 'polylang' ),
+			esc_html__( 'There is a new version of %1$s available.', 'linguator' ),
 			esc_html( $plugin['Name'] )
 		);
 
 		if ( ! current_user_can( 'update_plugins' ) ) {
 			echo ' ';
-			esc_html_e( 'Contact your network administrator to install the update.', 'polylang' );
+			esc_html_e( 'Contact your network administrator to install the update.', 'linguator' );
 		} elseif ( empty( $update_cache->response[ $this->name ]->package ) && ! empty( $changelog_link ) ) {
 			echo ' ';
 			printf(
 				/* translators: 1. opening anchor tag, do not translate 2. the new plugin version 3. closing anchor tag, do not translate. */
-				__( '%1$sView version %2$s details%3$s.', 'polylang' ),
+				__( '%1$sView version %2$s details%3$s.', 'linguator' ),
 				'<a target="_blank" class="thickbox open-plugin-details-modal" href="' . esc_url( $changelog_link ) . '">',
 				esc_html( $update_cache->response[ $this->name ]->new_version ),
 				'</a>'
@@ -324,7 +324,7 @@ class PLL_Plugin_Updater {
 			echo ' ';
 			printf(
 				/* translators: 1. and 4. are opening anchor tags 2. the new plugin version 3. and 5. are closing anchor tags. */
-				__( '%1$sView version %2$s details%3$s or %4$supdate now%5$s.', 'polylang' ),
+				__( '%1$sView version %2$s details%3$s or %4$supdate now%5$s.', 'linguator' ),
 				'<a target="_blank" class="thickbox open-plugin-details-modal" href="' . esc_url( $changelog_link ) . '">',
 				esc_html( $update_cache->response[ $this->name ]->new_version ),
 				'</a>',
@@ -335,7 +335,7 @@ class PLL_Plugin_Updater {
 			printf(
 				' %1$s%2$s%3$s',
 				'<a target="_blank" class="update-link" href="' . esc_url( wp_nonce_url( $update_link, 'upgrade-plugin_' . $file ) ) . '">',
-				esc_html__( 'Update now.', 'polylang' ),
+				esc_html__( 'Update now.', 'linguator' ),
 				'</a>'
 			);
 		}
@@ -570,7 +570,7 @@ class PLL_Plugin_Updater {
 		}
 
 		if ( ! current_user_can( 'update_plugins' ) ) {
-			wp_die( esc_html__( 'You do not have permission to install plugin updates', 'polylang' ), esc_html__( 'Error', 'polylang' ), array( 'response' => 403 ) );
+			wp_die( esc_html__( 'You do not have permission to install plugin updates', 'linguator' ), esc_html__( 'Error', 'linguator' ), array( 'response' => 403 ) );
 		}
 
 		$version_info = $this->get_repo_api_data();

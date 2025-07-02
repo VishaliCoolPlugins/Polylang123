@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,7 +8,7 @@
  *
  * @since 2.8
  */
-class PLL_WordPress_Importer {
+class LMAT_WordPress_Importer {
 
 	/**
 	 * Setups filters.
@@ -33,7 +33,7 @@ class PLL_WordPress_Importer {
 	}
 
 	/**
-	 * Loads our child class PLL_WP_Import instead of WP_Import.
+	 * Loads our child class LMAT_WP_Import instead of WP_Import.
 	 *
 	 * @since 1.2
 	 */
@@ -41,12 +41,12 @@ class PLL_WordPress_Importer {
 		$class = new ReflectionClass( 'WP_Import' );
 		load_plugin_textdomain( 'wordpress-importer', false, basename( dirname( $class->getFileName() ) ) . '/languages' );
 
-		$GLOBALS['wp_import'] = new PLL_WP_Import();
-		register_importer( 'wordpress', 'WordPress', __( 'Import <strong>posts, pages, comments, custom fields, categories, and tags</strong> from a WordPress export file.', 'polylang' ), array( $GLOBALS['wp_import'], 'dispatch' ) ); // phpcs:ignore WordPress.WP.CapitalPDangit.MisspelledInText
+		$GLOBALS['wp_import'] = new LMAT_WP_Import();
+		register_importer( 'wordpress', 'WordPress', __( 'Import <strong>posts, pages, comments, custom fields, categories, and tags</strong> from a WordPress export file.', 'linguator' ), array( $GLOBALS['wp_import'], 'dispatch' ) ); // phpcs:ignore WordPress.WP.CapitalPDangit.MisspelledInText
 	}
 
 	/**
-	 * Sets the flag when importing a language and the file has been exported with Polylang < 1.8.
+	 * Sets the flag when importing a language and the file has been exported with Linguator < 1.8.
 	 *
 	 * @since 1.8
 	 *
@@ -54,7 +54,7 @@ class PLL_WordPress_Importer {
 	 * @return array
 	 */
 	public function wp_import_terms( $terms ) {
-		$languages = include POLYLANG_DIR . '/settings/languages.php';
+		$languages = include LINGUATOR_DIR . '/settings/languages.php';
 
 		foreach ( $terms as $key => $term ) {
 			if ( 'language' === $term['term_taxonomy'] ) {

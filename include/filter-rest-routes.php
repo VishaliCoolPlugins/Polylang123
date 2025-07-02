@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,7 +8,7 @@
  *
  * @since 3.5
  */
-class PLL_Filter_REST_Routes {
+class LMAT_Filter_REST_Routes {
 	/**
 	 * Cached REST routes filterable by language ordered by types.
 	 *
@@ -18,7 +18,7 @@ class PLL_Filter_REST_Routes {
 	private $filtered_routes = array();
 
 	/**
-	 * @var PLL_Model
+	 * @var LMAT_Model
 	 */
 	private $model;
 
@@ -27,9 +27,9 @@ class PLL_Filter_REST_Routes {
 	 *
 	 * @since 3.5
 	 *
-	 * @param PLL_Model $model Shared instance of the current PLL_Model.
+	 * @param LMAT_Model $model Shared instance of the current LMAT_Model.
 	 */
-	public function __construct( PLL_Model $model ) {
+	public function __construct( LMAT_Model $model ) {
 		$this->model = $model;
 	}
 
@@ -96,7 +96,7 @@ class PLL_Filter_REST_Routes {
 	 * @return void
 	 */
 	public function add_inline_script( string $script_handle ) {
-		$script_var = 'let pllFilteredRoutes = ' . (string) wp_json_encode( $this->get() );
+		$script_var = 'let lmatFilteredRoutes = ' . (string) wp_json_encode( $this->get() );
 
 		wp_add_inline_script( $script_handle, $script_var, 'before' );
 	}
@@ -133,7 +133,7 @@ class PLL_Filter_REST_Routes {
 		 * @param string[] $routes Array of filterable REST routes, with types as key.
 		 */
 		$this->filtered_routes = apply_filters(
-			'pll_filtered_rest_routes',
+			'lmat_filtered_rest_routes',
 			array_merge(
 				$filtered_entities,
 				array( 'search' => 'wp/v2/search' )

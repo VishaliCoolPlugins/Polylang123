@@ -2,24 +2,24 @@
 /**
  * Loads the module for general synchronization such as metas and taxonomies.
  *
- * @package Polylang
+ * @package Linguator
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Don't access directly
 }
 
-if ( $polylang->model->has_languages() ) {
-	if ( $polylang instanceof PLL_Admin_Base ) {
-		$polylang->sync = new PLL_Admin_Sync( $polylang );
+if ( $linguator->model->has_languages() ) {
+	if ( $linguator instanceof LMAT_Admin_Base ) {
+		$linguator->sync = new LMAT_Admin_Sync( $linguator );
 	} else {
-		$polylang->sync = new PLL_Sync( $polylang );
+		$linguator->sync = new LMAT_Sync( $linguator );
 	}
 
 	add_filter(
-		'pll_settings_modules',
+		'lmat_settings_modules',
 		function ( $modules ) {
-			$modules[] = 'PLL_Settings_Sync';
+			$modules[] = 'LMAT_Settings_Sync';
 			return $modules;
 		}
 	);

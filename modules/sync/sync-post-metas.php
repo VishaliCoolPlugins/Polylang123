@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,7 +8,7 @@
  *
  * @since 2.3
  */
-class PLL_Sync_Post_Metas extends PLL_Sync_Metas {
+class LMAT_Sync_Post_Metas extends LMAT_Sync_Metas {
 	/**
 	 * Stores the plugin options.
 	 *
@@ -21,16 +21,16 @@ class PLL_Sync_Post_Metas extends PLL_Sync_Metas {
 	 *
 	 * @since 2.3
 	 *
-	 * @param object $polylang The Polylang object.
+	 * @param object $linguator The Linguator object.
 	 */
-	public function __construct( &$polylang ) {
+	public function __construct( &$linguator ) {
 		$this->meta_type = 'post';
 
-		parent::__construct( $polylang );
+		parent::__construct( $linguator );
 
-		$this->options = &$polylang->options;
+		$this->options = &$linguator->options;
 
-		add_filter( 'pll_translate_post_meta', array( $this, 'translate_thumbnail_id' ), 10, 3 );
+		add_filter( 'lmat_translate_post_meta', array( $this, 'translate_thumbnail_id' ), 10, 3 );
 	}
 
 	/**
@@ -75,7 +75,7 @@ class PLL_Sync_Post_Metas extends PLL_Sync_Metas {
 		}
 
 		/** This filter is documented in modules/sync/sync-metas.php */
-		return array_unique( apply_filters( 'pll_copy_post_metas', $keys, $sync, $from, $to, $lang ) );
+		return array_unique( apply_filters( 'lmat_copy_post_metas', $keys, $sync, $from, $to, $lang ) );
 	}
 
 	/**

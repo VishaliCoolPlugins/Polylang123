@@ -2,16 +2,16 @@
 /**
  * Loads the WPML compatibility mode.
  *
- * @package Polylang
+ * @package Linguator
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Don't access directly.
 }
 
-if ( $polylang->model->has_languages() ) {
-	if ( ! defined( 'PLL_WPML_COMPAT' ) || PLL_WPML_COMPAT ) {
-		PLL_WPML_Compat::instance(); // WPML API.
-		PLL_WPML_Config::instance(); // wpml-config.xml.
+if ( $linguator->model->has_languages() ) {
+	if ( ! defined( 'LMAT_WPML_COMPAT' ) || LMAT_WPML_COMPAT ) {
+		LMAT_WPML_Compat::instance(); // WPML API.
+		LMAT_WPML_Config::instance(); // wpml-config.xml.
 	}
 }

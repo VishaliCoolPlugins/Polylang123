@@ -1,18 +1,18 @@
 <?php
 /**
- * Displays the settings tab in Polylang settings
+ * Displays the settings tab in Linguator settings
  *
- * @package Polylang
+ * @package Linguator
  *
- * @var PLL_Settings_Module[] $modules List of Polylang modules.
+ * @var LMAT_Settings_Module[] $modules List of Linguator modules.
  */
 
 defined( 'ABSPATH' ) || exit;
 ?>
 <div class="form-wrap">
 	<?php
-	wp_nonce_field( 'pll_options', '_pll_nonce' );
-	$list_table = new PLL_Table_Settings();
+	wp_nonce_field( 'lmat_options', '_lmat_nonce' );
+	$list_table = new LMAT_Table_Settings();
 	$list_table->prepare_items( $modules );
 	$list_table->display();
 	?>

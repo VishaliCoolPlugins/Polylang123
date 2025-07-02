@@ -2,34 +2,34 @@
 /**
  * Displays the wizard licenses step
  *
- * @package Polylang
+ * @package Linguator
  *
  * @since 2.7
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$licenses = apply_filters( 'pll_settings_licenses', array() );
+$licenses = apply_filters( 'lmat_settings_licenses', array() );
 $is_error = isset( $_GET['activate_error'] ) && 'i18n_license_key_error' === sanitize_key( $_GET['activate_error'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 ?>
 <p>
-	<?php esc_html_e( 'You are using plugins which require a license key.', 'polylang' ); ?>
+	<?php esc_html_e( 'You are using plugins which require a license key.', 'linguator' ); ?>
 	<?php
 	if ( 1 === count( $licenses ) ) {
-		echo esc_html( __( 'Please enter your license key:', 'polylang' ) );
+		echo esc_html( __( 'Please enter your license key:', 'linguator' ) );
 	} else {
-		echo esc_html( __( 'Please enter your license keys:', 'polylang' ) );
+		echo esc_html( __( 'Please enter your license keys:', 'linguator' ) );
 	}
 	?>
 </p>
-<h2><?php esc_html_e( 'Licenses', 'polylang' ); ?></h2>
+<h2><?php esc_html_e( 'Licenses', 'linguator' ); ?></h2>
 <div id="messages">
 	<?php if ( $is_error ) : ?>
-		<p class="error"><?php esc_html_e( 'There is an error with a license key.', 'polylang' ); ?></p>
+		<p class="error"><?php esc_html_e( 'There is an error with a license key.', 'linguator' ); ?></p>
 	<?php endif; ?>
 </div>
 <div class="form-field">
-	<table id="pll-licenses-table" class="form-table pll-table-top">
+	<table id="lmat-licenses-table" class="form-table lmat-table-top">
 		<tbody>
 		<?php
 		foreach ( $licenses as $license ) {

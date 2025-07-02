@@ -1,20 +1,20 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
-namespace WP_Syntex\Polylang\REST\V1;
+namespace WP_Syntex\Linguator\REST\V1;
 
-use PLL_Language;
-use PLL_Model;
-use PLL_Translatable_Objects;
+use LMAT_Language;
+use LMAT_Model;
+use LMAT_Translatable_Objects;
 use stdClass;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
-use WP_Syntex\Polylang\Model\Languages as Languages_Model;
-use WP_Syntex\Polylang\REST\Abstract_Controller;
+use WP_Syntex\Linguator\Model\Languages as Languages_Model;
+use WP_Syntex\Linguator\REST\Abstract_Controller;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -30,7 +30,7 @@ class Languages extends Abstract_Controller {
 	private $languages;
 
 	/**
-	 * @var PLL_Translatable_Objects
+	 * @var LMAT_Translatable_Objects
 	 */
 	private $translatable_objects;
 
@@ -39,10 +39,10 @@ class Languages extends Abstract_Controller {
 	 *
 	 * @since 3.7
 	 *
-	 * @param PLL_Model $model Polylang's model.
+	 * @param LMAT_Model $model Linguator's model.
 	 */
-	public function __construct( PLL_Model $model ) {
-		$this->namespace            = 'pll/v1';
+	public function __construct( LMAT_Model $model ) {
+		$this->namespace            = 'lmat/v1';
 		$this->rest_base            = 'languages';
 		$this->languages            = $model->languages;
 		$this->translatable_objects = $model->translatable_objects;
@@ -91,7 +91,7 @@ class Languages extends Abstract_Controller {
 			array(
 				'args'   => array(
 					'term_id' => array(
-						'description' => __( 'Unique identifier for the language.', 'polylang' ),
+						'description' => __( 'Unique identifier for the language.', 'linguator' ),
 						'type'        => 'integer',
 					),
 				),
@@ -117,7 +117,7 @@ class Languages extends Abstract_Controller {
 			array(
 				'args'   => array(
 					'slug'    => array(
-						'description' => __( 'Language code - preferably 2-letters ISO 639-1 (for example: en).', 'polylang' ),
+						'description' => __( 'Language code - preferably 2-letters ISO 639-1 (for example: en).', 'linguator' ),
 						'type'        => 'string',
 					),
 				),
@@ -165,7 +165,7 @@ class Languages extends Abstract_Controller {
 		if ( isset( $request['term_id'] ) ) {
 			return new WP_Error(
 				'rest_exists',
-				__( 'Cannot create existing language.', 'polylang' ),
+				__( 'Cannot create existing language.', 'linguator' ),
 				array( 'status' => 400 )
 			);
 		}
@@ -195,7 +195,7 @@ class Languages extends Abstract_Controller {
 			return $this->add_status_to_error( $result );
 		}
 
-		/** @var PLL_Language */
+		/** @var LMAT_Language */
 		$language = $this->languages->get( $args['locale'] );
 		return $this->prepare_item_for_response( $language, $request );
 	}
@@ -258,7 +258,7 @@ class Languages extends Abstract_Controller {
 			return $this->add_status_to_error( $update );
 		}
 
-		/** @var PLL_Language */
+		/** @var LMAT_Language */
 		$language = $this->languages->get( $args['lang_id'] );
 		return $this->prepare_item_for_response( $language, $request );
 	}
@@ -310,7 +310,7 @@ class Languages extends Abstract_Controller {
 		if ( 'edit' === $request['context'] && ! $this->check_update_permission() ) {
 			return new WP_Error(
 				'rest_forbidden_context',
-				__( 'Sorry, you are not allowed to edit languages.', 'polylang' ),
+				__( 'Sorry, you are not allowed to edit languages.', 'linguator' ),
 				array( 'status' => rest_authorization_required_code() )
 			);
 		}
@@ -332,7 +332,7 @@ class Languages extends Abstract_Controller {
 		if ( ! $this->check_update_permission() ) {
 			return new WP_Error(
 				'rest_cannot_create',
-				__( 'Sorry, you are not allowed to create a language.', 'polylang' ),
+				__( 'Sorry, you are not allowed to create a language.', 'linguator' ),
 				array( 'status' => rest_authorization_required_code() )
 			);
 		}
@@ -369,7 +369,7 @@ class Languages extends Abstract_Controller {
 		if ( ! $this->check_update_permission() ) {
 			return new WP_Error(
 				'rest_cannot_update',
-				__( 'Sorry, you are not allowed to edit this language.', 'polylang' ),
+				__( 'Sorry, you are not allowed to edit this language.', 'linguator' ),
 				array( 'status' => rest_authorization_required_code() )
 			);
 		}
@@ -391,7 +391,7 @@ class Languages extends Abstract_Controller {
 		if ( ! $this->check_update_permission() ) {
 			return new WP_Error(
 				'rest_cannot_delete',
-				__( 'Sorry, you are not allowed to delete this language.', 'polylang' ),
+				__( 'Sorry, you are not allowed to delete this language.', 'linguator' ),
 				array( 'status' => rest_authorization_required_code() )
 			);
 		}
@@ -403,7 +403,7 @@ class Languages extends Abstract_Controller {
 	 *
 	 * @since 3.7
 	 *
-	 * @param PLL_Language    $item    Language object.
+	 * @param LMAT_Language    $item    Language object.
 	 * @param WP_REST_Request $request Request object.
 	 * @return WP_REST_Response Response object.
 	 *
@@ -446,39 +446,39 @@ class Languages extends Abstract_Controller {
 			'type'       => 'object',
 			'properties' => array(
 				'term_id'         => array(
-					'description' => __( 'Unique identifier for the language.', 'polylang' ),
+					'description' => __( 'Unique identifier for the language.', 'linguator' ),
 					'type'        => 'integer',
 					'minimum'     => 1,
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
 				'name'            => array(
-					'description' => __( 'The name is how it is displayed on your site (for example: English).', 'polylang' ),
+					'description' => __( 'The name is how it is displayed on your site (for example: English).', 'linguator' ),
 					'type'        => 'string',
 					'minLength'   => 1,
 					'context'     => array( 'view', 'edit' ),
 				),
 				'slug'            => array(
-					'description' => __( 'Language code - preferably 2-letters ISO 639-1 (for example: en).', 'polylang' ),
+					'description' => __( 'Language code - preferably 2-letters ISO 639-1 (for example: en).', 'linguator' ),
 					'type'        => 'string',
 					'pattern'     => Languages_Model::SLUG_PATTERN,
 					'context'     => array( 'view', 'edit' ),
 				),
 				'locale'          => array(
-					'description' => __( 'WordPress Locale for the language (for example: en_US).', 'polylang' ),
+					'description' => __( 'WordPress Locale for the language (for example: en_US).', 'linguator' ),
 					'type'        => 'string',
 					'pattern'     => Languages_Model::LOCALE_PATTERN,
 					'context'     => array( 'view', 'edit' ),
 					'required'    => true,
 				),
 				'w3c'             => array(
-					'description' => __( 'W3C Locale for the language (for example: en-US).', 'polylang' ),
+					'description' => __( 'W3C Locale for the language (for example: en-US).', 'linguator' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
 				'facebook'        => array(
-					'description' => __( 'Facebook Locale for the language (for example: en_US).', 'polylang' ),
+					'description' => __( 'Facebook Locale for the language (for example: en_US).', 'linguator' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
@@ -486,97 +486,97 @@ class Languages extends Abstract_Controller {
 				'is_rtl'          => array(
 					'description' => sprintf(
 						/* translators: %s is a value. */
-						__( 'Text direction. %s for right-to-left.', 'polylang' ),
+						__( 'Text direction. %s for right-to-left.', 'linguator' ),
 						'`true`'
 					),
 					'type'        => 'boolean',
 					'context'     => array( 'view', 'edit' ),
 				),
 				'term_group'      => array(
-					'description' => __( 'Position of the language in the language switcher.', 'polylang' ),
+					'description' => __( 'Position of the language in the language switcher.', 'linguator' ),
 					'type'        => 'integer',
 					'context'     => array( 'view', 'edit' ),
 				),
 				'flag_code'       => array(
-					'description' => __( 'Flag code corresponding to ISO 3166-1 (for example: us for the United States flag).', 'polylang' ),
+					'description' => __( 'Flag code corresponding to ISO 3166-1 (for example: us for the United States flag).', 'linguator' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
 				),
 				'flag_url'        => array(
-					'description' => __( 'Flag URL.', 'polylang' ),
+					'description' => __( 'Flag URL.', 'linguator' ),
 					'type'        => 'string',
 					'format'      => 'uri',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
 				'flag'            => array(
-					'description' => __( 'HTML tag for the flag.', 'polylang' ),
+					'description' => __( 'HTML tag for the flag.', 'linguator' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
 				'custom_flag_url' => array(
-					'description' => __( 'Custom flag URL.', 'polylang' ),
+					'description' => __( 'Custom flag URL.', 'linguator' ),
 					'type'        => 'string',
 					'format'      => 'uri',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
 				'custom_flag'     => array(
-					'description' => __( 'HTML tag for the custom flag.', 'polylang' ),
+					'description' => __( 'HTML tag for the custom flag.', 'linguator' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
 				'is_default'      => array(
-					'description' => __( 'Tells whether the language is the default one.', 'polylang' ),
+					'description' => __( 'Tells whether the language is the default one.', 'linguator' ),
 					'type'        => 'boolean',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
 				'active'          => array(
-					'description' => __( 'Tells whether the language is active.', 'polylang' ),
+					'description' => __( 'Tells whether the language is active.', 'linguator' ),
 					'type'        => 'boolean',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
 				'home_url'        => array(
-					'description' => __( 'Home URL in this language.', 'polylang' ),
+					'description' => __( 'Home URL in this language.', 'linguator' ),
 					'type'        => 'string',
 					'format'      => 'uri',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
 				'search_url'      => array(
-					'description' => __( 'Search URL in this language.', 'polylang' ),
+					'description' => __( 'Search URL in this language.', 'linguator' ),
 					'type'        => 'string',
 					'format'      => 'uri',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
 				'host'            => array(
-					'description' => __( 'Host for this language.', 'polylang' ),
+					'description' => __( 'Host for this language.', 'linguator' ),
 					'type'        => 'string',
 					'format'      => 'uri',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
 				'page_on_front'   => array(
-					'description' => __( 'Page on front ID in this language.', 'polylang' ),
+					'description' => __( 'Page on front ID in this language.', 'linguator' ),
 					'type'        => 'integer',
 					'minimum'     => 0,
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
 				'page_for_posts'  => array(
-					'description' => __( 'Identifier of the page for posts in this language.', 'polylang' ),
+					'description' => __( 'Identifier of the page for posts in this language.', 'linguator' ),
 					'type'        => 'integer',
 					'minimum'     => 0,
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
 				'fallbacks'       => array(
-					'description' => __( 'List of language locale fallbacks.', 'polylang' ),
+					'description' => __( 'List of language locale fallbacks.', 'linguator' ),
 					'type'        => 'array',
 					'uniqueItems' => true,
 					'items'       => array(
@@ -587,14 +587,14 @@ class Languages extends Abstract_Controller {
 					'readonly'    => true,
 				),
 				'term_props'      => array(
-					'description' => __( 'Language properties.', 'polylang' ),
+					'description' => __( 'Language properties.', 'linguator' ),
 					'type'        => 'object',
 					'properties'  => array(),
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
 				'no_default_cat'  => array(
-					'description' => __( 'Tells whether the default category must be created when creating a new language.', 'polylang' ),
+					'description' => __( 'Tells whether the default category must be created when creating a new language.', 'linguator' ),
 					'type'        => 'boolean',
 					'context'     => array( 'edit' ),
 					'default'     => false,
@@ -609,18 +609,18 @@ class Languages extends Abstract_Controller {
 				'properties'  => array(
 					'term_id'          => array(
 						/* translators: %s is the name of the term property (`term_id` or `term_taxonomy_id`). */
-						'description' => sprintf( __( 'The %s of the language term for this translatable entity.', 'polylang' ), '`term_id`' ),
+						'description' => sprintf( __( 'The %s of the language term for this translatable entity.', 'linguator' ), '`term_id`' ),
 						'type'        => 'integer',
 						'minimum'     => 1,
 					),
 					'term_taxonomy_id' => array(
 						/* translators: %s is the name of the term property (`term_id` or `term_taxonomy_id`). */
-						'description' => sprintf( __( 'The %s of the language term for this translatable entity.', 'polylang' ), '`term_taxonomy_id`' ),
+						'description' => sprintf( __( 'The %s of the language term for this translatable entity.', 'linguator' ), '`term_taxonomy_id`' ),
 						'type'        => 'integer',
 						'minimum'     => 1,
 					),
 					'count'            => array(
-						'description' => __( 'Number of items of this type of content in this language.', 'polylang' ),
+						'description' => __( 'Number of items of this type of content in this language.', 'linguator' ),
 						'type'        => 'integer',
 						'minimum'     => 0,
 					),
@@ -684,7 +684,7 @@ class Languages extends Abstract_Controller {
 			// Should not happen.
 			return new WP_Error(
 				'rest_invalid_locale',
-				__( 'The locale is invalid.', 'polylang' ),
+				__( 'The locale is invalid.', 'linguator' ),
 				array( 'status' => 400 )
 			);
 		}
@@ -702,12 +702,12 @@ class Languages extends Abstract_Controller {
 		}
 
 		// Create a language from our default list with only the locale.
-		$languages = include POLYLANG_DIR . '/settings/languages.php';
+		$languages = include LINGUATOR_DIR . '/settings/languages.php';
 
 		if ( empty( $languages[ $request['locale'] ] ) ) {
 			return new WP_Error(
-				'pll_rest_invalid_locale',
-				__( 'The locale is invalid.', 'polylang' ),
+				'lmat_rest_invalid_locale',
+				__( 'The locale is invalid.', 'linguator' ),
 				array( 'status' => 400 )
 			);
 		}
@@ -742,7 +742,7 @@ class Languages extends Abstract_Controller {
 	 * @since 3.7
 	 *
 	 * @param WP_REST_Request $request Full details about the request.
-	 * @return PLL_Language|WP_Error Language object if the ID or slug is valid, WP_Error otherwise.
+	 * @return LMAT_Language|WP_Error Language object if the ID or slug is valid, WP_Error otherwise.
 	 *
 	 * @phpstan-template T of array
 	 * @phpstan-param WP_REST_Request<T> $request
@@ -751,7 +751,7 @@ class Languages extends Abstract_Controller {
 		if ( isset( $request['term_id'] ) ) {
 			$error = new WP_Error(
 				'rest_invalid_id',
-				__( 'Invalid language ID', 'polylang' ),
+				__( 'Invalid language ID', 'linguator' ),
 				array( 'status' => 404 )
 			);
 
@@ -761,7 +761,7 @@ class Languages extends Abstract_Controller {
 
 			$language = $this->languages->get( (int) $request['term_id'] );
 
-			if ( ! $language instanceof PLL_Language ) {
+			if ( ! $language instanceof LMAT_Language ) {
 				return $error;
 			}
 
@@ -771,10 +771,10 @@ class Languages extends Abstract_Controller {
 		if ( isset( $request['slug'] ) ) {
 			$language = $this->languages->get( (string) $request['slug'] );
 
-			if ( ! $language instanceof PLL_Language ) {
+			if ( ! $language instanceof LMAT_Language ) {
 				return new WP_Error(
 					'rest_invalid_slug',
-					__( 'Invalid language slug', 'polylang' ),
+					__( 'Invalid language slug', 'linguator' ),
 					array( 'status' => 404 )
 				);
 			}
@@ -785,7 +785,7 @@ class Languages extends Abstract_Controller {
 		// Should not happen.
 		return new WP_Error(
 			'rest_invalid_identifier',
-			__( 'Invalid language identifier', 'polylang' ),
+			__( 'Invalid language identifier', 'linguator' ),
 			array( 'status' => 404 )
 		);
 	}

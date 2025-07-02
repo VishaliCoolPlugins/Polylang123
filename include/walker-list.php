@@ -1,15 +1,15 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
  * Displays a language list
  *
  * @since 1.2
- * @since 3.4 Extends `PLL_Walker` now.
+ * @since 3.4 Extends `LMAT_Walker` now.
  */
-class PLL_Walker_List extends PLL_Walker {
+class LMAT_Walker_List extends LMAT_Walker {
 	/**
 	 * Database fields to use.
 	 *

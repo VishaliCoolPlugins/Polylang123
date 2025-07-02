@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,7 +8,7 @@
  *
  * @since 1.8
  */
-class PLL_Settings_Sync extends PLL_Settings_Module {
+class LMAT_Settings_Sync extends LMAT_Settings_Module {
 	/**
 	 * Stores the display order priority.
 	 *
@@ -21,15 +21,15 @@ class PLL_Settings_Sync extends PLL_Settings_Module {
 	 *
 	 * @since 1.8
 	 *
-	 * @param object $polylang The polylang object.
+	 * @param object $linguator The linguator object.
 	 */
-	public function __construct( &$polylang ) {
+	public function __construct( &$linguator ) {
 		parent::__construct(
-			$polylang,
+			$linguator,
 			array(
 				'module'      => 'sync',
-				'title'       => __( 'Synchronization', 'polylang' ),
-				'description' => __( 'The synchronization options allow to maintain exact same values (or translations in the case of taxonomies and page parent) of meta content between the translations of a post or page.', 'polylang' ),
+				'title'       => __( 'Synchronization', 'linguator' ),
+				'description' => __( 'The synchronization options allow to maintain exact same values (or translations in the case of taxonomies and page parent) of meta content between the translations of a post or page.', 'linguator' ),
 			)
 		);
 	}
@@ -50,7 +50,7 @@ class PLL_Settings_Sync extends PLL_Settings_Module {
 	 */
 	protected function form() {
 		?>
-		<ul class="pll-inline-block-list">
+		<ul class="lmat-inline-block-list">
 			<?php
 			foreach ( self::list_metas_to_sync() as $key => $str ) {
 				printf(
@@ -100,17 +100,17 @@ class PLL_Settings_Sync extends PLL_Settings_Module {
 	 */
 	public static function list_metas_to_sync() {
 		return array(
-			'taxonomies'        => __( 'Taxonomies', 'polylang' ),
-			'post_meta'         => __( 'Custom fields', 'polylang' ),
-			'comment_status'    => __( 'Comment status', 'polylang' ),
-			'ping_status'       => __( 'Ping status', 'polylang' ),
-			'sticky_posts'      => __( 'Sticky posts', 'polylang' ),
-			'post_date'         => __( 'Published date', 'polylang' ),
-			'post_format'       => __( 'Post format', 'polylang' ),
-			'post_parent'       => __( 'Page parent', 'polylang' ),
-			'_wp_page_template' => __( 'Page template', 'polylang' ),
-			'menu_order'        => __( 'Page order', 'polylang' ),
-			'_thumbnail_id'     => __( 'Featured image', 'polylang' ),
+			'taxonomies'        => __( 'Taxonomies', 'linguator' ),
+			'post_meta'         => __( 'Custom fields', 'linguator' ),
+			'comment_status'    => __( 'Comment status', 'linguator' ),
+			'ping_status'       => __( 'Ping status', 'linguator' ),
+			'sticky_posts'      => __( 'Sticky posts', 'linguator' ),
+			'post_date'         => __( 'Published date', 'linguator' ),
+			'post_format'       => __( 'Post format', 'linguator' ),
+			'post_parent'       => __( 'Page parent', 'linguator' ),
+			'_wp_page_template' => __( 'Page template', 'linguator' ),
+			'menu_order'        => __( 'Page order', 'linguator' ),
+			'_thumbnail_id'     => __( 'Featured image', 'linguator' ),
 		);
 	}
 }

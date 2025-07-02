@@ -1,11 +1,11 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
-namespace WP_Syntex\Polylang\Options\Business;
+namespace WP_Syntex\Linguator\Options\Business;
 
-use WP_Syntex\Polylang\Options\Abstract_Option;
+use WP_Syntex\Linguator\Options\Abstract_Option;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -67,6 +67,6 @@ class First_Activation extends Abstract_Option {
 	 * @return string
 	 */
 	protected function get_description(): string {
-		return __( 'Time of first activation of Polylang.', 'polylang' );
+		return __( 'Time of first activation of Linguator.', 'linguator' );
 	}
 }

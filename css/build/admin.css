@@ -7,7 +7,7 @@
 	margin: 0.35em 0 0.5em;
 }
 
-.pll-legend {
+.lmat-legend {
 	display: block;
 	padding: 2px 0;
 	color: #1d2327;
@@ -31,27 +31,27 @@
 }
 
 td.column-default_lang .icon-default-lang:before,
-.pll-wizard-content .icon-default-lang:before {
+.lmat-wizard-content .icon-default-lang:before {
 	font-family: 'dashicons';
 	content: "\f155";
 }
 
-.pll-icon:before{
+.lmat-icon:before{
 	display: inline-block;
 	text-align: left;
 	width: 15px;
 }
-.pll-circle:before{
+.lmat-circle:before{
 	content: "\25cf";
 }
 
-/* about Polylang metabox */
-#pll-about-box p,
-#pll-recommended p {
+/* about Linguator metabox */
+#lmat-about-box p,
+#lmat-recommended p {
 	text-align: justify;
 }
 
-#pll-about-box input {
+#lmat-about-box input {
 	margin: 0;
 	padding: 0;
 	float: right;
@@ -92,84 +92,84 @@ td.column-default_lang .icon-default-lang:before,
 }
 
 /* settings */
-.pll-settings {
+.lmat-settings {
 	margin-top: 20px;
 }
 
-.pll-settings .plugin-title {
+.lmat-settings .plugin-title {
 	width: 25%;
 }
 
-#wpbody-content .pll-settings .pll-configure tr {
+#wpbody-content .lmat-settings .lmat-configure tr {
 	display: table-row;
 }
 
-#wpbody-content .pll-settings .pll-configure td {
+#wpbody-content .lmat-settings .lmat-configure td {
 	display: table-cell;
 }
 
-#wpbody-content .pll-settings .pll-configure > td {
+#wpbody-content .lmat-settings .lmat-configure > td {
 	padding: 20px 20px 20px 40px;
 }
 
-.pll-configure legend {
+.lmat-configure legend {
 	font-size: 14px;
 	font-weight: 600;
 	margin-bottom: 0.5em;
 }
 
-.pll-configure td .description {
+.lmat-configure td .description {
 	margin-top: 2px;
 	margin-bottom: 0.5em;
 }
 
-.pll-configure p.submit {
+.lmat-configure p.submit {
 	margin-top: 20px;
 }
 
-.pll-configure .button {
+.lmat-configure .button {
 	margin-right: 20px;
 }
 
-.pll-configure fieldset {
+.lmat-configure fieldset {
 	margin-bottom: 1.5em;
 }
 
-.pll-inline-block-list {
+.lmat-inline-block-list {
 	margin: 0;
 }
 
-.pll-inline-block-list li {
+.lmat-inline-block-list li {
 	display: inline-block;
 	margin: 0;
 	width: 250px;
 }
 
 /* settings URL modifications */
-#pll-domains-table td {
+#lmat-domains-table td {
 	padding: 2px 2px 2px 1.5em;
 	-webkit-box-shadow: none;
 	box-shadow: none;
 	border: none;
 }
 
-.pll-settings-url-col {
+.lmat-settings-url-col {
 	display: inline-block;
 	width: 49%;
 	vertical-align: top;
 }
 
 /* settings Activation keys */
-.pll-table-top td {
+.lmat-table-top td {
 	vertical-align: top;
 }
 
-#pll-licenses-table label {
+#lmat-licenses-table label {
 	font-size: 1em;
 	font-weight: 600;
 }
 
-.pll-configure .pll-deactivate-license {
+.lmat-configure .lmat-deactivate-license {
 	margin: 0 0 0 20px;
 }
 
@@ -181,18 +181,18 @@ td.column-default_lang .icon-default-lang:before,
 }
 
 /* Text direction in post.php and edit-tags.php */
-.pll-dir-rtl textarea,
-.pll-dir-rtl input[type="text"] {
+.lmat-dir-rtl textarea,
+.lmat-dir-rtl input[type="text"] {
 	direction: rtl;
 }
 
-.pll-dir-ltr textarea,
-.pll-dir-ltr input[type="text"] {
+.lmat-dir-ltr textarea,
+.lmat-dir-ltr input[type="text"] {
 	direction: ltr;
 }
 
-.pll-dir-ltr .tr_lang,
-.pll-dir-rtl .tr_lang {
+.lmat-dir-ltr .tr_lang,
+.lmat-dir-rtl .tr_lang {
 	direction: inherit;
 }
 
@@ -220,8 +220,8 @@ td.column-default_lang .icon-default-lang:before,
 	text-decoration: none;
 }
 
-#post-translations .pll-language-column,
-#post-translations .pll-column-icon {
+#post-translations .lmat-language-column,
+#post-translations .lmat-column-icon {
 	width: 20px;
 }
 
@@ -241,38 +241,38 @@ td.column-default_lang .icon-default-lang:before,
 	width: auto;
 }
 
-#select-post-language .pll-select-flag {
+#select-post-language .lmat-select-flag {
 	padding: 4px;
 	margin-right: 10px;
 }
 
-.rtl #select-post-language .pll-select-flag {
+.rtl #select-post-language .lmat-select-flag {
     padding: 4px;
     margin-right: 0px;
     margin-left: 10px;
 }
 
 /* specific cases for media */
-#select-media-language .pll-select-flag {
+#select-media-language .lmat-select-flag {
 	padding: 4px;
 	margin-right: 10px;
 }
 
-.pll-media-edit-column {
+.lmat-media-edit-column {
 	float: right;
 }
 
 /* language and translations in edit-tags.php */
-.pll-translation-flag { /* also for media */
+.lmat-translation-flag { /* also for media */
 	margin-right: 14px;
 }
 
-#select-add-term-language .pll-select-flag {
+#select-add-term-language .lmat-select-flag {
 	padding: 11px;
 	margin-right: 13px;
 }
 
-#select-edit-term-language .pll-select-flag {
+#select-edit-term-language .lmat-select-flag {
 	padding: 11px;
 	margin-right: 4px;
 }
@@ -290,31 +290,31 @@ td.column-default_lang .icon-default-lang:before,
 	width: 95%;
 }
 
-#term-translations .pll-language-column {
+#term-translations .lmat-language-column {
 	line-height: 28px;
 	width: 20%;
 }
 
-#term-translations .pll-edit-column,
-#add-term-translations .pll-language-column {
+#term-translations .lmat-edit-column,
+#add-term-translations .lmat-language-column {
 	width: 20px;
 }
 
-#edit-term-translations .pll-language-column {
+#edit-term-translations .lmat-language-column {
 	padding: 15px 10px;
 	font-weight: normal;
 }
 
 /* icon fonts */
-.pll_icon_add:before {
+.lmat_icon_add:before {
 	content: "\f132";
 }
 
-.pll_icon_edit:before {
+.lmat_icon_edit:before {
 	content: "\f464";
 }
 
-[class^="pll_icon_"] {
+[class^="lmat_icon_"] {
 	font: 20px/1 'dashicons';
 	vertical-align: middle;
 }
@@ -334,54 +334,54 @@ td.column-default_lang .icon-default-lang:before,
 	top: 1px;
 }
 
-#wp-admin-bar-languages.pll-filtered-languages {
+#wp-admin-bar-languages.lmat-filtered-languages {
 	background: #a03f3f;
 }
 
-#wpadminbar #wp-admin-bar-languages.pll-filtered-languages span.ab-label{ /* Enforce white color for WordPress admin light theme. */
+#wpadminbar #wp-admin-bar-languages.lmat-filtered-languages span.ab-label{ /* Enforce white color for WordPress admin light theme. */
 		color: #fff;
 }
 
 /* Notices */
-.pll-notice.notice {
+.lmat-notice.notice {
 	padding-right: 38px;
 	position: relative;
 }
 
-.pll-notice a.notice-dismiss {
+.lmat-notice a.notice-dismiss {
 	text-decoration: none;
 }
 
-.pll-notice .button {
+.lmat-notice .button {
 	margin-right: 10px;
 }
 
 @media screen and ( max-width: 782px ) {
 	/* settings */
-	#wpbody-content .pll-settings .pll-configure > td {
+	#wpbody-content .lmat-settings .lmat-configure > td {
 		padding: 20px;
 	}
 
-	#wpbody-content .pll-settings #cb {
+	#wpbody-content .lmat-settings #cb {
 		padding: 20px 9px;
 	}
 
 	/* settings URL modifications */
-	.pll-inline-block {
+	.lmat-inline-block {
 		width: auto;
 	}
 
-	.pll-settings-url-col {
+	.lmat-settings-url-col {
 		display: block;
 		width: 100%;
 	}
 
 	/* settings licenses */
-	#wpbody-content .pll-settings #pll-licenses-table td {
+	#wpbody-content .lmat-settings #lmat-licenses-table td {
 		display: block;
 	}
 
-	.pll-configure .pll-deactivate-license {
+	.lmat-configure .lmat-deactivate-license {
 		margin: 10px 0 5px;
 	}
 
@@ -398,9 +398,9 @@ td.column-default_lang .icon-default-lang:before,
 	}
 
 	/* hide selected language flag and translations language name */
-	#select-add-term-language .pll-select-flag,
-	#select-edit-term-language .pll-select-flag,
-	#edit-term-translations .pll-language-name {
+	#select-add-term-language .lmat-select-flag,
+	#select-edit-term-language .lmat-select-flag,
+	#edit-term-translations .lmat-language-name {
 		display: none;
 	}
 
@@ -408,7 +408,7 @@ td.column-default_lang .icon-default-lang:before,
 		width: 100%;
 	}
 
-	#add-term-translations .pll-language-column {
+	#add-term-translations .lmat-language-column {
 		line-height: 38px;
 	}
 
@@ -416,15 +416,15 @@ td.column-default_lang .icon-default-lang:before,
 		padding: 8px 10px;
 	}
 
-	#edit-term-translations .pll-language-column,
-	#edit-term-translations .pll-edit-column {
+	#edit-term-translations .lmat-language-column,
+	#edit-term-translations .lmat-edit-column {
 		width: 20px;
 	}
 
 	/* translations tables should be kept as table */
-	.term-translations .pll-language-column,
-	.term-translations .pll-edit-column,
-	.term-translations .pll-translation-column {
+	.term-translations .lmat-language-column,
+	.term-translations .lmat-edit-column,
+	.term-translations .lmat-translation-column {
 		display: table-cell;
 	}
 

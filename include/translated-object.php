@@ -1,9 +1,9 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
-use WP_Syntex\Polylang\Options\Options;
+use WP_Syntex\Linguator\Options\Options;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 1.8
  */
-abstract class PLL_Translated_Object extends PLL_Translatable_Object {
+abstract class LMAT_Translated_Object extends LMAT_Translatable_Object {
 
 	/**
 	 * Taxonomy name for the translation groups.
@@ -28,9 +28,9 @@ abstract class PLL_Translated_Object extends PLL_Translatable_Object {
 	 *
 	 * @since 1.8
 	 *
-	 * @param PLL_Model $model Instance of `PLL_Model`.
+	 * @param LMAT_Model $model Instance of `LMAT_Model`.
 	 */
-	public function __construct( PLL_Model $model ) {
+	public function __construct( LMAT_Model $model ) {
 		parent::__construct( $model );
 
 		$this->tax_to_cache[] = $this->tax_translations;
@@ -57,7 +57,7 @@ abstract class PLL_Translated_Object extends PLL_Translatable_Object {
 				'public'                => false,
 				'query_var'             => false,
 				'rewrite'               => false,
-				'_pll'                  => true,
+				'_lmat'                  => true,
 				'update_count_callback' => '_update_generic_term_count', // Count *all* objects to correctly detect unused terms.
 			)
 		);
@@ -82,7 +82,7 @@ abstract class PLL_Translated_Object extends PLL_Translatable_Object {
 	 * @since 3.4
 	 *
 	 * @param int                     $id   Object ID.
-	 * @param PLL_Language|string|int $lang Language to assign to the object.
+	 * @param LMAT_Language|string|int $lang Language to assign to the object.
 	 * @return bool True when successfully assigned. False otherwise (or if the given language is already assigned to
 	 *              the object).
 	 */
@@ -179,7 +179,7 @@ abstract class PLL_Translated_Object extends PLL_Translatable_Object {
 
 		if ( empty( $term ) ) {
 			// Create a new term if necessary.
-			$group = uniqid( 'pll_' );
+			$group = uniqid( 'lmat_' );
 			wp_insert_term( $group, $this->tax_translations, array( 'description' => maybe_serialize( $translations ) ) );
 		} else {
 			// Take care not to overwrite extra data stored in the description field, if any.
@@ -308,7 +308,7 @@ abstract class PLL_Translated_Object extends PLL_Translatable_Object {
 	 * @since 0.5
 	 *
 	 * @param int                 $id   Object ID.
-	 * @param PLL_Language|string $lang Language (slug or object).
+	 * @param LMAT_Language|string $lang Language (slug or object).
 	 * @return int Object ID of the translation, `0` if there is none.
 	 *
 	 * @phpstan-return int<0, max>
@@ -332,7 +332,7 @@ abstract class PLL_Translated_Object extends PLL_Translatable_Object {
 	 * @since 3.4 Returns `0` instead of `false`.
 	 *
 	 * @param int                     $id   Object ID.
-	 * @param PLL_Language|string|int $lang Language (object, slug, or term ID).
+	 * @param LMAT_Language|string|int $lang Language (object, slug, or term ID).
 	 * @return int The translation object ID if exists. `0` if the passed object has no language or if not translated.
 	 *
 	 * @phpstan-return int<0, max>
@@ -385,7 +385,7 @@ abstract class PLL_Translated_Object extends PLL_Translatable_Object {
 		 *                         Defaults to true.
 		 * @param int       $id    The synchronization source object ID.
 		 */
-		$check = apply_filters( "pll_pre_current_user_can_synchronize_{$this->type}", true, $id );
+		$check = apply_filters( "lmat_pre_current_user_can_synchronize_{$this->type}", true, $id );
 
 		if ( null !== $check ) {
 			return (bool) $check;
@@ -503,7 +503,7 @@ abstract class PLL_Translated_Object extends PLL_Translatable_Object {
 	 * Creates translations groups in mass.
 	 *
 	 * @since 1.6.3
-	 * @since 3.4 Moved from PLL_Admin_Model class.
+	 * @since 3.4 Moved from LMAT_Admin_Model class.
 	 *
 	 * @param int[][] $translations Array of translations arrays.
 	 * @return void
@@ -519,7 +519,7 @@ abstract class PLL_Translated_Object extends PLL_Translatable_Object {
 		$count       = array();
 
 		foreach ( $translations as $t ) {
-			$term = uniqid( 'pll_' ); // The term name.
+			$term = uniqid( 'lmat_' ); // The term name.
 			$terms[] = array( $term, $term );
 			$slugs[] = $term;
 			$description[ $term ] = maybe_serialize( $t );

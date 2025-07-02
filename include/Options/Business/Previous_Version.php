@@ -1,9 +1,9 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
-namespace WP_Syntex\Polylang\Options\Business;
+namespace WP_Syntex\Linguator\Options\Business;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -34,6 +34,6 @@ class Previous_Version extends Version {
 	 * @return string
 	 */
 	protected function get_description(): string {
-		return __( "Polylang's previous version.", 'polylang' );
+		return __( "Linguator's previous version.", 'linguator' );
 	}
 }

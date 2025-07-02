@@ -2,10 +2,10 @@
 /**
  * Displays the translations fields for terms
  *
- * @package Polylang
+ * @package Linguator
  *
- * @var PLL_Admin_Filters_Term $this      PLL_Admin_Filters_Term object.
- * @var PLL_Language           $lang      The post language. Default language if no language assigned yet.
+ * @var LMAT_Admin_Filters_Term $this      LMAT_Admin_Filters_Term object.
+ * @var LMAT_Language           $lang      The post language. Default language if no language assigned yet.
  * @var string                 $taxonomy  Taxonomy name.
  * @var string                 $post_type Post type.
  */
@@ -14,14 +14,14 @@ defined( 'ABSPATH' ) || exit;
 
 if ( isset( $term_id ) ) {
 	// Edit term form ?>
-	<th scope="row"><?php esc_html_e( 'Translations', 'polylang' ); ?></th>
+	<th scope="row"><?php esc_html_e( 'Translations', 'linguator' ); ?></th>
 	<td>
 	<?php
 }
 else {
 	// Add term form
 	?>
-	<p><?php esc_html_e( 'Translations', 'polylang' ); ?></p>
+	<p><?php esc_html_e( 'Translations', 'linguator' ); ?></p>
 	<?php
 }
 ?>
@@ -51,11 +51,11 @@ else {
 		}
 		?>
 		<tr>
-			<th class = "pll-language-column">
-				<span class = "pll-translation-flag"><?php echo $language->flag ?: esc_html( $language->slug ); // phpcs:ignore WordPress.Security.EscapeOutput ?></span>
+			<th class = "lmat-language-column">
+				<span class = "lmat-translation-flag"><?php echo $language->flag ?: esc_html( $language->slug ); // phpcs:ignore WordPress.Security.EscapeOutput ?></span>
 				<?php
 				printf(
-					'<span class="pll-language-name%1$s">%2$s</span>',
+					'<span class="lmat-language-name%1$s">%2$s</span>',
 					isset( $term_id ) ? '' : ' screen-reader-text',
 					esc_html( $language->name )
 				);
@@ -65,11 +65,11 @@ else {
 			if ( isset( $term_id ) ) {
 				?>
 				<td class = "hidden"><?php echo $add_link; // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
-				<td class = "pll-edit-column"><?php echo $link; // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
+				<td class = "lmat-edit-column"><?php echo $link; // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
 				<?php
 			}
 			?>
-			<td class = "pll-translation-column">
+			<td class = "lmat-translation-column">
 				<?php
 				printf(
 					'<label class="screen-reader-text" for="tr_lang_%1$s">%2$s</label>
@@ -77,7 +77,7 @@ else {
 					<span lang="%6$s" dir="%7$s"><input type="text" class="tr_lang" id="tr_lang_%1$s" value="%4$s"%5$s /></span>',
 					esc_attr( $language->slug ),
 					/* translators: accessibility text */
-					esc_html__( 'Translation', 'polylang' ),
+					esc_html__( 'Translation', 'linguator' ),
 					$translation_exists ? (int) $translation->term_id : 0,
 					$translation_exists ? esc_attr( $translation->name ) : '',
 					disabled( empty( $disabled ), false, false ),

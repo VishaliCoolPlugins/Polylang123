@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -13,11 +13,11 @@
  * @since 2.1 Stores the strings in a post meta instead of post content to avoid unserialize issues (See #63)
  * @since 3.4 Stores the strings into language taxonomy term meta instead of a post meta.
  */
-class PLL_MO extends MO {
+class LMAT_MO extends MO {
 	/**
 	 * Static cache for the translations.
 	 *
-	 * @var PLL_Cache<array>
+	 * @var LMAT_Cache<array>
 	 */
 	private static $cache;
 
@@ -28,7 +28,7 @@ class PLL_MO extends MO {
 	 */
 	public function __construct() {
 		if ( empty( self::$cache ) ) {
-			self::$cache = new PLL_Cache();
+			self::$cache = new LMAT_Cache();
 		}
 	}
 
@@ -37,7 +37,7 @@ class PLL_MO extends MO {
 	 *
 	 * @since 1.2
 	 *
-	 * @param PLL_Language $lang The language in which we want to export strings.
+	 * @param LMAT_Language $lang The language in which we want to export strings.
 	 * @return void
 	 */
 	public function export_to_db( $lang ) {
@@ -54,18 +54,18 @@ class PLL_MO extends MO {
 			}
 		}
 
-		update_term_meta( $lang->term_id, '_pll_strings_translations', $strings );
+		update_term_meta( $lang->term_id, '_lmat_strings_translations', $strings );
 
 		self::$cache->clean( $lang->slug );
 	}
 
 	/**
-	 * Reads a PLL_MO object from the term meta.
+	 * Reads a LMAT_MO object from the term meta.
 	 *
 	 * @since 1.2
-	 * @since 3.4 Reads a PLL_MO from the term meta.
+	 * @since 3.4 Reads a LMAT_MO from the term meta.
 	 *
-	 * @param PLL_Language $lang The language in which we want to get strings.
+	 * @param LMAT_Language $lang The language in which we want to get strings.
 	 * @return void
 	 */
 	public function import_from_db( $lang ) {
@@ -76,7 +76,7 @@ class PLL_MO extends MO {
 			return;
 		}
 
-		$strings = get_term_meta( $lang->term_id, '_pll_strings_translations', true );
+		$strings = get_term_meta( $lang->term_id, '_lmat_strings_translations', true );
 		if ( empty( $strings ) || ! is_array( $strings ) ) {
 			self::$cache->set( $lang->slug, array() );
 			return;

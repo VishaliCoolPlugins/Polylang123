@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -10,7 +10,7 @@
  *
  * @since 3.0
  */
-abstract class PLL_Abstract_Sitemaps {
+abstract class LMAT_Abstract_Sitemaps {
 	/**
 	 * Setups actions and filters.
 	 *
@@ -19,7 +19,7 @@ abstract class PLL_Abstract_Sitemaps {
 	 * @return void
 	 */
 	public function init() {
-		add_filter( 'pll_home_url_white_list', array( $this, 'home_url_white_list' ) );
+		add_filter( 'lmat_home_url_white_list', array( $this, 'home_url_white_list' ) );
 	}
 
 	/**

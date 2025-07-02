@@ -1,14 +1,14 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
-namespace WP_Syntex\Polylang\Options;
+namespace WP_Syntex\Linguator\Options;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Polylang's options registry.
+ * Linguator's options registry.
  *
  * @since 3.7
  */
@@ -40,7 +40,7 @@ class Registry {
 	);
 
 	/**
-	 * Registers Polylang's options.
+	 * Registers Linguator's options.
 	 *
 	 * @since 3.7
 	 *

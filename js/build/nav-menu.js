@@ -1,10 +1,10 @@
 /**
  * Handles the options in the language switcher nav menu metabox.
  *
- * @package Polylang
+ * @package Linguator
  */
 
-const pllNavMenu = {
+const lmatNavMenu = {
 	/**
 	 * The element wrapping the menu elements.
 	 *
@@ -17,9 +17,9 @@ const pllNavMenu = {
 	 */
 	init: () => {
 		if ( document.readyState !== 'loading' ) {
-			pllNavMenu.ready();
+			lmatNavMenu.ready();
 		} else {
-			document.addEventListener( 'DOMContentLoaded', pllNavMenu.ready );
+			document.addEventListener( 'DOMContentLoaded', lmatNavMenu.ready );
 		}
 	},
 
@@ -27,15 +27,15 @@ const pllNavMenu = {
 	 * Called when the DOM is ready. Attaches the events to the wrapper.
 	 */
 	ready: () => {
-		pllNavMenu.wrapper = document.getElementById( 'menu-to-edit' );
+		lmatNavMenu.wrapper = document.getElementById( 'menu-to-edit' );
 
-		if ( ! pllNavMenu.wrapper ) {
+		if ( ! lmatNavMenu.wrapper ) {
 			return;
 		}
 
-		pllNavMenu.wrapper.addEventListener( 'click', pllNavMenu.printMetabox );
-		pllNavMenu.wrapper.addEventListener( 'change', pllNavMenu.ensureContent );
-		pllNavMenu.wrapper.addEventListener( 'change', pllNavMenu.showHideRows );
+		lmatNavMenu.wrapper.addEventListener( 'click', lmatNavMenu.printMetabox );
+		lmatNavMenu.wrapper.addEventListener( 'change', lmatNavMenu.ensureContent );
+		lmatNavMenu.wrapper.addEventListener( 'change', lmatNavMenu.showHideRows );
 	},
 
 	printMetabox: {
@@ -57,7 +57,7 @@ const pllNavMenu = {
 				return;
 			}
 
-			if ( ! metabox.querySelectorAll( 'input[value="#pll_switcher"][type=text]' ).length ) {
+			if ( ! metabox.querySelectorAll( 'input[value="#lmat_switcher"][type=text]' ).length ) {
 				// Not our metabox, or already replaced.
 				return;
 			}
@@ -69,21 +69,21 @@ const pllNavMenu = {
 				}
 			} );
 
-			const t      = pllNavMenu.printMetabox;
+			const t      = lmatNavMenu.printMetabox;
 			const itemId = Number( metabox.id.replace( 'menu-item-settings-', '' ) );
 
-			metabox.append( t.createHiddenInput( 'title', itemId, pll_data.title ) ); // phpcs:ignore WordPressVIPMinimum.JS.HTMLExecutingFunctions.append
-			metabox.append( t.createHiddenInput( 'url', itemId, '#pll_switcher' ) ); // phpcs:ignore WordPressVIPMinimum.JS.HTMLExecutingFunctions.append
-			metabox.append( t.createHiddenInput( 'pll-detect', itemId, 1 ) ); // phpcs:ignore WordPressVIPMinimum.JS.HTMLExecutingFunctions.append
+			metabox.append( t.createHiddenInput( 'title', itemId, lmat_data.title ) ); // phpcs:ignore WordPressVIPMinimum.JS.HTMLExecutingFunctions.append
+			metabox.append( t.createHiddenInput( 'url', itemId, '#lmat_switcher' ) ); // phpcs:ignore WordPressVIPMinimum.JS.HTMLExecutingFunctions.append
+			metabox.append( t.createHiddenInput( 'lmat-detect', itemId, 1 ) ); // phpcs:ignore WordPressVIPMinimum.JS.HTMLExecutingFunctions.append
 
 			const ids          = Array( 'hide_if_no_translation', 'hide_current', 'force_home', 'show_flags', 'show_names', 'dropdown' ); // Reverse order.
-			const isValDefined = typeof( pll_data.val[ itemId ] ) !== 'undefined';
+			const isValDefined = typeof( lmat_data.val[ itemId ] ) !== 'undefined';
 
 			ids.forEach( ( optionName ) => {
 				// Create the checkbox's wrapper.
 				const inputWrapper = t.createElement( 'p', { class: 'description' } );
 
-				if ( 'hide_current' === optionName && isValDefined && 1 === pll_data.val[ itemId ].dropdown ) {
+				if ( 'hide_current' === optionName && isValDefined && 1 === lmat_data.val[ itemId ].dropdown ) {
 					// Hide the `hide_current` checkbox if `dropdown` is checked.
 					inputWrapper.classList.add( 'hidden' );
 				}
@@ -93,7 +93,7 @@ const pllNavMenu = {
 				// Create the checkbox's label.
 				const inputId = `edit-menu-item-${ optionName }-${ itemId }`;
 				const label   = t.createElement( 'label', { 'for': inputId } );
-				label.innerText = ` ${ pll_data.strings[ optionName ] }`;
+				label.innerText = ` ${ lmat_data.strings[ optionName ] }`;
 
 				inputWrapper.append( label ); // phpcs:ignore WordPressVIPMinimum.JS.HTMLExecutingFunctions.append
 
@@ -105,7 +105,7 @@ const pllNavMenu = {
 					value: 1,
 				} );
 
-				if ( ( isValDefined && 1 === pll_data.val[ itemId ][ optionName ] ) || ( ! isValDefined && 'show_names' === optionName ) ) { // `show_names` as default value.
+				if ( ( isValDefined && 1 === lmat_data.val[ itemId ][ optionName ] ) || ( ! isValDefined && 'show_names' === optionName ) ) { // `show_names` as default value.
 					cb.checked = true;
 				}
 
@@ -122,7 +122,7 @@ const pllNavMenu = {
 		 * @return {HTMLElement} The input element.
 		 */
 		createHiddenInput: ( id, itemId, value ) => {
-			return pllNavMenu.printMetabox.createElement( 'input', {
+			return lmatNavMenu.printMetabox.createElement( 'input', {
 				type:  'hidden',
 				id:    `edit-menu-item-${ id }-${ itemId }`,
 				name:  `menu-item-${ id }[${ itemId }]`,
@@ -160,7 +160,7 @@ const pllNavMenu = {
 				return;
 			}
 
-			const matches = event.target.id.match( pllNavMenu.ensureContent.regExpr );
+			const matches = event.target.id.match( lmatNavMenu.ensureContent.regExpr );
 
 			if ( ! matches ) {
 				// Not the checkbox we want.
@@ -188,7 +188,7 @@ const pllNavMenu = {
 				return;
 			}
 
-			const matches = event.target.id.match( pllNavMenu.showHideRows.regExpr );
+			const matches = event.target.id.match( lmatNavMenu.showHideRows.regExpr );
 
 			if ( ! matches ) {
 				// Not the checkbox we want.
@@ -216,5 +216,5 @@ const pllNavMenu = {
 	},
 };
 
-pllNavMenu.init();
+lmatNavMenu.init();
 

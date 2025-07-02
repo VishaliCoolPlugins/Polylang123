@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,50 +8,50 @@
  *
  * @since 1.8
  */
-abstract class PLL_Admin_Base extends PLL_Base {
+abstract class LMAT_Admin_Base extends LMAT_Base {
 	/**
 	 * Current language (used to filter the content).
 	 *
-	 * @var PLL_Language|null
+	 * @var LMAT_Language|null
 	 */
 	public $curlang;
 
 	/**
 	 * Language selected in the admin language filter.
 	 *
-	 * @var PLL_Language|null
+	 * @var LMAT_Language|null
 	 */
 	public $filter_lang;
 
 	/**
 	 * Preferred language to assign to new contents.
 	 *
-	 * @var PLL_Language|null
+	 * @var LMAT_Language|null
 	 */
 	public $pref_lang;
 
 	/**
-	 * @var PLL_Filters_Links|null
+	 * @var LMAT_Filters_Links|null
 	 */
 	public $filters_links;
 
 	/**
-	 * @var PLL_Admin_Links|null
+	 * @var LMAT_Admin_Links|null
 	 */
 	public $links;
 
 	/**
-	 * @var PLL_Admin_Notices|null
+	 * @var LMAT_Admin_Notices|null
 	 */
 	public $notices;
 
 	/**
-	 * @var PLL_Admin_Static_Pages|null
+	 * @var LMAT_Admin_Static_Pages|null
 	 */
 	public $static_pages;
 
 	/**
-	 * @var PLL_Admin_Default_Term|null
+	 * @var LMAT_Admin_Default_Term|null
 	 */
 	public $default_term;
 
@@ -60,7 +60,7 @@ abstract class PLL_Admin_Base extends PLL_Base {
 	 *
 	 * @since 1.8
 	 *
-	 * @param PLL_Links_Model $links_model Reference to the links model.
+	 * @param LMAT_Links_Model $links_model Reference to the links model.
 	 */
 	public function __construct( &$links_model ) {
 		parent::__construct( $links_model );
@@ -76,7 +76,7 @@ abstract class PLL_Admin_Base extends PLL_Base {
 		add_action( 'customize_controls_enqueue_scripts', array( $this, 'customize_controls_enqueue_scripts' ) );
 
 		// Early instantiated to be able to correctly initialize language properties.
-		$this->static_pages = new PLL_Admin_Static_Pages( $this );
+		$this->static_pages = new LMAT_Admin_Static_Pages( $this );
 		$this->model->set_languages_ready();
 	}
 
@@ -89,17 +89,17 @@ abstract class PLL_Admin_Base extends PLL_Base {
 	public function init() {
 		parent::init();
 
-		$this->notices = new PLL_Admin_Notices( $this );
+		$this->notices = new LMAT_Admin_Notices( $this );
 
-		$this->default_term = new PLL_Admin_Default_Term( $this );
+		$this->default_term = new LMAT_Admin_Default_Term( $this );
 		$this->default_term->add_hooks();
 
 		if ( ! $this->model->has_languages() ) {
 			return;
 		}
 
-		$this->links = new PLL_Admin_Links( $this ); // FIXME needed here ?
-		$this->filters_links = new PLL_Filters_Links( $this ); // FIXME needed here ?
+		$this->links = new LMAT_Admin_Links( $this ); // FIXME needed here ?
+		$this->filters_links = new LMAT_Filters_Links( $this ); // FIXME needed here ?
 
 		// Filter admin language for users
 		// We must not call user info before WordPress defines user roles in wp-settings.php
@@ -121,23 +121,23 @@ abstract class PLL_Admin_Base extends PLL_Base {
 		global $admin_page_hooks;
 
 		// Prepare the list of tabs
-		$tabs = array( 'lang' => __( 'Languages', 'polylang' ) );
+		$tabs = array( 'lang' => __( 'Languages', 'linguator' ) );
 
 		// Only if at least one language has been created
 		if ( $this->model->has_languages() ) {
-			$tabs['strings'] = __( 'Translations', 'polylang' );
+			$tabs['strings'] = __( 'Translations', 'linguator' );
 		}
 
-		$tabs['settings'] = __( 'Settings', 'polylang' );
+		$tabs['settings'] = __( 'Settings', 'linguator' );
 
 		/**
-		 * Filter the list of tabs in Polylang settings
+		 * Filter the list of tabs in Linguator settings
 		 *
 		 * @since 1.5.1
 		 *
 		 * @param array $tabs list of tab names
 		 */
-		$tabs = apply_filters( 'pll_settings_tabs', $tabs );
+		$tabs = apply_filters( 'lmat_settings_tabs', $tabs );
 
 		$parent = '';
 
@@ -145,7 +145,7 @@ abstract class PLL_Admin_Base extends PLL_Base {
 			$page = 'lang' === $tab ? 'mlang' : "mlang_$tab";
 			if ( empty( $parent ) ) {
 				$parent = $page;
-				add_menu_page( $title, __( 'Languages', 'polylang' ), 'manage_options', $page, '__return_null', 'dashicons-translation' );
+				add_menu_page( $title, __( 'Languages', 'linguator' ), 'manage_options', $page, '__return_null', 'dashicons-translation' );
 				$admin_page_hooks[ $page ] = 'languages'; // Hack to avoid the localization of the hook name. See: https://core.trac.wordpress.org/ticket/18857
 			}
 
@@ -155,7 +155,7 @@ abstract class PLL_Admin_Base extends PLL_Base {
 
 	/**
 	 * Dummy method to display the 3 tabs pages: languages, strings translations, settings.
-	 * Overwritten in `PLL_Settings`.
+	 * Overwritten in `LMAT_Settings`.
 	 *
 	 * @since 3.7
 	 *
@@ -173,9 +173,9 @@ abstract class PLL_Admin_Base extends PLL_Base {
 	public function admin_enqueue_scripts() {
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-		wp_enqueue_script( 'pll_admin', plugins_url( "/js/build/admin{$suffix}.js", POLYLANG_ROOT_FILE ), array( 'jquery' ), POLYLANG_VERSION, true );
-		$inline_script = sprintf( 'let pll_admin = %s;', wp_json_encode( array( 'ajax_filter' => $this->get_ajax_filter_data() ) ) );
-		wp_add_inline_script( 'pll_admin', $inline_script, 'before' );
+		wp_enqueue_script( 'lmat_admin', plugins_url( "/js/build/admin{$suffix}.js", LINGUATOR_ROOT_FILE ), array( 'jquery' ), LINGUATOR_VERSION, true );
+		$inline_script = sprintf( 'let lmat_admin = %s;', wp_json_encode( array( 'ajax_filter' => $this->get_ajax_filter_data() ) ) );
+		wp_add_inline_script( 'lmat_admin', $inline_script, 'before' );
 
 		$screen = get_current_screen();
 		if ( empty( $screen ) ) {
@@ -222,15 +222,15 @@ abstract class PLL_Admin_Base extends PLL_Base {
 
 		foreach ( $scripts as $script => $v ) {
 			if ( in_array( $screen->base, $v[0] ) && ( $v[2] || $this->model->has_languages() ) ) {
-				wp_enqueue_script( "pll_{$script}", plugins_url( "/js/build/{$script}{$suffix}.js", POLYLANG_ROOT_FILE ), $v[1], POLYLANG_VERSION, $v[3] );
+				wp_enqueue_script( "lmat_{$script}", plugins_url( "/js/build/{$script}{$suffix}.js", LINGUATOR_ROOT_FILE ), $v[1], LINGUATOR_VERSION, $v[3] );
 				if ( 'classic-editor' === $script || 'block-editor' === $script ) {
-					wp_set_script_translations( "pll_{$script}", 'polylang' );
+					wp_set_script_translations( "lmat_{$script}", 'linguator' );
 				}
 			}
 		}
 
-		wp_register_style( 'polylang_admin', plugins_url( "/css/build/admin{$suffix}.css", POLYLANG_ROOT_FILE ), array( 'wp-jquery-ui-dialog' ), POLYLANG_VERSION );
-		wp_enqueue_style( 'polylang_dialog', plugins_url( "/css/build/dialog{$suffix}.css", POLYLANG_ROOT_FILE ), array( 'polylang_admin' ), POLYLANG_VERSION );
+		wp_register_style( 'linguator_admin', plugins_url( "/css/build/admin{$suffix}.css", LINGUATOR_ROOT_FILE ), array( 'wp-jquery-ui-dialog' ), LINGUATOR_VERSION );
+		wp_enqueue_style( 'linguator_dialog', plugins_url( "/css/build/dialog{$suffix}.css", LINGUATOR_ROOT_FILE ), array( 'linguator_admin' ), LINGUATOR_VERSION );
 
 		$this->add_inline_scripts();
 	}
@@ -245,7 +245,7 @@ abstract class PLL_Admin_Base extends PLL_Base {
 	 * @return bool True if the screen is a block editor, false otherwise.
 	 */
 	protected function is_block_editor( $screen ) {
-		return method_exists( $screen, 'is_block_editor' ) && $screen->is_block_editor() && ! pll_use_block_editor_plugin();
+		return method_exists( $screen, 'is_block_editor' ) && $screen->is_block_editor() && ! lmat_use_block_editor_plugin();
 	}
 
 	/**
@@ -258,7 +258,7 @@ abstract class PLL_Admin_Base extends PLL_Base {
 	public function customize_controls_enqueue_scripts() {
 		if ( $this->model->has_languages() ) {
 			$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-			wp_enqueue_script( 'pll_widgets', plugins_url( '/js/build/widgets' . $suffix . '.js', POLYLANG_ROOT_FILE ), array( 'jquery' ), POLYLANG_VERSION, true );
+			wp_enqueue_script( 'lmat_widgets', plugins_url( '/js/build/widgets' . $suffix . '.js', LINGUATOR_ROOT_FILE ), array( 'jquery' ), LINGUATOR_VERSION, true );
 			$this->add_inline_scripts();
 		}
 	}
@@ -272,18 +272,18 @@ abstract class PLL_Admin_Base extends PLL_Base {
 	 * @return void
 	 */
 	private function add_inline_scripts() {
-		if ( wp_script_is( 'pll_block-editor', 'enqueued' ) ) {
-			$default_lang_script = 'const pllDefaultLanguage = "' . $this->options['default_lang'] . '";';
+		if ( wp_script_is( 'lmat_block-editor', 'enqueued' ) ) {
+			$default_lang_script = 'const lmatDefaultLanguage = "' . $this->options['default_lang'] . '";';
 			wp_add_inline_script(
-				'pll_block-editor',
+				'lmat_block-editor',
 				$default_lang_script,
 				'before'
 			);
 		}
-		if ( wp_script_is( 'pll_widgets', 'enqueued' ) ) {
+		if ( wp_script_is( 'lmat_widgets', 'enqueued' ) ) {
 			wp_localize_script(
-				'pll_widgets',
-				'pll_widgets',
+				'lmat_widgets',
+				'lmat_widgets',
 				array(
 					'flags' => wp_list_pluck( $this->model->get_languages_list(), 'flag', 'slug' ),
 				)
@@ -299,7 +299,7 @@ abstract class PLL_Admin_Base extends PLL_Base {
 	 * - When the AJAX request has no `options.data` thanks to ScreenfeedFr.
 	 *   See: https://wordpress.org/support/topic/ajaxprefilter-may-not-work-as-expected.
 	 * - When `options.data` is a JSON string.
-	 *   See: https://wordpress.org/support/topic/polylang-breaking-third-party-ajax-requests-on-admin-panels.
+	 *   See: https://wordpress.org/support/topic/linguator-breaking-third-party-ajax-requests-on-admin-panels.
 	 * - When `options.data` is an empty string (GET request with the method 'load').
 	 *   See: https://wordpress.org/support/topic/invalid-url-during-wordpress-new-dashboard-widget-operation.
 	 *
@@ -310,13 +310,13 @@ abstract class PLL_Admin_Base extends PLL_Base {
 	public function get_ajax_filter_data(): array {
 		global $post_ID, $tag_ID;
 
-		$params = array( 'pll_ajax_backend' => 1 );
+		$params = array( 'lmat_ajax_backend' => 1 );
 		if ( ! empty( $post_ID ) ) {
-			$params = array_merge( $params, array( 'pll_post_id' => (int) $post_ID ) );
+			$params = array_merge( $params, array( 'lmat_post_id' => (int) $post_ID ) );
 		}
 
 		if ( ! empty( $tag_ID ) ) {
-			$params = array_merge( $params, array( 'pll_term_id' => (int) $tag_ID ) );
+			$params = array_merge( $params, array( 'lmat_term_id' => (int) $tag_ID ) );
 		}
 
 		/**
@@ -326,7 +326,7 @@ abstract class PLL_Admin_Base extends PLL_Base {
 		 *
 		 * @param array $params List of parameters to add to the admin ajax request.
 		 */
-		return (array) apply_filters( 'pll_admin_ajax_params', $params );
+		return (array) apply_filters( 'lmat_admin_ajax_params', $params );
 	}
 
 	/**
@@ -340,7 +340,7 @@ abstract class PLL_Admin_Base extends PLL_Base {
 		$this->curlang = $this->filter_lang;
 
 		// Edit Post
-		if ( isset( $_REQUEST['pll_post_id'] ) && $lang = $this->model->post->get_language( (int) $_REQUEST['pll_post_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+		if ( isset( $_REQUEST['lmat_post_id'] ) && $lang = $this->model->post->get_language( (int) $_REQUEST['lmat_post_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			$this->curlang = $lang;
 		} elseif ( 'post.php' === $GLOBALS['pagenow'] && isset( $_GET['post'] ) && $this->model->is_translated_post_type( get_post_type( (int) $_GET['post'] ) ) && $lang = $this->model->post->get_language( (int) $_GET['post'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			$this->curlang = $lang;
@@ -349,7 +349,7 @@ abstract class PLL_Admin_Base extends PLL_Base {
 		}
 
 		// Edit Term
-		elseif ( isset( $_REQUEST['pll_term_id'] ) && $lang = $this->model->term->get_language( (int) $_REQUEST['pll_term_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+		elseif ( isset( $_REQUEST['lmat_term_id'] ) && $lang = $this->model->term->get_language( (int) $_REQUEST['lmat_term_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			$this->curlang = $lang;
 		} elseif ( in_array( $GLOBALS['pagenow'], array( 'edit-tags.php', 'term.php' ) ) && isset( $_GET['taxonomy'] ) && $this->model->is_translated_taxonomy( sanitize_key( $_GET['taxonomy'] ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			if ( isset( $_GET['tag_ID'] ) && $lang = $this->model->term->get_language( (int) $_GET['tag_ID'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
@@ -367,22 +367,22 @@ abstract class PLL_Admin_Base extends PLL_Base {
 		}
 
 		/**
-		 * Filters the current language used by Polylang in the admin context.
+		 * Filters the current language used by Linguator in the admin context.
 		 *
 		 * @since 3.2
 		 *
-		 * @param PLL_Language|false|null $curlang  Instance of the current language.
-		 * @param PLL_Admin_Base          $polylang Instance of the main Polylang's object.
+		 * @param LMAT_Language|false|null $curlang  Instance of the current language.
+		 * @param LMAT_Admin_Base          $linguator Instance of the main Linguator's object.
 		 */
-		$this->curlang = apply_filters( 'pll_admin_current_language', $this->curlang, $this );
+		$this->curlang = apply_filters( 'lmat_admin_current_language', $this->curlang, $this );
 
 		// Inform that the admin language has been set.
-		if ( $this->curlang instanceof PLL_Language ) {
+		if ( $this->curlang instanceof LMAT_Language ) {
 			/** This action is documented in frontend/choose-lang.php */
-			do_action( 'pll_language_defined', $this->curlang->slug, $this->curlang );
+			do_action( 'lmat_language_defined', $this->curlang->slug, $this->curlang );
 		} else {
-			/** This action is documented in include/class-polylang.php */
-			do_action( 'pll_no_language_defined' ); // To load overridden textdomains.
+			/** This action is documented in include/class-linguator.php */
+			do_action( 'lmat_no_language_defined' ); // To load overridden textdomains.
 		}
 	}
 
@@ -398,10 +398,10 @@ abstract class PLL_Admin_Base extends PLL_Base {
 		// $_GET['lang'] is numeric when editing a language, not when selecting a new language in the filter
 		// We intentionally don't use a nonce to update the language filter
 		if ( ! wp_doing_ajax() && ! empty( $_GET['lang'] ) && ! is_numeric( sanitize_key( $_GET['lang'] ) ) && current_user_can( 'edit_user', $user_id = get_current_user_id() ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			update_user_meta( $user_id, 'pll_filter_content', ( $lang = $this->model->get_language( sanitize_key( $_GET['lang'] ) ) ) ? $lang->slug : '' ); // phpcs:ignore WordPress.Security.NonceVerification
+			update_user_meta( $user_id, 'lmat_filter_content', ( $lang = $this->model->get_language( sanitize_key( $_GET['lang'] ) ) ) ? $lang->slug : '' ); // phpcs:ignore WordPress.Security.NonceVerification
 		}
 
-		$this->filter_lang = $this->model->get_language( get_user_meta( get_current_user_id(), 'pll_filter_content', true ) );
+		$this->filter_lang = $this->model->get_language( get_user_meta( get_current_user_id(), 'lmat_filter_content', true ) );
 
 		// Set preferred language for use when saving posts and terms: must not be empty
 		$this->pref_lang = empty( $this->filter_lang ) ? $this->model->get_default_language() : $this->filter_lang;
@@ -412,9 +412,9 @@ abstract class PLL_Admin_Base extends PLL_Base {
 		 *
 		 * @since 1.2.3
 		 *
-		 * @param PLL_Language $pref_lang Preferred language.
+		 * @param LMAT_Language $pref_lang Preferred language.
 		 */
-		$this->pref_lang = apply_filters( 'pll_admin_preferred_language', $this->pref_lang );
+		$this->pref_lang = apply_filters( 'lmat_admin_preferred_language', $this->pref_lang );
 
 		$this->set_current_language();
 	}
@@ -449,7 +449,7 @@ abstract class PLL_Admin_Base extends PLL_Base {
 	public function admin_bar_menu( $wp_admin_bar ) {
 		$all_item = (object) array(
 			'slug' => 'all',
-			'name' => __( 'Show all languages', 'polylang' ),
+			'name' => __( 'Show all languages', 'linguator' ),
 			'flag' => '<span class="ab-icon"></span>',
 		);
 
@@ -457,8 +457,8 @@ abstract class PLL_Admin_Base extends PLL_Base {
 
 		$title = sprintf(
 			'<span class="ab-label"%1$s><span class="screen-reader-text">%2$s</span>%3$s</span>',
-			$selected instanceof PLL_Language ? sprintf( ' lang="%s"', esc_attr( $selected->get_locale( 'display' ) ) ) : '',
-			__( 'Filters content by language', 'polylang' ),
+			$selected instanceof LMAT_Language ? sprintf( ' lang="%s"', esc_attr( $selected->get_locale( 'display' ) ) ) : '',
+			__( 'Filters content by language', 'linguator' ),
 			esc_html( $selected->name )
 		);
 
@@ -469,19 +469,19 @@ abstract class PLL_Admin_Base extends PLL_Base {
 		 *
 		 * @param array $items The admin languages filter submenu items.
 		 */
-		$items = apply_filters( 'pll_admin_languages_filter', array_merge( array( $all_item ), $this->model->get_languages_list() ) );
+		$items = apply_filters( 'lmat_admin_languages_filter', array_merge( array( $all_item ), $this->model->get_languages_list() ) );
 
 		$menu = array(
 			'id'    => 'languages',
 			'title' => $selected->flag . $title,
 			'href'  => esc_url( add_query_arg( 'lang', $selected->slug, remove_query_arg( 'paged' ) ) ),
 			'meta'  => array(
-				'title' => __( 'Filters content by language', 'polylang' ),
+				'title' => __( 'Filters content by language', 'linguator' ),
 			),
 		);
 
 		if ( 'all' !== $selected->slug ) {
-			$menu['meta']['class'] = 'pll-filtered-languages';
+			$menu['meta']['class'] = 'lmat-filtered-languages';
 		}
 
 		if ( ! empty( $items ) ) {
@@ -509,8 +509,8 @@ abstract class PLL_Admin_Base extends PLL_Base {
 	 * Remove the customize submenu when using a block theme.
 	 *
 	 * WordPress removes the Customizer menu if a block theme is activated and no other plugins interact with it.
-	 * As Polylang interacts with the Customizer, we have to delete this menu ourselves in the case of a block theme,
-	 * unless another plugin than Polylang interacts with the Customizer.
+	 * As Linguator interacts with the Customizer, we have to delete this menu ourselves in the case of a block theme,
+	 * unless another plugin than Linguator interacts with the Customizer.
 	 *
 	 * @since 3.2
 	 *

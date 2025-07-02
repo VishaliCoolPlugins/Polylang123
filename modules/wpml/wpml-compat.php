@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -10,11 +10,11 @@
  *
  * @since 1.0.2
  */
-class PLL_WPML_Compat {
+class LMAT_WPML_Compat {
 	/**
 	 * Singleton instance
 	 *
-	 * @var PLL_WPML_Compat|null
+	 * @var LMAT_WPML_Compat|null
 	 */
 	protected static $instance;
 
@@ -26,7 +26,7 @@ class PLL_WPML_Compat {
 	protected static $strings = array();
 
 	/**
-	 * @var PLL_WPML_API
+	 * @var LMAT_WPML_API
 	 */
 	public $api;
 
@@ -38,17 +38,17 @@ class PLL_WPML_Compat {
 	protected function __construct() {
 		// Load the WPML API.
 		require_once __DIR__ . '/wpml-legacy-api.php';
-		$this->api = new PLL_WPML_API();
+		$this->api = new LMAT_WPML_API();
 
-		$strings = get_option( 'polylang_wpml_strings' );
+		$strings = get_option( 'linguator_wpml_strings' );
 
 		if ( is_array( $strings ) ) {
 			self::$strings = $strings;
-			add_filter( 'pll_get_strings', array( $this, 'get_strings' ) );
+			add_filter( 'lmat_get_strings', array( $this, 'get_strings' ) );
 		}
 
-		add_action( 'pll_language_defined', array( $this, 'define_constants' ) );
-		add_action( 'pll_no_language_defined', array( $this, 'define_constants' ) );
+		add_action( 'lmat_language_defined', array( $this, 'define_constants' ) );
+		add_action( 'lmat_no_language_defined', array( $this, 'define_constants' ) );
 	}
 
 	/**
@@ -56,7 +56,7 @@ class PLL_WPML_Compat {
 	 *
 	 * @since 1.7
 	 *
-	 * @return PLL_WPML_Compat
+	 * @return LMAT_WPML_Compat
 	 */
 	public static function instance() {
 		if ( empty( self::$instance ) ) {
@@ -68,22 +68,22 @@ class PLL_WPML_Compat {
 	/**
 	 * Defines two WPML constants once the language has been defined
 	 * The compatibility with WPML is not perfect on admin side as the constants are defined
-	 * in 'setup_theme' by Polylang (based on user info) and 'plugins_loaded' by WPML (based on cookie).
+	 * in 'setup_theme' by Linguator (based on user info) and 'plugins_loaded' by WPML (based on cookie).
 	 *
 	 * @since 0.9.5
 	 *
 	 * @return void
 	 */
 	public function define_constants() {
-		if ( ! empty( PLL()->curlang ) ) {
+		if ( ! empty( LMAT()->curlang ) ) {
 			if ( ! defined( 'ICL_LANGUAGE_CODE' ) ) {
-				define( 'ICL_LANGUAGE_CODE', PLL()->curlang->slug );
+				define( 'ICL_LANGUAGE_CODE', LMAT()->curlang->slug );
 			}
 
 			if ( ! defined( 'ICL_LANGUAGE_NAME' ) ) {
-				define( 'ICL_LANGUAGE_NAME', PLL()->curlang->name );
+				define( 'ICL_LANGUAGE_NAME', LMAT()->curlang->name );
 			}
-		} elseif ( ! PLL() instanceof PLL_Frontend ) {
+		} elseif ( ! LMAT() instanceof LMAT_Frontend ) {
 			if ( ! defined( 'ICL_LANGUAGE_CODE' ) ) {
 				define( 'ICL_LANGUAGE_CODE', 'all' );
 			}
@@ -95,7 +95,7 @@ class PLL_WPML_Compat {
 	}
 
 	/**
-	 * Unlike pll_register_string, icl_register_string stores the string in database
+	 * Unlike lmat_register_string, icl_register_string stores the string in database
 	 * so we need to do the same as some plugins or themes may expect this.
 	 * We use a serialized option to store these strings.
 	 *
@@ -124,14 +124,14 @@ class PLL_WPML_Compat {
 		// If a string has already been registered with the same name and context, let's replace it.
 		$exist_string = $this->get_string_by_context_and_name( $context, $name );
 		if ( $exist_string && $exist_string !== $string ) {
-			$languages = PLL()->model->get_languages_list();
+			$languages = LMAT()->model->get_languages_list();
 
 			// Assign translations of the old string to the new string, except for the default language.
 			foreach ( $languages as $language ) {
 				if ( $language->is_default ) {
 					continue;
 				}
-				$mo = new PLL_MO();
+				$mo = new LMAT_MO();
 				$mo->import_from_db( $language );
 				$mo->add_entry( $mo->make_entry( $string, $mo->translate( $exist_string ) ) );
 				$mo->export_to_db( $language );
@@ -144,7 +144,7 @@ class PLL_WPML_Compat {
 		if ( ! in_array( $to_register, self::$strings ) ) {
 			$key = md5( "$context | $name" );
 			self::$strings[ $key ] = $to_register;
-			update_option( 'polylang_wpml_strings', self::$strings );
+			update_option( 'linguator_wpml_strings', self::$strings );
 		}
 	}
 
@@ -161,12 +161,12 @@ class PLL_WPML_Compat {
 		$key = md5( "$context | $name" );
 		if ( isset( self::$strings[ $key ] ) ) {
 			unset( self::$strings[ $key ] );
-			update_option( 'polylang_wpml_strings', self::$strings );
+			update_option( 'linguator_wpml_strings', self::$strings );
 		}
 	}
 
 	/**
-	 * Adds strings registered by icl_register_string to those registered by pll_register_string
+	 * Adds strings registered by icl_register_string to those registered by lmat_register_string
 	 *
 	 * @since 1.0.2
 	 *

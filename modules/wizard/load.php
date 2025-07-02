@@ -2,13 +2,13 @@
 /**
  * Loads the setup wizard.
  *
- * @package Polylang
+ * @package Linguator
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Don't access directly
 }
 
-if ( $polylang instanceof PLL_Admin_Base ) {
-	$polylang->wizard = new PLL_Wizard( $polylang );
+if ( $linguator instanceof LMAT_Admin_Base ) {
+	$linguator->wizard = new LMAT_Wizard( $linguator );
 }

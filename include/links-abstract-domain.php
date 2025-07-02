@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,14 +8,14 @@
  *
  * @since 2.0
  */
-abstract class PLL_Links_Abstract_Domain extends PLL_Links_Permalinks {
+abstract class LMAT_Links_Abstract_Domain extends LMAT_Links_Permalinks {
 
 	/**
 	 * Constructor.
 	 *
 	 * @since 2.0
 	 *
-	 * @param PLL_Model $model Instance of PLL_Model.
+	 * @param LMAT_Model $model Instance of LMAT_Model.
 	 */
 	public function __construct( &$model ) {
 		parent::__construct( $model );
@@ -28,7 +28,7 @@ abstract class PLL_Links_Abstract_Domain extends PLL_Links_Permalinks {
 		add_filter( 'upload_dir', array( $this, 'upload_dir' ) );
 
 		// Set the correct domain for each language.
-		add_filter( 'pll_language_flag_url', array( $this, 'site_url' ) );
+		add_filter( 'lmat_language_flag_url', array( $this, 'site_url' ) );
 	}
 
 	/**
@@ -42,7 +42,7 @@ abstract class PLL_Links_Abstract_Domain extends PLL_Links_Permalinks {
 	 */
 	public function get_language_from_url( $url = '' ) {
 		if ( empty( $url ) ) {
-			$url = pll_get_requested_url();
+			$url = lmat_get_requested_url();
 		}
 
 		$host = wp_parse_url( $url, PHP_URL_HOST );

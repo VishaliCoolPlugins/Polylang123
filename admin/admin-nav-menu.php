@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,24 +8,24 @@
  *
  * @since 1.2
  */
-class PLL_Admin_Nav_Menu extends PLL_Nav_Menu {
+class LMAT_Admin_Nav_Menu extends LMAT_Nav_Menu {
 
 	/**
 	 * Constructor: setups filters and actions
 	 *
 	 * @since 1.2
 	 *
-	 * @param object $polylang The Polylang object.
+	 * @param object $linguator The Linguator object.
 	 */
-	public function __construct( &$polylang ) {
-		parent::__construct( $polylang );
+	public function __construct( &$linguator ) {
+		parent::__construct( $linguator );
 
 		// Populates nav menus locations
 		// Since WP 4.4, must be done before customize_register is fired
 		add_filter( 'theme_mod_nav_menu_locations', array( $this, 'theme_mod_nav_menu_locations' ), 20 );
 
 		// Integration in the WP menu interface
-		add_action( 'admin_init', array( $this, 'admin_init' ) ); // after Polylang upgrade
+		add_action( 'admin_init', array( $this, 'admin_init' ) ); // after Linguator upgrade
 
 		// Add filter to update menu locations when language changes
 		add_action( 'admin_init', array( $this, 'maybe_update_menu_locations' ) );
@@ -48,8 +48,8 @@ class PLL_Admin_Nav_Menu extends PLL_Nav_Menu {
 		add_action( 'delete_nav_menu', array( $this, 'delete_nav_menu' ) );
 
 		// FIXME is it possible to choose the order ( after theme locations in WP3.5 and older ) ?
-		// FIXME not displayed if Polylang is activated before the first time the user goes to nav menus http://core.trac.wordpress.org/ticket/16828
-		add_meta_box( 'pll_lang_switch_box', __( 'Language switcher', 'polylang' ), array( $this, 'lang_switch' ), 'nav-menus', 'side', 'high' );
+		// FIXME not displayed if Linguator is activated before the first time the user goes to nav menus http://core.trac.wordpress.org/ticket/16828
+		add_meta_box( 'lmat_lang_switch_box', __( 'Language switcher', 'linguator' ), array( $this, 'lang_switch' ), 'nav-menus', 'side', 'high' );
 
 		$this->create_nav_menu_locations();
 	}
@@ -72,17 +72,17 @@ class PLL_Admin_Nav_Menu extends PLL_Nav_Menu {
 				<ul id="lang-switch-checklist" class="categorychecklist form-no-clear">
 					<li>
 						<label class="menu-item-title">
-							<input type="checkbox" class="menu-item-checkbox" name="menu-item[<?php echo (int) $_nav_menu_placeholder; ?>][menu-item-object-id]" value="-1"> <?php esc_html_e( 'Languages', 'polylang' ); ?>
+							<input type="checkbox" class="menu-item-checkbox" name="menu-item[<?php echo (int) $_nav_menu_placeholder; ?>][menu-item-object-id]" value="-1"> <?php esc_html_e( 'Languages', 'linguator' ); ?>
 						</label>
 						<input type="hidden" class="menu-item-type" name="menu-item[<?php echo (int) $_nav_menu_placeholder; ?>][menu-item-type]" value="custom">
-						<input type="hidden" class="menu-item-title" name="menu-item[<?php echo (int) $_nav_menu_placeholder; ?>][menu-item-title]" value="<?php esc_attr_e( 'Languages', 'polylang' ); ?>">
-						<input type="hidden" class="menu-item-url" name="menu-item[<?php echo (int) $_nav_menu_placeholder; ?>][menu-item-url]" value="#pll_switcher">
+						<input type="hidden" class="menu-item-title" name="menu-item[<?php echo (int) $_nav_menu_placeholder; ?>][menu-item-title]" value="<?php esc_attr_e( 'Languages', 'linguator' ); ?>">
+						<input type="hidden" class="menu-item-url" name="menu-item[<?php echo (int) $_nav_menu_placeholder; ?>][menu-item-url]" value="#lmat_switcher">
 					</li>
 				</ul>
 			</div>
 			<p class="button-controls">
 				<span class="add-to-menu">
-					<input type="submit" <?php disabled( $nav_menu_selected_id, 0 ); ?> class="button-secondary submit-add-to-menu right" value="<?php esc_attr_e( 'Add to Menu', 'polylang' ); ?>" name="add-post-type-menu-item" id="submit-posttype-lang-switch">
+					<input type="submit" <?php disabled( $nav_menu_selected_id, 0 ); ?> class="button-secondary submit-add-to-menu right" value="<?php esc_attr_e( 'Add to Menu', 'linguator' ); ?>" name="add-post-type-menu-item" id="submit-posttype-lang-switch">
 					<span class="spinner"></span>
 				</span>
 			</p>
@@ -104,11 +104,11 @@ class PLL_Admin_Nav_Menu extends PLL_Nav_Menu {
 		}
 
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_enqueue_script( 'pll_nav_menu', plugins_url( "/js/build/nav-menu{$suffix}.js", POLYLANG_ROOT_FILE ), array(), POLYLANG_VERSION );
+		wp_enqueue_script( 'lmat_nav_menu', plugins_url( "/js/build/nav-menu{$suffix}.js", LINGUATOR_ROOT_FILE ), array(), LINGUATOR_VERSION );
 
 		$data = array(
-			'strings' => PLL_Switcher::get_switcher_options( 'menu', 'string' ), // The strings for the options
-			'title'   => __( 'Languages', 'polylang' ), // The title
+			'strings' => LMAT_Switcher::get_switcher_options( 'menu', 'string' ), // The strings for the options
+			'title'   => __( 'Languages', 'linguator' ), // The title
 			'val'     => array(),
 		);
 
@@ -119,17 +119,17 @@ class PLL_Admin_Nav_Menu extends PLL_Nav_Menu {
 				'nopaging'    => true,
 				'post_type'   => 'nav_menu_item',
 				'fields'      => 'ids',
-				'meta_key'    => '_pll_menu_item',
+				'meta_key'    => '_lmat_menu_item',
 			)
 		);
 
 		// The options values for the language switcher
 		foreach ( $items as $item ) {
-			$data['val'][ $item ] = get_post_meta( $item, '_pll_menu_item', true );
+			$data['val'][ $item ] = get_post_meta( $item, '_lmat_menu_item', true );
 		}
 
 		// Send all these data to javascript
-		wp_localize_script( 'pll_nav_menu', 'pll_data', $data );
+		wp_localize_script( 'lmat_nav_menu', 'lmat_data', $data );
 	}
 
 	/**
@@ -142,7 +142,7 @@ class PLL_Admin_Nav_Menu extends PLL_Nav_Menu {
 	 * @return void
 	 */
 	public function wp_update_nav_menu_item( $menu_id = 0, $menu_item_db_id = 0 ) {
-		if ( empty( $_POST['menu-item-url'][ $menu_item_db_id ] ) || '#pll_switcher' !== $_POST['menu-item-url'][ $menu_item_db_id ] ) { // phpcs:ignore WordPress.Security.NonceVerification
+		if ( empty( $_POST['menu-item-url'][ $menu_item_db_id ] ) || '#lmat_switcher' !== $_POST['menu-item-url'][ $menu_item_db_id ] ) { // phpcs:ignore WordPress.Security.NonceVerification
 			return;
 		}
 
@@ -152,16 +152,16 @@ class PLL_Admin_Nav_Menu extends PLL_Nav_Menu {
 
 			$options = array( 'hide_if_no_translation' => 0, 'hide_current' => 0, 'force_home' => 0, 'show_flags' => 0, 'show_names' => 1, 'dropdown' => 0 ); // Default values
 			// Our jQuery form has not been displayed
-			if ( empty( $_POST['menu-item-pll-detect'][ $menu_item_db_id ] ) ) {
-				if ( ! get_post_meta( $menu_item_db_id, '_pll_menu_item', true ) ) { // Our options were never saved
-					update_post_meta( $menu_item_db_id, '_pll_menu_item', $options );
+			if ( empty( $_POST['menu-item-lmat-detect'][ $menu_item_db_id ] ) ) {
+				if ( ! get_post_meta( $menu_item_db_id, '_lmat_menu_item', true ) ) { // Our options were never saved
+					update_post_meta( $menu_item_db_id, '_lmat_menu_item', $options );
 				}
 			}
 			else {
 				foreach ( array_keys( $options ) as $opt ) {
 					$options[ $opt ] = empty( $_POST[ 'menu-item-' . $opt ][ $menu_item_db_id ] ) ? 0 : 1;
 				}
-				update_post_meta( $menu_item_db_id, '_pll_menu_item', $options ); // Allow us to easily identify our nav menu item
+				update_post_meta( $menu_item_db_id, '_lmat_menu_item', $options ); // Allow us to easily identify our nav menu item
 			}
 		}
 	}
@@ -268,7 +268,7 @@ class PLL_Admin_Nav_Menu extends PLL_Nav_Menu {
 	}
 
 	/**
-	 * Removes the nav menu term_id from the locations stored in Polylang options when a nav menu is deleted
+	 * Removes the nav menu term_id from the locations stored in Linguator options when a nav menu is deleted
 	 *
 	 * @since 1.7.3
 	 *
@@ -311,7 +311,7 @@ class PLL_Admin_Nav_Menu extends PLL_Nav_Menu {
 
 		if ( isset( $_wp_registered_nav_menus ) && ! $once ) {
 			// Get current language filter
-			$current_lang = $this->model->get_language( get_user_meta( get_current_user_id(), 'pll_filter_content', true ) );
+			$current_lang = $this->model->get_language( get_user_meta( get_current_user_id(), 'lmat_filter_content', true ) );
 
 			foreach ( $_wp_registered_nav_menus as $loc => $name ) {
 				if ( $current_lang ) {

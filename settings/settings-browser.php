@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,7 +8,7 @@
  *
  * @since 1.8
  */
-class PLL_Settings_Browser extends PLL_Settings_Module {
+class LMAT_Settings_Browser extends LMAT_Settings_Module {
 	/**
 	 * Stores the display order priority.
 	 *
@@ -21,23 +21,23 @@ class PLL_Settings_Browser extends PLL_Settings_Module {
 	 *
 	 * @since 1.8
 	 *
-	 * @param object $polylang polylang object
+	 * @param object $linguator linguator object
 	 */
-	public function __construct( &$polylang ) {
+	public function __construct( &$linguator ) {
 		// Needed for `$this->is_available()`, which is used before calling the parent's constructor.
-		$this->options = &$polylang->options;
+		$this->options = &$linguator->options;
 
 		parent::__construct(
-			$polylang,
+			$linguator,
 			array(
 				'module'        => 'browser',
-				'title'         => __( 'Detect browser language', 'polylang' ),
-				'description'   => __( 'When the front page is visited, redirects to itself in the browser preferred language. As this doesn\'t work if it is cached, Polylang will attempt to disable the front page cache for known cache plugins.', 'polylang' ),
+				'title'         => __( 'Detect browser language', 'linguator' ),
+				'description'   => __( 'When the front page is visited, redirects to itself in the browser preferred language. As this doesn\'t work if it is cached, Linguator will attempt to disable the front page cache for known cache plugins.', 'linguator' ),
 				'active_option' => $this->is_available() ? 'browser' : 'none',
 			)
 		);
 
-		if ( ! class_exists( 'PLL_Xdata_Domain', true ) ) {
+		if ( ! class_exists( 'LMAT_Xdata_Domain', true ) ) {
 			add_action( 'admin_print_footer_scripts', array( $this, 'print_js' ) );
 		}
 	}
@@ -50,7 +50,7 @@ class PLL_Settings_Browser extends PLL_Settings_Module {
 	 * @return bool
 	 */
 	protected function is_available() {
-		return ( 3 > $this->options['force_lang'] ) || class_exists( 'PLL_Xdata_Domain', true );
+		return ( 3 > $this->options['force_lang'] ) || class_exists( 'LMAT_Xdata_Domain', true );
 	}
 
 	/**
@@ -93,10 +93,10 @@ class PLL_Settings_Browser extends PLL_Settings_Module {
 					$( "input[name='force_lang']" ).on( 'change', function() {
 						var value = $( this ).val();
 						if ( 3 > value ) {
-							$( "#pll-module-browser" ).<?php echo $func; // phpcs:ignore WordPress.Security.EscapeOutput ?>.children( "td" ).children( ".row-actions" ).html( '<?php echo $link; // phpcs:ignore WordPress.Security.EscapeOutput ?>' );
+							$( "#lmat-module-browser" ).<?php echo $func; // phpcs:ignore WordPress.Security.EscapeOutput ?>.children( "td" ).children( ".row-actions" ).html( '<?php echo $link; // phpcs:ignore WordPress.Security.EscapeOutput ?>' );
 						}
 						else {
-							$( "#pll-module-browser" ).removeClass( "active" ).addClass( "inactive" ).children( "td" ).children( ".row-actions" ).html( '<?php echo $deactivated; // phpcs:ignore WordPress.Security.EscapeOutput ?>' );
+							$( "#lmat-module-browser" ).removeClass( "active" ).addClass( "inactive" ).children( "td" ).children( ".row-actions" ).html( '<?php echo $deactivated; // phpcs:ignore WordPress.Security.EscapeOutput ?>' );
 						}
 					} );
 				}

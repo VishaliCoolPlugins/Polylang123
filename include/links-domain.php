@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -9,7 +9,7 @@
  *
  * @since 1.2
  */
-class PLL_Links_Domain extends PLL_Links_Abstract_Domain {
+class LMAT_Links_Domain extends LMAT_Links_Abstract_Domain {
 
 	/**
 	 * An array with language code as keys and the host as values.
@@ -23,7 +23,7 @@ class PLL_Links_Domain extends PLL_Links_Abstract_Domain {
 	 *
 	 * @since 1.8
 	 *
-	 * @param object $model PLL_Model instance.
+	 * @param object $model LMAT_Model instance.
 	 */
 	public function __construct( &$model ) {
 		parent::__construct( $model );
@@ -42,11 +42,11 @@ class PLL_Links_Domain extends PLL_Links_Abstract_Domain {
 	 * @since 3.4 Accepts now a language slug.
 	 *
 	 * @param string                    $url      The url to modify.
-	 * @param PLL_Language|string|false $language Language object or slug.
+	 * @param LMAT_Language|string|false $language Language object or slug.
 	 * @return string The modified url.
 	 */
 	public function add_language_to_link( $url, $language ) {
-		if ( $language instanceof PLL_Language ) {
+		if ( $language instanceof LMAT_Language ) {
 			$language = $language->slug;
 		}
 
@@ -77,11 +77,11 @@ class PLL_Links_Domain extends PLL_Links_Abstract_Domain {
 	 * @since 1.3.1
 	 * @since 3.4 Accepts now a language slug.
 	 *
-	 * @param PLL_Language|string $language Language object or slug.
+	 * @param LMAT_Language|string $language Language object or slug.
 	 * @return string
 	 */
 	public function home_url( $language ) {
-		if ( $language instanceof PLL_Language ) {
+		if ( $language instanceof LMAT_Language ) {
 			$language = $language->slug;
 		}
 

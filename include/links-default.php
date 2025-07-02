@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -9,9 +9,9 @@
  *
  * @since 1.2
  */
-class PLL_Links_Default extends PLL_Links_Model {
+class LMAT_Links_Default extends LMAT_Links_Model {
 	/**
-	 * Tells this child class of PLL_Links_Model does not use pretty permalinks.
+	 * Tells this child class of LMAT_Links_Model does not use pretty permalinks.
 	 *
 	 * @var bool
 	 */
@@ -24,11 +24,11 @@ class PLL_Links_Default extends PLL_Links_Model {
 	 * @since 3.4 Accepts now a language slug.
 	 *
 	 * @param string                    $url      The url to modify.
-	 * @param PLL_Language|string|false $language Language object or slug.
+	 * @param LMAT_Language|string|false $language Language object or slug.
 	 * @return string The modified url.
 	 */
 	public function add_language_to_link( $url, $language ) {
-		if ( $language instanceof PLL_Language ) {
+		if ( $language instanceof LMAT_Language ) {
 			$language = $language->slug;
 		}
 
@@ -83,7 +83,7 @@ class PLL_Links_Default extends PLL_Links_Model {
 	 */
 	public function get_language_from_url( $url = '' ) {
 		if ( empty( $url ) ) {
-			$url = pll_get_requested_url();
+			$url = lmat_get_requested_url();
 		}
 
 		$pattern = sprintf(
@@ -99,11 +99,11 @@ class PLL_Links_Default extends PLL_Links_Model {
 	 * @since 1.8
 	 * @since 3.4 Accepts now an array of language properties.
 	 *
-	 * @param PLL_Language|array $language Language object or array of language properties.
+	 * @param LMAT_Language|array $language Language object or array of language properties.
 	 * @return string The static front page url.
 	 */
 	public function front_page_url( $language ) {
-		if ( $language instanceof PLL_Language ) {
+		if ( $language instanceof LMAT_Language ) {
 			$language = $language->to_array();
 		}
 

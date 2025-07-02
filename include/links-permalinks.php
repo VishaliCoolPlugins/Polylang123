@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,9 +8,9 @@
  *
  * @since 1.6
  */
-abstract class PLL_Links_Permalinks extends PLL_Links_Model {
+abstract class LMAT_Links_Permalinks extends LMAT_Links_Model {
 	/**
-	 * Tells this child class of PLL_Links_Model is for pretty permalinks.
+	 * Tells this child class of LMAT_Links_Model is for pretty permalinks.
 	 *
 	 * @var bool
 	 */
@@ -51,7 +51,7 @@ abstract class PLL_Links_Permalinks extends PLL_Links_Model {
 	 *
 	 * @since 1.8
 	 *
-	 * @param PLL_Model $model PLL_Model instance.
+	 * @param LMAT_Model $model LMAT_Model instance.
 	 */
 	public function __construct( &$model ) {
 		parent::__construct( $model );
@@ -80,7 +80,7 @@ abstract class PLL_Links_Permalinks extends PLL_Links_Model {
 	}
 
 	/**
-	 * Fires our own action telling Polylang plugins
+	 * Fires our own action telling Linguator plugins
 	 * and third parties are able to prepare rewrite rules.
 	 *
 	 * @since 3.5
@@ -91,14 +91,14 @@ abstract class PLL_Links_Permalinks extends PLL_Links_Model {
 		self::$can_filter_rewrite_rules = true;
 
 		/**
-		 * Tells when Polylang is able to prepare rewrite rules filters.
+		 * Tells when Linguator is able to prepare rewrite rules filters.
 		 * Action fired right after `wp_loaded` and just before WordPress `WP_Rewrite::flush_rules()` callback.
 		 *
 		 * @since 3.5
 		 *
-		 * @param PLL_Links_Permalinks $links Current links object.
+		 * @param LMAT_Links_Permalinks $links Current links object.
 		 */
-		do_action( 'pll_prepare_rewrite_rules', $this );
+		do_action( 'lmat_prepare_rewrite_rules', $this );
 	}
 
 	/**
@@ -118,7 +118,7 @@ abstract class PLL_Links_Permalinks extends PLL_Links_Model {
 		 * @param string $modified_url The link to the first page.
 		 * @param string $original_url The link to the original paged page.
 		 */
-		return apply_filters( 'pll_remove_paged_from_link', preg_replace( '#/page/[0-9]+/?#', $this->use_trailing_slashes ? '/' : '', $url ), $url );
+		return apply_filters( 'lmat_remove_paged_from_link', preg_replace( '#/page/[0-9]+/?#', $this->use_trailing_slashes ? '/' : '', $url ), $url );
 	}
 
 	/**
@@ -140,7 +140,7 @@ abstract class PLL_Links_Permalinks extends PLL_Links_Model {
 		 * @param string $original_url The link to the original first page.
 		 * @param int    $page         The page number.
 		 */
-		return apply_filters( 'pll_add_paged_to_link', user_trailingslashit( trailingslashit( $url ) . 'page/' . $page, 'paged' ), $url, $page );
+		return apply_filters( 'lmat_add_paged_to_link', user_trailingslashit( trailingslashit( $url ) . 'page/' . $page, 'paged' ), $url, $page );
 	}
 
 	/**
@@ -149,11 +149,11 @@ abstract class PLL_Links_Permalinks extends PLL_Links_Model {
 	 * @since 1.3.1
 	 * @since 3.4 Accepts now a language slug.
 	 *
-	 * @param PLL_Language|string $language Language object or slug.
+	 * @param LMAT_Language|string $language Language object or slug.
 	 * @return string
 	 */
 	public function home_url( $language ) {
-		if ( $language instanceof PLL_Language ) {
+		if ( $language instanceof LMAT_Language ) {
 			$language = $language->slug;
 		}
 
@@ -166,11 +166,11 @@ abstract class PLL_Links_Permalinks extends PLL_Links_Model {
 	 * @since 1.8
 	 * @since 3.4 Accepts now an array of language properties.
 	 *
-	 * @param PLL_Language|array $language Language object or array of language properties.
+	 * @param LMAT_Language|array $language Language object or array of language properties.
 	 * @return string The static front page url.
 	 */
 	public function front_page_url( $language ) {
-		if ( $language instanceof PLL_Language ) {
+		if ( $language instanceof LMAT_Language ) {
 			$language = $language->to_array();
 		}
 
@@ -195,17 +195,17 @@ abstract class PLL_Links_Permalinks extends PLL_Links_Model {
 		$types = array_merge( $this->always_rewrite, $types );
 
 		/**
-		 * Filters the list of rewrite rules filters to be used by Polylang.
+		 * Filters the list of rewrite rules filters to be used by Linguator.
 		 *
 		 * @since 0.8.1
 		 *
 		 * @param array $types The list of filters (without '_rewrite_rules' at the end).
 		 */
-		return apply_filters( 'pll_rewrite_rules', $types );
+		return apply_filters( 'lmat_rewrite_rules', $types );
 	}
 
 	/**
-	 * Removes hooks to filter rewrite rules, called when switching blog @see {PLL_Base::switch_blog()}.
+	 * Removes hooks to filter rewrite rules, called when switching blog @see {LMAT_Base::switch_blog()}.
 	 *
 	 * @since 3.5
 	 *
@@ -214,6 +214,6 @@ abstract class PLL_Links_Permalinks extends PLL_Links_Model {
 	public function remove_filters() {
 		parent::remove_filters();
 
-		remove_all_actions( 'pll_prepare_rewrite_rules' );
+		remove_all_actions( 'lmat_prepare_rewrite_rules' );
 	}
 }

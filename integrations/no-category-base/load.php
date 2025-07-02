@@ -2,12 +2,12 @@
 /**
  * Loads the integration with No Category Base.
  *
- * @package Polylang
+ * @package Linguator
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Don't access directly.
 }
 
-PLL_Integrations::instance()->no_category_base = new PLL_No_Category_Base();
-PLL_Integrations::instance()->no_category_base->init();
+LMAT_Integrations::instance()->no_category_base = new LMAT_No_Category_Base();
+LMAT_Integrations::instance()->no_category_base->init();

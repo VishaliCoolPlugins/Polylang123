@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,7 +8,7 @@
  *
  * @since 1.2
  */
-class PLL_WP_Import extends WP_Import {
+class LMAT_WP_Import extends WP_Import {
 	/**
 	 * Stores post_translations terms.
 	 *
@@ -40,14 +40,14 @@ class PLL_WP_Import extends WP_Import {
 		wp_cache_set( 'last_changed', microtime(), 'terms' );
 
 		// Assign the default language in case the importer created the first language.
-		if ( empty( PLL()->options['default_lang'] ) ) {
+		if ( empty( LMAT()->options['default_lang'] ) ) {
 			$languages = get_terms( array( 'taxonomy' => 'language', 'hide_empty' => false, 'orderby' => 'term_id' ) );
 			$default_lang = reset( $languages );
-			PLL()->options['default_lang'] = $default_lang->slug;
+			LMAT()->options['default_lang'] = $default_lang->slug;
 		}
 
 		// Clean languages cache in case some of them were created during import.
-		PLL()->model->clean_languages_cache();
+		LMAT()->model->clean_languages_cache();
 
 		$this->remap_terms_relations( $term_translations );
 		$this->remap_translations( $term_translations, $this->processed_terms );
@@ -68,18 +68,18 @@ class PLL_WP_Import extends WP_Import {
 				$menu_items[] = $post;
 			}
 
-			if ( 0 === strpos( $post['post_title'], 'polylang_mo_' ) ) {
+			if ( 0 === strpos( $post['post_title'], 'linguator_mo_' ) ) {
 				$mo_posts[] = $post;
 			}
 		}
 
 		if ( ! empty( $mo_posts ) ) {
-			new PLL_MO(); // Just to register the polylang_mo post type before processing posts
+			new LMAT_MO(); // Just to register the linguator_mo post type before processing posts
 		}
 
 		parent::process_posts();
 
-		PLL()->model->clean_languages_cache(); // To update the posts count in ( cached ) languages list
+		LMAT()->model->clean_languages_cache(); // To update the posts count in ( cached ) languages list
 
 		$this->remap_translations( $this->post_translations, $this->processed_posts );
 		unset( $this->post_translations );
@@ -87,8 +87,8 @@ class PLL_WP_Import extends WP_Import {
 		// Language switcher menu items
 		foreach ( $menu_items as $item ) {
 			foreach ( $item['postmeta'] as $meta ) {
-				if ( '_pll_menu_item' == $meta['key'] ) {
-					update_post_meta( $this->processed_menu_items[ $item['post_id'] ], '_pll_menu_item', maybe_unserialize( $meta['value'] ) );
+				if ( '_lmat_menu_item' == $meta['key'] ) {
+					update_post_meta( $this->processed_menu_items[ $item['post_id'] ], '_lmat_menu_item', maybe_unserialize( $meta['value'] ) );
 				}
 			}
 		}
@@ -99,7 +99,7 @@ class PLL_WP_Import extends WP_Import {
 
 			if ( ! empty( $this->processed_terms[ $lang_id ] ) ) {
 				if ( $strings = maybe_unserialize( $post['post_content'] ) ) {
-					$mo = new PLL_MO();
+					$mo = new LMAT_MO();
 					$mo->import_from_db( $this->processed_terms[ $lang_id ] );
 					foreach ( $strings as $msg ) {
 						$mo->add_entry_or_merge( $mo->make_entry( $msg[0], $msg[1] ) );
@@ -127,7 +127,7 @@ class PLL_WP_Import extends WP_Import {
 		foreach ( $terms as $term ) {
 			$translations = maybe_unserialize( $term['term_description'] );
 			foreach ( $translations as $slug => $old_id ) {
-				if ( $old_id && ! empty( $this->processed_terms[ $old_id ] ) && $lang = PLL()->model->get_language( $slug ) ) {
+				if ( $old_id && ! empty( $this->processed_terms[ $old_id ] ) && $lang = LMAT()->model->get_language( $slug ) ) {
 					// Language relationship.
 					$trs[] = array( $this->processed_terms[ $old_id ], $lang->get_tax_prop( 'term_language', 'term_taxonomy_id' ) );
 

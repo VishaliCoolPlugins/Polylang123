@@ -2,16 +2,16 @@
 /**
  * Loads the settings module for Machine Translation.
  *
- * @package Polylang
+ * @package Linguator
  */
 
 defined( 'ABSPATH' ) || exit;
 
-if ( $polylang->model->has_languages() ) {
+if ( $linguator->model->has_languages() ) {
 	add_filter(
-		'pll_settings_modules',
+		'lmat_settings_modules',
 		function ( $modules ) {
-			$modules[] = 'PLL_Settings_Preview_Machine_Translation';
+			$modules[] = 'LMAT_Settings_Preview_Machine_Translation';
 			return $modules;
 		}
 	);

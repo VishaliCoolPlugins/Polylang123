@@ -1,17 +1,17 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Trait to use for objects that can have one or more types.
- * This must be used with {@see PLL_Translatable_Object_With_Types_Interface}.
+ * This must be used with {@see LMAT_Translatable_Object_With_Types_Interface}.
  *
  * @since 3.4
  */
-trait PLL_Translatable_Object_With_Types_Trait {
+trait LMAT_Translatable_Object_With_Types_Trait {
 
 	/**
 	 * Fetches the IDs of the objects without language.
@@ -60,7 +60,7 @@ trait PLL_Translatable_Object_With_Types_Trait {
 	}
 
 	/**
-	 * Returns true if Polylang manages languages for this object type.
+	 * Returns true if Linguator manages languages for this object type.
 	 *
 	 * @since 3.4
 	 *

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) { // If uninstall not called from WordPress exit.
@@ -8,12 +8,12 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) { // If uninstall not called from Word
 }
 
 /**
- * Manages Polylang uninstallation.
- * The goal is to remove **all** Polylang related data in db.
+ * Manages Linguator uninstallation.
+ * The goal is to remove **all** Linguator related data in db.
  *
  * @since 0.5
  */
-class PLL_Uninstall {
+class LMAT_Uninstall {
 
 	/**
 	 * Constructor: manages uninstall for multisite.
@@ -23,8 +23,8 @@ class PLL_Uninstall {
 	public function __construct() {
 		global $wpdb;
 
-		// Don't do anything except if the constant PLL_REMOVE_ALL_DATA is explicitly defined and true.
-		if ( ! defined( 'PLL_REMOVE_ALL_DATA' ) || ! PLL_REMOVE_ALL_DATA ) {
+		// Don't do anything except if the constant LMAT_REMOVE_ALL_DATA is explicitly defined and true.
+		if ( ! defined( 'LMAT_REMOVE_ALL_DATA' ) || ! LMAT_REMOVE_ALL_DATA ) {
 			return;
 		}
 
@@ -48,17 +48,17 @@ class PLL_Uninstall {
 	public function uninstall() {
 		global $wpdb;
 
-		do_action( 'pll_uninstall' );
+		do_action( 'lmat_uninstall' );
 
 		// We need to register the taxonomies.
-		$pll_taxonomies = array(
+		$lmat_taxonomies = array(
 			'language',
 			'term_language',
 			'post_translations',
 			'term_translations',
 		);
 
-		foreach ( $pll_taxonomies as $taxonomy ) {
+		foreach ( $lmat_taxonomies as $taxonomy ) {
 			register_taxonomy(
 				$taxonomy,
 				null,
@@ -79,8 +79,8 @@ class PLL_Uninstall {
 		);
 
 		// Delete users options.
-		delete_metadata( 'user', 0, 'pll_filter_content', '', true );
-		delete_metadata( 'user', 0, 'pll_dismissed_notices', '', true ); // Legacy meta.
+		delete_metadata( 'user', 0, 'lmat_filter_content', '', true );
+		delete_metadata( 'user', 0, 'lmat_dismissed_notices', '', true ); // Legacy meta.
 		foreach ( $languages as $lang ) {
 			delete_metadata( 'user', 0, "description_{$lang->slug}", '', true );
 		}
@@ -92,7 +92,7 @@ class PLL_Uninstall {
 				'numberposts' => -1,
 				'nopaging'    => true,
 				'fields'      => 'ids',
-				'meta_key'    => '_pll_menu_item',
+				'meta_key'    => '_lmat_menu_item',
 			)
 		);
 
@@ -101,11 +101,11 @@ class PLL_Uninstall {
 		}
 
 		/*
-		 * Backward compatibility with Polylang < 3.4.
+		 * Backward compatibility with Linguator < 3.4.
 		 * Delete the legacy strings translations.
 		 */
 		register_post_type(
-			'polylang_mo',
+			'linguator_mo',
 			array(
 				'rewrite'   => false,
 				'query_var' => false,
@@ -113,7 +113,7 @@ class PLL_Uninstall {
 		);
 		$ids = get_posts(
 			array(
-				'post_type'   => 'polylang_mo',
+				'post_type'   => 'linguator_mo',
 				'post_status' => 'any',
 				'numberposts' => -1,
 				'nopaging'    => true,
@@ -130,7 +130,7 @@ class PLL_Uninstall {
 
 		$terms = get_terms(
 			array(
-				'taxonomy'   => $pll_taxonomies,
+				'taxonomy'   => $lmat_taxonomies,
 				'hide_empty' => false,
 			)
 		);
@@ -163,7 +163,7 @@ class PLL_Uninstall {
 			$wpdb->query(
 				$wpdb->prepare(
 					sprintf(
-						"DELETE FROM {$wpdb->termmeta} WHERE term_id IN (%s) AND meta_key='_pll_strings_translations'",
+						"DELETE FROM {$wpdb->termmeta} WHERE term_id IN (%s) AND meta_key='_lmat_strings_translations'",
 						implode( ',', array_fill( 0, count( $term_ids ), '%d' ) )
 					),
 					$term_ids
@@ -177,16 +177,16 @@ class PLL_Uninstall {
 		}
 
 		// Delete options.
-		delete_option( 'polylang' );
-		delete_option( 'widget_polylang' ); // Automatically created by WP.
-		delete_option( 'polylang_wpml_strings' ); // Strings registered with icl_register_string.
-		delete_option( 'polylang_licenses' );
-		delete_option( 'pll_dismissed_notices' );
-		delete_option( 'pll_language_from_content_available' );
+		delete_option( 'linguator' );
+		delete_option( 'widget_linguator' ); // Automatically created by WP.
+		delete_option( 'linguator_wpml_strings' ); // Strings registered with icl_register_string.
+		delete_option( 'linguator_licenses' );
+		delete_option( 'lmat_dismissed_notices' );
+		delete_option( 'lmat_language_from_content_available' );
 
 		// Delete transients.
-		delete_transient( 'pll_languages_list' );
+		delete_transient( 'lmat_languages_list' );
 	}
 }
 
-new PLL_Uninstall();
+new LMAT_Uninstall();

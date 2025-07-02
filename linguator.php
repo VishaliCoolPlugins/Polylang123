@@ -1,21 +1,21 @@
 <?php
 /**
- * Polylang
+ * Linguator
  *
- * @package           Polylang
+ * @package           Linguator
  * @author            WP SYNTEX
  * @license           GPL-3.0-or-later
  *
  * @wordpress-plugin
- * Plugin Name:       Polylang
- * Plugin URI:        https://polylang.pro
+ * Plugin Name:       Linguator
+ * Plugin URI:        https://linguator.pro
  * Description:       Adds multilingual capability to WordPress
  * Version:           3.7.3
  * Requires at least: 6.2
  * Requires PHP:      7.2
  * Author:            WP SYNTEX
- * Author URI:        https://polylang.pro
- * Text Domain:       polylang
+ * Author URI:        https://linguator.pro
+ * Text Domain:       linguator
  * License:           GPL v3 or later
  * License URI:       https://www.gnu.org/licenses/gpl-3.0.txt
  *
@@ -40,8 +40,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Don't access directly.
 }
 
-if ( defined( 'POLYLANG_VERSION' ) ) {
-	// The user is attempting to activate a second plugin instance, typically Polylang and Polylang Pro.
+if ( defined( 'LINGUATOR_VERSION' ) ) {
+	// The user is attempting to activate a second plugin instance, typically Linguator and Linguator Pro.
 	require_once ABSPATH . 'wp-admin/includes/plugin.php';
 	require_once ABSPATH . 'wp-includes/pluggable.php';
 	if ( is_plugin_active( plugin_basename( __FILE__ ) ) ) {
@@ -52,26 +52,26 @@ if ( defined( 'POLYLANG_VERSION' ) ) {
 	}
 } else {
 	// Go on loading the plugin
-	define( 'POLYLANG_VERSION', '3.7.3' );
-	define( 'PLL_MIN_WP_VERSION', '6.2' );
-	define( 'PLL_MIN_PHP_VERSION', '7.2' );
+	define( 'LINGUATOR_VERSION', '3.7.3' );
+	define( 'LMAT_MIN_WP_VERSION', '6.2' );
+	define( 'LMAT_MIN_PHP_VERSION', '7.2' );
 
-	define( 'POLYLANG_FILE', __FILE__ );
-	define( 'POLYLANG_DIR', __DIR__ );
+	define( 'LINGUATOR_FILE', __FILE__ );
+	define( 'LINGUATOR_DIR', __DIR__ );
 
-	// Whether we are using Polylang or Polylang Pro, get the filename of the plugin in use.
-	if ( ! defined( 'POLYLANG_ROOT_FILE' ) ) {
-		define( 'POLYLANG_ROOT_FILE', __FILE__ );
+	// Whether we are using Linguator or Linguator Pro, get the filename of the plugin in use.
+	if ( ! defined( 'LINGUATOR_ROOT_FILE' ) ) {
+		define( 'LINGUATOR_ROOT_FILE', __FILE__ );
 	}
 
-	if ( ! defined( 'POLYLANG_BASENAME' ) ) {
-		define( 'POLYLANG_BASENAME', plugin_basename( __FILE__ ) ); // Plugin name as known by WP.
+	if ( ! defined( 'LINGUATOR_BASENAME' ) ) {
+		define( 'LINGUATOR_BASENAME', plugin_basename( __FILE__ ) ); // Plugin name as known by WP.
 		require __DIR__ . '/vendor/autoload.php';
 	}
 
-	define( 'POLYLANG', ucwords( str_replace( '-', ' ', dirname( POLYLANG_BASENAME ) ) ) );
+	define( 'LINGUATOR', ucwords( str_replace( '-', ' ', dirname( LINGUATOR_BASENAME ) ) ) );
 
-	if ( empty( $_GET['deactivate-polylang'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-		new Polylang();
+	if ( empty( $_GET['deactivate-linguator'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+		new Linguator();
 	}
 }

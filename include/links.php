@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,7 +8,7 @@
  *
  * @since 1.2
  */
-class PLL_Links {
+class LMAT_Links {
 	/**
 	 * Stores the plugin options.
 	 *
@@ -17,21 +17,21 @@ class PLL_Links {
 	public $options;
 
 	/**
-	 * @var PLL_Model
+	 * @var LMAT_Model
 	 */
 	public $model;
 
 	/**
-	 * Instance of a child class of PLL_Links_Model.
+	 * Instance of a child class of LMAT_Links_Model.
 	 *
-	 * @var PLL_Links_Model
+	 * @var LMAT_Links_Model
 	 */
 	public $links_model;
 
 	/**
 	 * Current language (used to filter the content).
 	 *
-	 * @var PLL_Language|null
+	 * @var LMAT_Language|null
 	 */
 	public $curlang;
 
@@ -40,12 +40,12 @@ class PLL_Links {
 	 *
 	 * @since 1.2
 	 *
-	 * @param object $polylang The Polylang object.
+	 * @param object $linguator The Linguator object.
 	 */
-	public function __construct( &$polylang ) {
-		$this->links_model = &$polylang->links_model;
-		$this->model = &$polylang->model;
-		$this->options = &$polylang->options;
+	public function __construct( &$linguator ) {
+		$this->links_model = &$linguator->links_model;
+		$this->model = &$linguator->model;
+		$this->options = &$linguator->options;
 	}
 
 	/**
@@ -53,12 +53,12 @@ class PLL_Links {
 	 *
 	 * @since 1.3
 	 *
-	 * @param PLL_Language|string $language  The language.
+	 * @param LMAT_Language|string $language  The language.
 	 * @param bool                $is_search Optional, whether we need the home url for a search form, defaults to false.
 	 * @return string
 	 */
 	public function get_home_url( $language, $is_search = false ) {
-		if ( ! $language instanceof PLL_Language ) {
+		if ( ! $language instanceof LMAT_Language ) {
 			$language = $this->model->get_language( $language );
 		}
 

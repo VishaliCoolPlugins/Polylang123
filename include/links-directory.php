@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -9,7 +9,7 @@
  *
  * @since 1.2
  */
-class PLL_Links_Directory extends PLL_Links_Permalinks {
+class LMAT_Links_Directory extends LMAT_Links_Permalinks {
 	/**
 	 * Relative path to the home url.
 	 *
@@ -22,7 +22,7 @@ class PLL_Links_Directory extends PLL_Links_Permalinks {
 	 *
 	 * @since 1.2
 	 *
-	 * @param PLL_Model $model PLL_Model instance.
+	 * @param LMAT_Model $model LMAT_Model instance.
 	 */
 	public function __construct( &$model ) {
 		parent::__construct( $model );
@@ -38,7 +38,7 @@ class PLL_Links_Directory extends PLL_Links_Permalinks {
 	 * @return void
 	 */
 	public function init() {
-		add_action( 'pll_prepare_rewrite_rules', array( $this, 'prepare_rewrite_rules' ) ); // Ensure it's hooked before `self::do_prepare_rewrite_rules()` is called.
+		add_action( 'lmat_prepare_rewrite_rules', array( $this, 'prepare_rewrite_rules' ) ); // Ensure it's hooked before `self::do_prepare_rewrite_rules()` is called.
 
 		parent::init();
 	}
@@ -50,11 +50,11 @@ class PLL_Links_Directory extends PLL_Links_Permalinks {
 	 * @since 3.4 Accepts now a language slug.
 	 *
 	 * @param string                    $url      The url to modify.
-	 * @param PLL_Language|string|false $language Language object or slug.
+	 * @param LMAT_Language|string|false $language Language object or slug.
 	 * @return string The modified url.
 	 */
 	public function add_language_to_link( $url, $language ) {
-		if ( $language instanceof PLL_Language ) {
+		if ( $language instanceof LMAT_Language ) {
 			$language = $language->slug;
 		}
 
@@ -109,7 +109,7 @@ class PLL_Links_Directory extends PLL_Links_Permalinks {
 	 */
 	public function get_language_from_url( $url = '' ) {
 		if ( empty( $url ) ) {
-			$url = pll_get_requested_url();
+			$url = lmat_get_requested_url();
 		}
 
 		$path = (string) wp_parse_url( $url, PHP_URL_PATH );
@@ -127,11 +127,11 @@ class PLL_Links_Directory extends PLL_Links_Permalinks {
 	 * @since 1.3.1
 	 * @since 3.4 Accepts now a language slug.
 	 *
-	 * @param PLL_Language|string $language Language object or slug.
+	 * @param LMAT_Language|string $language Language object or slug.
 	 * @return string
 	 */
 	public function home_url( $language ) {
-		if ( $language instanceof PLL_Language ) {
+		if ( $language instanceof LMAT_Language ) {
 			$language = $language->slug;
 		}
 
@@ -144,7 +144,7 @@ class PLL_Links_Directory extends PLL_Links_Permalinks {
 	 * Prepares the rewrite rules filters.
 	 *
 	 * @since 0.8.1
-	 * @since 3.5 Hooked to `pll_prepare_rewrite_rules` and remove `$pre` parameter.
+	 * @since 3.5 Hooked to `lmat_prepare_rewrite_rules` and remove `$pre` parameter.
 	 *
 	 * @return void
 	 */
@@ -167,7 +167,7 @@ class PLL_Links_Directory extends PLL_Links_Permalinks {
 	 * The rewrite rules !
 	 *
 	 * Always make sure that the default language is at the end in case the language information is hidden for default language.
-	 * Thanks to brbrbr http://wordpress.org/support/topic/plugin-polylang-rewrite-rules-not-correct.
+	 * Thanks to brbrbr http://wordpress.org/support/topic/plugin-linguator-rewrite-rules-not-correct.
 	 *
 	 * @since 0.8.1
 	 *
@@ -212,7 +212,7 @@ class PLL_Links_Directory extends PLL_Links_Permalinks {
 				 * @param string      $filter  Current set of rules being modified.
 				 * @param string|bool $archive Custom post post type archive name or false if it is not a cpt archive.
 				 */
-				if ( isset( $slug ) && apply_filters( 'pll_modify_rewrite_rule', true, array( $key => $rule ), $filter, false ) ) {
+				if ( isset( $slug ) && apply_filters( 'lmat_modify_rewrite_rule', true, array( $key => $rule ), $filter, false ) ) {
 					$newrules[ $slug . str_replace( $wp_rewrite->root, '', ltrim( $key, '^' ) ) ] = str_replace(
 						array( '[8]', '[7]', '[6]', '[5]', '[4]', '[3]', '[2]', '[1]', '?' ),
 						array( '[9]', '[8]', '[7]', '[6]', '[5]', '[4]', '[3]', '[2]', '?lang=$matches[1]&' ),
@@ -227,7 +227,7 @@ class PLL_Links_Directory extends PLL_Links_Permalinks {
 			elseif ( in_array( $filter, $this->always_rewrite ) || in_array( $filter, $this->model->get_filtered_taxonomies() ) || ( $cpts && preg_match( $cpts, $rule, $matches ) && ! strpos( $rule, 'name=' ) ) || ( 'rewrite_rules_array' != $filter && $this->options['force_lang'] ) ) {
 
 				/** This filter is documented in include/links-directory.php */
-				if ( apply_filters( 'pll_modify_rewrite_rule', true, array( $key => $rule ), $filter, empty( $matches[1] ) ? false : $matches[1] ) ) {
+				if ( apply_filters( 'lmat_modify_rewrite_rule', true, array( $key => $rule ), $filter, empty( $matches[1] ) ? false : $matches[1] ) ) {
 					if ( isset( $slug ) ) {
 						$newrules[ $slug . str_replace( $wp_rewrite->root, '', ltrim( $key, '^' ) ) ] = str_replace(
 							array( '[8]', '[7]', '[6]', '[5]', '[4]', '[3]', '[2]', '[1]', '?' ),
@@ -259,7 +259,7 @@ class PLL_Links_Directory extends PLL_Links_Permalinks {
 	}
 
 	/**
-	 * Removes hooks to filter rewrite rules, called when switching blog @see {PLL_Base::switch_blog()}.
+	 * Removes hooks to filter rewrite rules, called when switching blog @see {LMAT_Base::switch_blog()}.
 	 * See `self::prepare_rewrite_rules()` for added hooks.
 	 *
 	 * @since 3.5

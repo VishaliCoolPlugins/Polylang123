@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,16 +8,16 @@
  *
  * @since 1.8
  */
-class PLL_Frontend_Static_Pages extends PLL_Static_Pages {
+class LMAT_Frontend_Static_Pages extends LMAT_Static_Pages {
 	/**
-	 * Instance of a child class of PLL_Links_Model.
+	 * Instance of a child class of LMAT_Links_Model.
 	 *
-	 * @var PLL_Links_Model
+	 * @var LMAT_Links_Model
 	 */
 	protected $links_model;
 
 	/**
-	 * @var PLL_Frontend_Links|null
+	 * @var LMAT_Frontend_Links|null
 	 */
 	protected $links;
 
@@ -33,25 +33,25 @@ class PLL_Frontend_Static_Pages extends PLL_Static_Pages {
 	 *
 	 * @since 1.8
 	 *
-	 * @param object $polylang The Polylang object.
+	 * @param object $linguator The Linguator object.
 	 */
-	public function __construct( &$polylang ) {
-		parent::__construct( $polylang );
+	public function __construct( &$linguator ) {
+		parent::__construct( $linguator );
 
-		$this->links_model = &$polylang->links_model;
-		$this->links       = &$polylang->links;
-		$this->options     = &$polylang->options;
+		$this->links_model = &$linguator->links_model;
+		$this->links       = &$linguator->links;
+		$this->options     = &$linguator->options;
 
-		add_action( 'pll_home_requested', array( $this, 'pll_home_requested' ) );
+		add_action( 'lmat_home_requested', array( $this, 'lmat_home_requested' ) );
 
 		// Manages the redirection of the homepage.
 		add_filter( 'redirect_canonical', array( $this, 'redirect_canonical' ) );
 
-		add_filter( 'pll_pre_translation_url', array( $this, 'pll_pre_translation_url' ), 10, 3 );
-		add_filter( 'pll_check_canonical_url', array( $this, 'pll_check_canonical_url' ) );
+		add_filter( 'lmat_pre_translation_url', array( $this, 'lmat_pre_translation_url' ), 10, 3 );
+		add_filter( 'lmat_check_canonical_url', array( $this, 'lmat_check_canonical_url' ) );
 
-		add_filter( 'pll_set_language_from_query', array( $this, 'page_on_front_query' ), 10, 2 );
-		add_filter( 'pll_set_language_from_query', array( $this, 'page_for_posts_query' ), 10, 2 );
+		add_filter( 'lmat_set_language_from_query', array( $this, 'page_on_front_query' ), 10, 2 );
+		add_filter( 'lmat_set_language_from_query', array( $this, 'page_for_posts_query' ), 10, 2 );
 
 		// Specific cases for the customizer.
 		add_action( 'customize_register', array( $this, 'filter_customizer' ) );
@@ -64,7 +64,7 @@ class PLL_Frontend_Static_Pages extends PLL_Static_Pages {
 	 *
 	 * @return void
 	 */
-	public function pll_home_requested() {
+	public function lmat_home_requested() {
 		set_query_var( 'page_id', $this->curlang->page_on_front );
 	}
 
@@ -100,11 +100,11 @@ class PLL_Frontend_Static_Pages extends PLL_Static_Pages {
 	 * @since 1.8
 	 *
 	 * @param string       $url               Empty string or the url of the translation of the current page.
-	 * @param PLL_Language $language          Language of the translation.
+	 * @param LMAT_Language $language          Language of the translation.
 	 * @param int          $queried_object_id Queried object ID.
 	 * @return string The translation url.
 	 */
-	public function pll_pre_translation_url( $url, $language, $queried_object_id ) {
+	public function lmat_pre_translation_url( $url, $language, $queried_object_id ) {
 		if ( empty( $queried_object_id ) ) {
 			return $url;
 		}
@@ -138,7 +138,7 @@ class PLL_Frontend_Static_Pages extends PLL_Static_Pages {
 	 * @param string $redirect_url The redirect url.
 	 * @return string|false
 	 */
-	public function pll_check_canonical_url( $redirect_url ) {
+	public function lmat_check_canonical_url( $redirect_url ) {
 		return $this->options['redirect_lang'] && ! $this->options['force_lang'] && ! empty( $this->curlang->page_on_front ) && is_page( $this->curlang->page_on_front ) ? false : $redirect_url;
 	}
 
@@ -160,9 +160,9 @@ class PLL_Frontend_Static_Pages extends PLL_Static_Pages {
 	 *
 	 * @since 1.8
 	 *
-	 * @param PLL_Language|false $lang  The current language, false if it is not set yet.
+	 * @param LMAT_Language|false $lang  The current language, false if it is not set yet.
 	 * @param WP_Query           $query The main WP query.
-	 * @return PLL_Language|false
+	 * @return LMAT_Language|false
 	 */
 	public function page_on_front_query( $lang, $query ) {
 		if ( ! empty( $lang ) || ! $this->page_on_front ) {
@@ -221,9 +221,9 @@ class PLL_Frontend_Static_Pages extends PLL_Static_Pages {
 	 *
 	 * @since 1.8
 	 *
-	 * @param PLL_Language|false $lang  The current language, false if it is not set yet.
+	 * @param LMAT_Language|false $lang  The current language, false if it is not set yet.
 	 * @param WP_Query           $query The main WP query.
-	 * @return PLL_Language|false
+	 * @return LMAT_Language|false
 	 */
 	public function page_for_posts_query( $lang, $query ) {
 		if ( ! empty( $lang ) || ! $this->page_for_posts ) {
@@ -280,7 +280,7 @@ class PLL_Frontend_Static_Pages extends PLL_Static_Pages {
 		add_filter( 'pre_option_page_on_front', array( $this, 'customize_page' ), 20 ); // After the customizer.
 		add_filter( 'pre_option_page_for_post', array( $this, 'customize_page' ), 20 );
 
-		add_filter( 'pll_pre_translation_url', array( $this, 'customize_translation_url' ), 20, 2 ); // After the generic hook in this class.
+		add_filter( 'lmat_pre_translation_url', array( $this, 'customize_translation_url' ), 20, 2 ); // After the generic hook in this class.
 	}
 
 	/**
@@ -292,7 +292,7 @@ class PLL_Frontend_Static_Pages extends PLL_Static_Pages {
 	 * @return int|false
 	 */
 	public function customize_page( $pre ) {
-		return is_numeric( $pre ) ? pll_get_post( (int) $pre ) : $pre;
+		return is_numeric( $pre ) ? lmat_get_post( (int) $pre ) : $pre;
 	}
 
 	/**
@@ -301,7 +301,7 @@ class PLL_Frontend_Static_Pages extends PLL_Static_Pages {
 	 * @since 3.4.2
 	 *
 	 * @param string       $url      An empty string or the URL of the translation of the current page.
-	 * @param PLL_Language $language The language of the translation.
+	 * @param LMAT_Language $language The language of the translation.
 	 * @return string
 	 */
 	public function customize_translation_url( $url, $language ) {

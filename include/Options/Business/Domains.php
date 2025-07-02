@@ -1,14 +1,14 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
-namespace WP_Syntex\Polylang\Options\Business;
+namespace WP_Syntex\Linguator\Options\Business;
 
 use WP_Error;
-use WP_Syntex\Polylang\Options\Abstract_Option;
-use WP_Syntex\Polylang\Options\Options;
-use WP_Syntex\Polylang\Model\Languages;
+use WP_Syntex\Linguator\Options\Abstract_Option;
+use WP_Syntex\Linguator\Options\Options;
+use WP_Syntex\Linguator\Model\Languages;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -127,14 +127,14 @@ class Domains extends Abstract_Option {
 			// Non-blocking error.
 			if ( 1 === count( $missing_langs ) ) {
 				/* translators: %s is a native language name. */
-				$message = __( 'Please enter a valid URL for %s.', 'polylang' );
+				$message = __( 'Please enter a valid URL for %s.', 'linguator' );
 			} else {
 				/* translators: %s is a list of native language names. */
-				$message = __( 'Please enter valid URLs for %s.', 'polylang' );
+				$message = __( 'Please enter valid URLs for %s.', 'linguator' );
 			}
 
 			$this->errors->add(
-				'pll_empty_domains',
+				'lmat_empty_domains',
 				sprintf( $message, wp_sprintf_l( '%l', $missing_langs ) ),
 				'warning'
 			);
@@ -145,7 +145,7 @@ class Domains extends Abstract_Option {
 			$failed_urls = array();
 
 			foreach ( array_filter( $all_values ) as $url ) {
-				$url = add_query_arg( 'deactivate-polylang', 1, $url );
+				$url = add_query_arg( 'deactivate-linguator', 1, $url );
 				// Don't redefine vip_safe_wp_remote_get() as it has not the same signature as wp_remote_get().
 				$response = function_exists( 'vip_safe_wp_remote_get' ) ? vip_safe_wp_remote_get( $url ) : wp_remote_get( $url );
 
@@ -158,13 +158,13 @@ class Domains extends Abstract_Option {
 				// Non-blocking error.
 				if ( 1 === count( $failed_urls ) ) {
 					/* translators: %s is a URL. */
-					$message = __( 'Polylang was unable to access the %s URL. Please check that the URL is valid.', 'polylang' );
+					$message = __( 'Linguator was unable to access the %s URL. Please check that the URL is valid.', 'linguator' );
 				} else {
 					/* translators: %s is a list of URLs. */
-					$message = __( 'Polylang was unable to access the %s URLs. Please check that the URLs are valid.', 'polylang' );
+					$message = __( 'Linguator was unable to access the %s URLs. Please check that the URLs are valid.', 'linguator' );
 				}
 				$this->errors->add(
-					'pll_invalid_domains',
+					'lmat_invalid_domains',
 					sprintf( $message, wp_sprintf_l( '%l', $failed_urls ) ),
 					'warning'
 				);
@@ -183,6 +183,6 @@ class Domains extends Abstract_Option {
 	 * @return string
 	 */
 	protected function get_description(): string {
-		return __( 'Domains used when the language is set from different domains.', 'polylang' );
+		return __( 'Domains used when the language is set from different domains.', 'linguator' );
 	}
 }

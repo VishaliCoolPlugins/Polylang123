@@ -1,5 +1,5 @@
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -11,7 +11,7 @@ jQuery(
 		$.ajaxPrefilter(
 			function ( options, originalOptions, jqXHR ) {
 				if ( 'string' === typeof options.data && -1 !== options.data.indexOf( 'action=find_posts' ) ) {
-					options.data = 'pll_post_id=' + $( '#affected' ).val() + '&' + options.data;
+					options.data = 'lmat_post_id=' + $( '#affected' ).val() + '&' + options.data;
 				}
 			}
 		);

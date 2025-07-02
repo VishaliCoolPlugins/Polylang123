@@ -1,5 +1,5 @@
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -59,15 +59,14 @@ jQuery(
 					);
 
 					var data = {
-						action:       'pll_update_term_rows',
+						action:       'lmat_update_term_rows',
 						term_id:      term_id,
 						translations: translations.join( ',' ),
 						taxonomy:     $( "input[name='taxonomy']" ).val(),
 						post_type:    $( "input[name='post_type']" ).val(),
 						screen:       $( "input[name='screen']" ).val(),
-						_pll_nonce:   $( '#_pll_nonce' ).val()
+						_lmat_nonce:   $( '#_lmat_nonce' ).val()
 					};
-
 					// get the modified rows in ajax and update them
 					$.post(
 						ajaxurl,
@@ -75,14 +74,14 @@ jQuery(
 						function ( response ) {
 							if ( response ) {
 								// Target a non existing WP HTML id to avoid a conflict with WP ajax requests.
-								var res = wpAjax.parseAjaxResponse( response, 'pll-ajax-response' );
+								var res = wpAjax.parseAjaxResponse( response, 'lmat-ajax-response' );
 								$.each(
 									res.responses,
 									function () {
 										if ( 'row' == this.what ) {
 											// data is built with a call to WP_Terms_List_Table::single_row method
 											// which uses internally other WordPress methods which escape correctly values.
-											// For Polylang language columns the HTML code is correctly escaped in PLL_Admin_Filters_Columns::term_column method.
+											// For Linguator language columns the HTML code is correctly escaped in LMAT_Admin_Filters_Columns::term_column method.
 											$( "#tag-" + this.supplemental.term_id ).replaceWith( this.data ); // phpcs:ignore WordPressVIPMinimum.JS.HTMLExecutingFunctions.replaceWith
 										}
 									}
@@ -98,7 +97,7 @@ jQuery(
 						// when adding a term, the new term_id is in the ajax response
 						case 'add-tag':
 							// Target a non existing WP HTML id to avoid a conflict with WP ajax requests.
-							res = wpAjax.parseAjaxResponse( xhr.responseXML, 'pll-ajax-response' );
+							res = wpAjax.parseAjaxResponse( xhr.responseXML, 'lmat-ajax-response' );
 							$.each(
 								res.responses,
 								function () {
@@ -135,18 +134,18 @@ jQuery(
 			$( '.tr_lang' ).each(
 				function () {
 					var tr_lang = $( this ).attr( 'id' ).substring( 8 );
-					var td = $( this ).parent().parent().siblings( '.pll-edit-column' );
+					var td = $( this ).parent().parent().siblings( '.lmat-edit-column' );
 
 					$( this ).autocomplete(
 						{
 							minLength: 0,
-							source: ajaxurl + '?action=pll_terms_not_translated' +
+							source: ajaxurl + '?action=lmat_terms_not_translated' +
 								'&term_language=' + $( '#term_lang_choice' ).val() +
 								'&term_id=' + $( "input[name='tag_ID']" ).val() +
 								'&taxonomy=' + $( "input[name='taxonomy']" ).val() +
 								'&translation_language=' + tr_lang +
 								'&post_type=' + typenow +
-								'&_pll_nonce=' + $( '#_pll_nonce' ).val(),
+								'&_lmat_nonce=' + $( '#_lmat_nonce' ).val(),
 							select: function ( event, ui ) {
 								$( '#htr_lang_' + tr_lang ).val( ui.item.id );
 								// ui.item.link is built and come from server side and is well escaped when necessary
@@ -187,7 +186,7 @@ jQuery(
 					term_id:    $( "input[name='tag_ID']" ).val(),
 					taxonomy:   $( "input[name='taxonomy']" ).val(),
 					post_type:  typenow,
-					_pll_nonce: $( '#_pll_nonce' ).val()
+					_lmat_nonce: $( '#_lmat_nonce' ).val()
 				};
 
 				$.post(
@@ -195,7 +194,7 @@ jQuery(
 					data,
 					function ( response ) {
 						// Target a non existing WP HTML id to avoid a conflict with WP ajax requests.
-						var res = wpAjax.parseAjaxResponse( response, 'pll-ajax-response' );
+						var res = wpAjax.parseAjaxResponse( response, 'lmat-ajax-response' );
 						$.each(
 							res.responses,
 							function () {
@@ -206,16 +205,16 @@ jQuery(
 										init_translations();
 									break;
 									case 'parent': // parent dropdown list for hierarchical taxonomies
-										// data correctly escaped in PLL_Admin_Filters_Term::term_lang_choice method which uses wp_dropdown_categories function.
+										// data correctly escaped in LMAT_Admin_Filters_Term::term_lang_choice method which uses wp_dropdown_categories function.
 										$( '#parent' ).replaceWith( this.data ); // phpcs:ignore WordPressVIPMinimum.JS.HTMLExecutingFunctions.replaceWith
 									break;
 									case 'tag_cloud': // popular items
-										// data correctly escaped in PLL_Admin_Filters_Term::term_lang_choice method which uses wp_tag_cloud and wp_generate_tag_cloud functions.
+										// data correctly escaped in LMAT_Admin_Filters_Term::term_lang_choice method which uses wp_tag_cloud and wp_generate_tag_cloud functions.
 										$( '.tagcloud' ).replaceWith( this.data ); // phpcs:ignore WordPressVIPMinimum.JS.HTMLExecutingFunctions.replaceWith
 									break;
 									case 'flag': // flag in front of the select dropdown
 										// Data is built and come from server side and is well escaped when necessary
-										$( '.pll-select-flag' ).html( this.data ); // phpcs:ignore WordPressVIPMinimum.JS.HTMLExecutingFunctions.html
+										$( '.lmat-select-flag' ).html( this.data ); // phpcs:ignore WordPressVIPMinimum.JS.HTMLExecutingFunctions.html
 									break;
 								}
 							}
@@ -242,7 +241,7 @@ jQuery(
 			( e ) => {
 				// Modifies the text direction.
 				let dir = e.detail.lang.is_rtl ? 'rtl' : 'ltr'
-				$( 'body' ).removeClass( 'pll-dir-rtl' ).removeClass( 'pll-dir-ltr' ).addClass( 'pll-dir-' + dir );
+				$( 'body' ).removeClass( 'lmat-dir-rtl' ).removeClass( 'lmat-dir-ltr' ).addClass( 'lmat-dir-' + dir );
 			}
 		);
 	}

@@ -1,16 +1,16 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
  * Setup specific filters useful for sanitization.
  *
- * Extract from PLL_Admin_Filters to be able to use in a REST API context.
+ * Extract from LMAT_Admin_Filters to be able to use in a REST API context.
  *
  * @since 2.9
  */
-class PLL_Filters_Sanitization {
+class LMAT_Filters_Sanitization {
 	/**
 	 * Language used for the sanitization depending on the context.
 	 *

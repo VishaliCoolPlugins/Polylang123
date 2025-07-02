@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -9,16 +9,16 @@
  *
  * @since 1.1
  */
-class PLL_Frontend_Auto_Translate {
+class LMAT_Frontend_Auto_Translate {
 	/**
-	 * @var PLL_Model
+	 * @var LMAT_Model
 	 */
 	public $model;
 
 	/**
 	 * Current language.
 	 *
-	 * @var PLL_Language|null
+	 * @var LMAT_Language|null
 	 */
 	public $curlang;
 
@@ -27,13 +27,13 @@ class PLL_Frontend_Auto_Translate {
 	 *
 	 * @since 1.1
 	 *
-	 * @param object $polylang The Polylang object.
+	 * @param object $linguator The Linguator object.
 	 */
-	public function __construct( &$polylang ) {
-		$this->model = &$polylang->model;
-		$this->curlang = &$polylang->curlang;
+	public function __construct( &$linguator ) {
+		$this->model = &$linguator->model;
+		$this->curlang = &$linguator->curlang;
 
-		add_action( 'parse_query', array( $this, 'translate_included_ids_in_query' ), 100 ); // After all Polylang filters.
+		add_action( 'parse_query', array( $this, 'translate_included_ids_in_query' ), 100 ); // After all Linguator filters.
 		add_filter( 'get_terms_args', array( $this, 'get_terms_args' ), 20, 2 );
 	}
 

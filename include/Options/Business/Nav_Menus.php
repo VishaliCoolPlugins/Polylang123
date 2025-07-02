@@ -1,14 +1,14 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
-namespace WP_Syntex\Polylang\Options\Business;
+namespace WP_Syntex\Linguator\Options\Business;
 
 use WP_Error;
-use WP_Syntex\Polylang\Options\Abstract_Option;
-use WP_Syntex\Polylang\Options\Options;
-use WP_Syntex\Polylang\Model\Languages;
+use WP_Syntex\Linguator\Options\Abstract_Option;
+use WP_Syntex\Linguator\Options\Options;
+use WP_Syntex\Linguator\Model\Languages;
 
 
 defined( 'ABSPATH' ) || exit;
@@ -150,6 +150,6 @@ class Nav_Menus extends Abstract_Option {
 	 * @return string
 	 */
 	protected function get_description(): string {
-		return __( 'Translated navigation menus for each theme.', 'polylang' );
+		return __( 'Translated navigation menus for each theme.', 'linguator' );
 	}
 }

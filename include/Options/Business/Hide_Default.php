@@ -1,13 +1,13 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
-namespace WP_Syntex\Polylang\Options\Business;
+namespace WP_Syntex\Linguator\Options\Business;
 
 use WP_Error;
-use WP_Syntex\Polylang\Options\Primitive\Abstract_Boolean;
-use WP_Syntex\Polylang\Options\Options;
+use WP_Syntex\Linguator\Options\Primitive\Abstract_Boolean;
+use WP_Syntex\Linguator\Options\Options;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -72,7 +72,7 @@ class Hide_Default extends Abstract_Boolean {
 	protected function get_description(): string {
 		return sprintf(
 			/* translators: %1$s and %2$s are "true/false" values. */
-			__( 'Remove the language code in URL for the default language: %1$s to hide, %2$s to display.', 'polylang' ),
+			__( 'Remove the language code in URL for the default language: %1$s to hide, %2$s to display.', 'linguator' ),
 			'`true`',
 			'`false`'
 		);

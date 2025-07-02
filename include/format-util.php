@@ -1,15 +1,15 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
  * A class to match values against a given format.
  *
  * @since 3.6
- * @since 3.7 Moved from Polylang Pro to Polylang.
+ * @since 3.7 Moved from Linguator Pro to Linguator.
  */
-class PLL_Format_Util {
+class LMAT_Format_Util {
 	/**
 	 * Cache for regex patterns.
 	 * Useful when using `filter_list()` for example.

@@ -1,75 +1,75 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
- * Main Polylang class when on frontend, accessible from @see PLL().
+ * Main Linguator class when on frontend, accessible from @see LMAT().
  *
  * @since 1.2
  */
-class PLL_Frontend extends PLL_Base {
+class LMAT_Frontend extends LMAT_Base {
 	/**
 	 * Current language.
 	 *
-	 * @var PLL_Language|null
+	 * @var LMAT_Language|null
 	 */
 	public $curlang;
 
 	/**
-	 * @var PLL_Frontend_Auto_Translate|null
+	 * @var LMAT_Frontend_Auto_Translate|null
 	 */
 	public $auto_translate;
 
 	/**
 	 * The class selecting the current language.
 	 *
-	 * @var PLL_Choose_Lang|null
+	 * @var LMAT_Choose_Lang|null
 	 */
 	public $choose_lang;
 
 	/**
-	 * @var PLL_Frontend_Filters|null
+	 * @var LMAT_Frontend_Filters|null
 	 */
 	public $filters;
 
 	/**
-	 * @var PLL_Frontend_Filters_Links|null
+	 * @var LMAT_Frontend_Filters_Links|null
 	 */
 	public $filters_links;
 
 	/**
-	 * @var PLL_Frontend_Filters_Search|null
+	 * @var LMAT_Frontend_Filters_Search|null
 	 */
 	public $filters_search;
 
 	/**
-	 * @var PLL_Frontend_Links|null
+	 * @var LMAT_Frontend_Links|null
 	 */
 	public $links;
 
 	/**
-	 * @var PLL_Default_Term|null
+	 * @var LMAT_Default_Term|null
 	 */
 	public $default_term;
 
 	/**
-	 * @var PLL_Frontend_Nav_Menu|null
+	 * @var LMAT_Frontend_Nav_Menu|null
 	 */
 	public $nav_menu;
 
 	/**
-	 * @var PLL_Frontend_Static_Pages|null
+	 * @var LMAT_Frontend_Static_Pages|null
 	 */
 	public $static_pages;
 
 	/**
-	 * @var PLL_Frontend_Filters_Widgets|null
+	 * @var LMAT_Frontend_Filters_Widgets|null
 	 */
 	public $filters_widgets;
 
 	/**
-	 * @var PLL_Canonical
+	 * @var LMAT_Canonical
 	 */
 	public $canonical;
 
@@ -78,12 +78,12 @@ class PLL_Frontend extends PLL_Base {
 	 *
 	 * @since 1.2
 	 *
-	 * @param PLL_Links_Model $links_model Reference to the links model.
+	 * @param LMAT_Links_Model $links_model Reference to the links model.
 	 */
 	public function __construct( &$links_model ) {
 		parent::__construct( $links_model );
 
-		add_action( 'pll_language_defined', array( $this, 'pll_language_defined' ), 1 );
+		add_action( 'lmat_language_defined', array( $this, 'lmat_language_defined' ), 1 );
 
 		// Avoids the language being the queried object when querying multiple taxonomies
 		add_action( 'parse_tax_query', array( $this, 'parse_tax_query' ), 1 );
@@ -92,7 +92,7 @@ class PLL_Frontend extends PLL_Base {
 		add_action( 'parse_query', array( $this, 'parse_query' ), 6 );
 
 		// Not before 'check_canonical_url'
-		if ( ! defined( 'PLL_AUTO_TRANSLATE' ) || PLL_AUTO_TRANSLATE ) {
+		if ( ! defined( 'LMAT_AUTO_TRANSLATE' ) || LMAT_AUTO_TRANSLATE ) {
 			add_action( 'template_redirect', array( $this, 'auto_translate' ), 7 );
 		}
 
@@ -105,7 +105,7 @@ class PLL_Frontend extends PLL_Base {
 		 * Also loaded in customizer preview, directly reading the request as we act before WP.
 		 */
 		if ( 'page' === get_option( 'show_on_front' ) || ( isset( $_REQUEST['wp_customize'] ) && 'on' === $_REQUEST['wp_customize'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			$this->static_pages = new PLL_Frontend_Static_Pages( $this );
+			$this->static_pages = new LMAT_Frontend_Static_Pages( $this );
 		}
 
 		$this->model->set_languages_ready();
@@ -119,19 +119,19 @@ class PLL_Frontend extends PLL_Base {
 	public function init() {
 		parent::init();
 
-		$this->links = new PLL_Frontend_Links( $this );
+		$this->links = new LMAT_Frontend_Links( $this );
 
-		$this->default_term = new PLL_Default_Term( $this );
+		$this->default_term = new LMAT_Default_Term( $this );
 		$this->default_term->add_hooks();
 
 		// Setup the language chooser
 		$c = array( 'Content', 'Url', 'Url', 'Domain' );
-		$class = 'PLL_Choose_Lang_' . $c[ $this->options['force_lang'] ];
+		$class = 'LMAT_Choose_Lang_' . $c[ $this->options['force_lang'] ];
 		$this->choose_lang = new $class( $this );
 		$this->choose_lang->init();
 
 		// Need to load nav menu class early to correctly define the locations in the customizer when the language is set from the content
-		$this->nav_menu = new PLL_Frontend_Nav_Menu( $this );
+		$this->nav_menu = new LMAT_Frontend_Nav_Menu( $this );
 	}
 
 	/**
@@ -141,23 +141,23 @@ class PLL_Frontend extends PLL_Base {
 	 *
 	 * @return void
 	 */
-	public function pll_language_defined() {
+	public function lmat_language_defined() {
 		// Filters
-		$this->filters_links = new PLL_Frontend_Filters_Links( $this );
-		$this->filters = new PLL_Frontend_Filters( $this );
-		$this->filters_search = new PLL_Frontend_Filters_Search( $this );
-		$this->filters_widgets = new PLL_Frontend_Filters_Widgets( $this );
+		$this->filters_links = new LMAT_Frontend_Filters_Links( $this );
+		$this->filters = new LMAT_Frontend_Filters( $this );
+		$this->filters_search = new LMAT_Frontend_Filters_Search( $this );
+		$this->filters_widgets = new LMAT_Frontend_Filters_Widgets( $this );
 
 		/*
 		 * Redirects to canonical url before WordPress redirect_canonical
 		 * but after Nextgen Gallery which hacks $_SERVER['REQUEST_URI'] !!!
 		 * and restores it in 'template_redirect' with priority 1.
 		 */
-		$this->canonical = new PLL_Canonical( $this );
+		$this->canonical = new LMAT_Canonical( $this );
 		add_action( 'template_redirect', array( $this->canonical, 'check_canonical_url' ), 4 );
 
 		// Auto translate for Ajax
-		if ( ( ! defined( 'PLL_AUTO_TRANSLATE' ) || PLL_AUTO_TRANSLATE ) && wp_doing_ajax() ) {
+		if ( ( ! defined( 'LMAT_AUTO_TRANSLATE' ) || LMAT_AUTO_TRANSLATE ) && wp_doing_ajax() ) {
 			$this->auto_translate();
 		}
 	}
@@ -171,8 +171,8 @@ class PLL_Frontend extends PLL_Base {
 	 * @return void
 	 */
 	public function parse_tax_query( $query ) {
-		$pll_query = new PLL_Query( $query, $this->model );
-		$queried_taxonomies = $pll_query->get_queried_taxonomies();
+		$lmat_query = new LMAT_Query( $query, $this->model );
+		$queried_taxonomies = $lmat_query->get_queried_taxonomies();
 
 		if ( ! empty( $queried_taxonomies ) && 'language' == reset( $queried_taxonomies ) ) {
 			$query->tax_query->queried_terms['language'] = array_shift( $query->tax_query->queried_terms );
@@ -189,12 +189,12 @@ class PLL_Frontend extends PLL_Base {
 	 */
 	public function parse_query( $query ) {
 		$qv = $query->query_vars;
-		$pll_query = new PLL_Query( $query, $this->model );
-		$taxonomies = $pll_query->get_queried_taxonomies();
+		$lmat_query = new LMAT_Query( $query, $this->model );
+		$taxonomies = $lmat_query->get_queried_taxonomies();
 
 		// Allow filtering recent posts and secondary queries by the current language
 		if ( ! empty( $this->curlang ) ) {
-			$pll_query->filter_query( $this->curlang );
+			$lmat_query->filter_query( $this->curlang );
 		}
 
 		// Modifies query vars when the language is queried
@@ -230,7 +230,7 @@ class PLL_Frontend extends PLL_Base {
 	 * @return void
 	 */
 	public function auto_translate() {
-		$this->auto_translate = new PLL_Frontend_Auto_Translate( $this );
+		$this->auto_translate = new LMAT_Frontend_Auto_Translate( $this );
 	}
 
 	/**
@@ -252,7 +252,7 @@ class PLL_Frontend extends PLL_Base {
 		parent::switch_blog( $new_blog_id, $prev_blog_id );
 
 		// Need to check that some languages are defined when user is logged in, has several blogs, some without any languages.
-		if ( ! $this->is_active_on_current_site() || ! $this->model->has_languages() || ! did_action( 'pll_language_defined' ) ) {
+		if ( ! $this->is_active_on_current_site() || ! $this->model->has_languages() || ! did_action( 'lmat_language_defined' ) ) {
 			return;
 		}
 
@@ -280,8 +280,8 @@ class PLL_Frontend extends PLL_Base {
 	 * Remove the customize admin bar on front-end when using a block theme.
 	 *
 	 * WordPress removes the Customizer menu if a block theme is activated and no other plugins interact with it.
-	 * As Polylang interacts with the Customizer, we have to delete this menu ourselves in the case of a block theme,
-	 * unless another plugin than Polylang interacts with the Customizer.
+	 * As Linguator interacts with the Customizer, we have to delete this menu ourselves in the case of a block theme,
+	 * unless another plugin than Linguator interacts with the Customizer.
 	 *
 	 * @since 3.2
 	 *

@@ -1,13 +1,13 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
-namespace WP_Syntex\Polylang\Options;
+namespace WP_Syntex\Linguator\Options;
 
 use WP_Error;
 use WP_Term;
-use WP_Syntex\Polylang\Options\Options;
+use WP_Syntex\Linguator\Options\Options;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -257,14 +257,14 @@ abstract class Abstract_Option {
 	protected function add_unknown_languages_warning( array $language_slugs ): void {
 		if ( 1 === count( $language_slugs ) ) {
 			/* translators: %s is a language slug. */
-			$message = __( 'The language %s is unknown and has been discarded.', 'polylang' );
+			$message = __( 'The language %s is unknown and has been discarded.', 'linguator' );
 		} else {
 			/* translators: %s is a list of language slugs. */
-			$message = __( 'The languages %s are unknown and have been discarded.', 'polylang' );
+			$message = __( 'The languages %s are unknown and have been discarded.', 'linguator' );
 		}
 
 		$this->errors->add(
-			sprintf( 'pll_unknown_%s_languages', static::key() ),
+			sprintf( 'lmat_unknown_%s_languages', static::key() ),
 			sprintf(
 				$message,
 				wp_sprintf_l(

@@ -1,6 +1,6 @@
-=== Polylang ===
+=== Linguator ===
 Contributors: Chouby, manooweb, raaaahman, marianne38, sebastienserre, greglone, hugod
-Donate link: https://polylang.pro
+Donate link: https://linguator.pro
 Tags: multilingual, translate, translation, language, localization
 Requires at least: 6.2
 Tested up to: 6.8
@@ -13,16 +13,16 @@ Go multilingual in a simple and efficient way. Keep writing posts and taxonomy t
 
 == Description ==
 
-With Polylang fully integrated to WordPress and using only its built-in core features (taxonomies), keep steady performances on your site and create a multilingual site featuring from just one extra language to 10 or more depending on your needs. There is no limit in the number of languages added and WordPress’ language packs are automatically downloaded when ready.
+With Linguator fully integrated to WordPress and using only its built-in core features (taxonomies), keep steady performances on your site and create a multilingual site featuring from just one extra language to 10 or more depending on your needs. There is no limit in the number of languages added and WordPress’ language packs are automatically downloaded when ready.
 
 = Features =
 
 Depending on the type of site you have built or are planning to build, a combination of plugins from the list below might be of interest.
 All plugins include a wizard allowing to setup them in just a few clicks.
 
-### Polylang
+### Linguator
 
-Polylang and [Polylang Pro](https://polylang.pro) share the same core providing features such as:
+Linguator and [Linguator Pro](https://linguator.pro) share the same core providing features such as:
 
 * Translating posts, pages, media, categories, post tags, custom post types and taxonomies, RSS feeds; RTL scripts are supported.
 * The language is either set by the language code in URL, or you can use a different sub-domain or domain per language.
@@ -31,7 +31,7 @@ Polylang and [Polylang Pro](https://polylang.pro) share the same core providing 
 * Customizable language switcher available as a classic widget or a classic navigation menu item.
 * Compatibility with Yoast SEO.
 
-### Polylang Pro
+### Linguator Pro
 
 Helps optimizing the time spent translating your site with some very useful extra features such as:
 
@@ -40,62 +40,62 @@ Helps optimizing the time spent translating your site with some very useful extr
 * Language options available in the widget block editor.
 * Template parts translatable in the site editor (FSE).
 * Duplicate and/or synchronize content across post translations.
-* Improved compatibility with other plugins such as [ACF Pro](https://polylang.pro/doc/working-with-acf-pro/).
+* Improved compatibility with other plugins such as [ACF Pro](https://linguator.pro/doc/working-with-acf-pro/).
 * Share the same URL slug for posts or terms across languages.
-* [Translate URL slugs](https://polylang.pro/doc/translating-urls-slugs/) for categories, author bases, custom post types and more...
+* [Translate URL slugs](https://linguator.pro/doc/translating-urls-slugs/) for categories, author bases, custom post types and more...
 * Machine translation with DeepL.
 * Export and import of content in XLIFF format for outsourced professional translation.
 * **Access to a Premium Support for personalized assistance.**
 
-### Polylang for WooCommerce
+### Linguator for WooCommerce
 
-[Add-on](https://polylang.pro/downloads/polylang-for-woocommerce/) for the compatibility with WooCommerce which provides features such as:
+[Add-on](https://linguator.pro/downloads/linguator-for-woocommerce/) for the compatibility with WooCommerce which provides features such as:
 
 * Translating WooCommerce pages (shop, check-out, cart, my account), product categories and global attribute terms directly in the WooCommerce interface.
 * Translating WooCommerce e-mails and sending them to customers in their language.
 * Products metadata synchronization.
 * Compatibility with the native WooCommerce CSV import & export tool.
 * Compatibility with popular plugins such as WooCommerce Subscriptions, Product Bundles, WooCommerce Bookings, Shipment Tracking and more.
-* Ability to use the WooCommerce REST API (available with Polylang Pro).
+* Ability to use the WooCommerce REST API (available with Linguator Pro).
 * **Access to a Premium Support for personalized assistance.**
 
 = Our other free plugins =
 
-* [WPML to Polylang](https://wordpress.org/plugins/wpml-to-polylang/) allows migrating from WPML to Polylang.
-* [Site Editor Classic Features](https://wordpress.org/plugins/fse-classic/) allows to use classic widgets (including the Polylang language switcher) and menus in the site editor (FSE).
+* [WPML to Linguator](https://wordpress.org/plugins/wpml-to-linguator/) allows migrating from WPML to Linguator.
+* [Site Editor Classic Features](https://wordpress.org/plugins/fse-classic/) allows to use classic widgets (including the Linguator language switcher) and menus in the site editor (FSE).
 
 = Credits =
 
-Thanks a lot to all translators who [help translating Polylang](https://translate.wordpress.org/projects/wp-plugins/polylang).
+Thanks a lot to all translators who [help translating Linguator](https://translate.wordpress.org/projects/wp-plugins/linguator).
 Thanks a lot to [Alex Lopez](http://www.alexlopez.rocks/) for the design of the logo.
-Most of the flags included with Polylang are coming from [famfamfam](http://famfamfam.com/) and are public domain.
+Most of the flags included with Linguator are coming from [famfamfam](http://famfamfam.com/) and are public domain.
 Wherever third party code has been used, credit has been given in the code’s comments.
 
 == Installation ==
 
 1. Make sure you are using WordPress 6.2 or later and that your server is running PHP 7.2 or later (same requirement as WordPress itself).
-1. If you tried other multilingual plugins, deactivate them before activating Polylang, otherwise, you may get unexpected results!
+1. If you tried other multilingual plugins, deactivate them before activating Linguator, otherwise, you may get unexpected results!
 1. Install and activate the plugin as usual from the 'Plugins' menu in WordPress.
-1. The [setup wizard](https://polylang.pro/doc/setup-wizard/) is automatically launched to help you get started more easily with Polylang by configuring the main features.
+1. The [setup wizard](https://linguator.pro/doc/setup-wizard/) is automatically launched to help you get started more easily with Linguator by configuring the main features.
 
 == Frequently Asked Questions ==
 
 = Where to find help ? =
 
-* First time users should read [Polylang - Getting started](https://polylang.pro/doc-category/getting-started/), which explains the basics and includes a lot of screenshots.
-* Read the [documentation](https://polylang.pro/doc/). It includes a [FAQ](https://polylang.pro/doc-category/faq/) and the [documentation for developers](https://polylang.pro/doc-category/developers/).
+* First time users should read [Linguator - Getting started](https://linguator.pro/doc-category/getting-started/), which explains the basics and includes a lot of screenshots.
+* Read the [documentation](https://linguator.pro/doc/). It includes a [FAQ](https://linguator.pro/doc-category/faq/) and the [documentation for developers](https://linguator.pro/doc-category/developers/).
 * Search the [community support forum](https://wordpress.org/search/). You will probably find your answers here.
-* Read the sticky posts in the [community support forum](http://wordpress.org/support/plugin/polylang).
-* If you still have a problem, open a new thread in the [community support forum](http://wordpress.org/support/plugin/polylang).
-* [Polylang Pro and Polylang for WooCommerce](https://polylang.pro) users have access to our premium support through helpdesk.
+* Read the sticky posts in the [community support forum](http://wordpress.org/support/plugin/linguator).
+* If you still have a problem, open a new thread in the [community support forum](http://wordpress.org/support/plugin/linguator).
+* [Linguator Pro and Linguator for WooCommerce](https://linguator.pro) users have access to our premium support through helpdesk.
 
-= Is Polylang compatible with WooCommerce? =
+= Is Linguator compatible with WooCommerce? =
 
-* You need [Polylang for WooCommerce](https://polylang.pro/downloads/polylang-for-woocommerce/), premium addon described above, which will make both plugins work together.
+* You need [Linguator for WooCommerce](https://linguator.pro/downloads/linguator-for-woocommerce/), premium addon described above, which will make both plugins work together.
 
 == Screenshots ==
 
-1. The Polylang languages admin panel
+1. The Linguator languages admin panel
 2. The Strings translations admin panel
 3. Multilingual media library
 4. The Edit Post screen with the Languages metabox
@@ -138,12 +138,12 @@ Wherever third party code has been used, credit has been given in the code’s c
 
 * Requires PHP 7.2 as minimum version
 * Pro: Add DeepL machine translation for strings
-* Pro: Consider Polylang Pro as equivalent to Polylang for plugin dependencies
+* Pro: Consider Linguator Pro as equivalent to Linguator for plugin dependencies
 * Pro: Add the details block and several labels in other blocks to XLIFF files and machine translation
 * Pro: Allow to translate metas stored as objects
 * Pro: Enhanced multilingual support of archive template hierarchy
 * Pro: Wrap the language switcher block in a nav tag
-* Pro: Support automatic IDs translation in blocks with new filters `pll_sync_block_rules_for_attributes` and `pll_sync_blocks_xpath_rules`
+* Pro: Support automatic IDs translation in blocks with new filters `lmat_sync_block_rules_for_attributes` and `lmat_sync_blocks_xpath_rules`
 * Pro: Complete rewrite of ACF integration
 * Pro: Add support for ACF blocks, post types and taxonomies.
 * Pro: Remove the possibility to translate ACF field groups
@@ -171,4 +171,4 @@ Wherever third party code has been used, credit has been given in the code’s c
 * Fix home link block not translated #1647
 * Fix a conflict with WooCommerce Price Based on Country #1638
 
-See [changelog.txt](https://plugins.svn.wordpress.org/polylang/trunk/changelog.txt) for older changelog
+See [changelog.txt](https://plugins.svn.wordpress.org/linguator/trunk/changelog.txt) for older changelog

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -9,7 +9,7 @@
  * @since 1.2
  */
 #[AllowDynamicProperties]
-abstract class PLL_Base {
+abstract class LMAT_Base {
 	/**
 	 * Stores the plugin options.
 	 *
@@ -18,28 +18,28 @@ abstract class PLL_Base {
 	public $options;
 
 	/**
-	 * @var PLL_Model
+	 * @var LMAT_Model
 	 */
 	public $model;
 
 	/**
-	 * Instance of a child class of PLL_Links_Model.
+	 * Instance of a child class of LMAT_Links_Model.
 	 *
-	 * @var PLL_Links_Model
+	 * @var LMAT_Links_Model
 	 */
 	public $links_model;
 
 	/**
 	 * Registers hooks on insert / update post related actions and filters.
 	 *
-	 * @var PLL_CRUD_Posts|null
+	 * @var LMAT_CRUD_Posts|null
 	 */
 	public $posts;
 
 	/**
 	 * Registers hooks on insert / update term related action and filters.
 	 *
-	 * @var PLL_CRUD_Terms|null
+	 * @var LMAT_CRUD_Terms|null
 	 */
 	public $terms;
 
@@ -48,19 +48,19 @@ abstract class PLL_Base {
 	 *
 	 * @since 1.2
 	 *
-	 * @param PLL_Links_Model $links_model Links Model.
+	 * @param LMAT_Links_Model $links_model Links Model.
 	 */
 	public function __construct( &$links_model ) {
 		$this->links_model = &$links_model;
 		$this->model = &$links_model->model;
 		$this->options = &$this->model->options;
 
-		$GLOBALS['l10n_unloaded']['pll_string'] = true; // Short-circuit _load_textdomain_just_in_time() for 'pll_string' domain in WP 4.6+
+		$GLOBALS['l10n_unloaded']['lmat_string'] = true; // Short-circuit _load_textdomain_just_in_time() for 'lmat_string' domain in WP 4.6+
 
 		add_action( 'widgets_init', array( $this, 'widgets_init' ) );
 
 		// User defined strings translations
-		add_action( 'pll_language_defined', array( $this, 'load_strings_translations' ), 5 );
+		add_action( 'lmat_language_defined', array( $this, 'load_strings_translations' ), 5 );
 		add_action( 'change_locale', array( $this, 'load_strings_translations' ) ); // Since WP 4.7
 		add_action( 'personal_options_update', array( $this, 'load_strings_translations' ), 1, 0 ); // Before WP, for confirmation request when changing the user email.
 		add_action( 'lostpassword_post', array( $this, 'load_strings_translations' ), 10, 0 ); // Password reset email.
@@ -78,14 +78,14 @@ abstract class PLL_Base {
 	 */
 	public function init() {
 		if ( $this->model->has_languages() ) {
-			$this->posts = new PLL_CRUD_Posts( $this );
-			$this->terms = new PLL_CRUD_Terms( $this );
+			$this->posts = new LMAT_CRUD_Posts( $this );
+			$this->terms = new LMAT_CRUD_Terms( $this );
 
 			// WordPress options.
-			new PLL_Translate_Option( 'blogname', array(), array( 'context' => 'WordPress' ) );
-			new PLL_Translate_Option( 'blogdescription', array(), array( 'context' => 'WordPress' ) );
-			new PLL_Translate_Option( 'date_format', array(), array( 'context' => 'WordPress' ) );
-			new PLL_Translate_Option( 'time_format', array(), array( 'context' => 'WordPress' ) );
+			new LMAT_Translate_Option( 'blogname', array(), array( 'context' => 'WordPress' ) );
+			new LMAT_Translate_Option( 'blogdescription', array(), array( 'context' => 'WordPress' ) );
+			new LMAT_Translate_Option( 'date_format', array(), array( 'context' => 'WordPress' ) );
+			new LMAT_Translate_Option( 'time_format', array(), array( 'context' => 'WordPress' ) );
 		}
 	}
 
@@ -97,12 +97,12 @@ abstract class PLL_Base {
 	 * @return void
 	 */
 	public function widgets_init() {
-		register_widget( 'PLL_Widget_Languages' );
+		register_widget( 'LMAT_Widget_Languages' );
 
 		// Overwrites the calendar widget to filter posts by language
-		if ( ! defined( 'PLL_WIDGET_CALENDAR' ) || PLL_WIDGET_CALENDAR ) {
+		if ( ! defined( 'LMAT_WIDGET_CALENDAR' ) || LMAT_WIDGET_CALENDAR ) {
 			unregister_widget( 'WP_Widget_Calendar' );
-			register_widget( 'PLL_Widget_Calendar' );
+			register_widget( 'LMAT_Widget_Calendar' );
 		}
 	}
 
@@ -117,23 +117,23 @@ abstract class PLL_Base {
 	 */
 	public function load_strings_translations( $locale = '' ) {
 		if ( empty( $locale ) ) {
-			$locale = ( is_admin() && ! Polylang::is_ajax_on_front() ) ? get_user_locale() : get_locale();
+			$locale = ( is_admin() && ! Linguator::is_ajax_on_front() ) ? get_user_locale() : get_locale();
 		}
 
 		$language = $this->model->get_language( $locale );
 
 		if ( ! empty( $language ) ) {
-			$mo = new PLL_MO();
+			$mo = new LMAT_MO();
 			$mo->import_from_db( $language );
-			$GLOBALS['l10n']['pll_string'] = &$mo;
+			$GLOBALS['l10n']['lmat_string'] = &$mo;
 		} else {
-			unset( $GLOBALS['l10n']['pll_string'] );
+			unset( $GLOBALS['l10n']['lmat_string'] );
 		}
 	}
 
 	/**
 	 * Resets some variables when the blog is switched.
-	 * Applied only if Polylang is active on the new blog.
+	 * Applied only if Linguator is active on the new blog.
 	 *
 	 * @since 1.5.1
 	 *
@@ -155,14 +155,14 @@ abstract class PLL_Base {
 	}
 
 	/**
-	 * Checks if Polylang is active on the current blog (useful when the blog is switched).
+	 * Checks if Linguator is active on the current blog (useful when the blog is switched).
 	 *
 	 * @since 3.5.2
 	 *
 	 * @return bool
 	 */
 	protected function is_active_on_current_site(): bool {
-		return pll_is_plugin_active( POLYLANG_BASENAME ) && ! empty( $this->options['version'] );
+		return lmat_is_plugin_active( LINGUATOR_BASENAME ) && ! empty( $this->options['version'] );
 	}
 
 	/**
@@ -182,13 +182,13 @@ abstract class PLL_Base {
 	}
 
 	/**
-	 * Tells whether or not Polylang or third party callbacks are hooked to `customize_register`.
+	 * Tells whether or not Linguator or third party callbacks are hooked to `customize_register`.
 	 *
 	 * @since 3.4.3
 	 *
 	 * @global $wp_filter
 	 *
-	 * @return bool True if Polylang's callbacks are hooked, false otherwise.
+	 * @return bool True if Linguator's callbacks are hooked, false otherwise.
 	 */
 	protected function is_customize_register_hooked() {
 		global $wp_filter;
@@ -199,8 +199,8 @@ abstract class PLL_Base {
 
 		/*
 		 * 'customize_register' is hooked by:
-		 * @see PLL_Nav_Menu::create_nav_menu_locations()
-		 * @see PLL_Frontend_Static_Pages::filter_customizer()
+		 * @see LMAT_Nav_Menu::create_nav_menu_locations()
+		 * @see LMAT_Frontend_Static_Pages::filter_customizer()
 		 */
 		$floor = 0;
 		if ( ! empty( $this->nav_menu ) && (bool) $wp_filter['customize_register']->has_filter( 'customize_register', array( $this->nav_menu, 'create_nav_menu_locations' ) ) ) {

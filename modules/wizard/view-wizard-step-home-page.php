@@ -2,15 +2,15 @@
 /**
  * Displays the wizard home page step
  *
- * @package Polylang
+ * @package Linguator
  *
  * @since 2.7
  *
- * @var PLL_Model      $model                  `PLL_Model` instance.
+ * @var LMAT_Model      $model                  `LMAT_Model` instance.
  * @var WP_Post        $home_page              Home page defined in WordPress options.
- * @var PLL_Language   $home_page_language     Home page language if already assigned.
+ * @var LMAT_Language   $home_page_language     Home page language if already assigned.
  * @var int[]          $translations           Ids of home page translations.
- * @var PLL_Language[] $untranslated_languages List of languages in which the home page isn't translated.
+ * @var LMAT_Language[] $untranslated_languages List of languages in which the home page isn't translated.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -19,12 +19,12 @@ defined( 'ABSPATH' ) || exit;
 <input type="hidden" name="home_page" value="<?php echo esc_attr( (string) $home_page->ID ); ?>" />
 <input type="hidden" name="home_page_title" value="<?php echo esc_attr( $home_page->post_title ); ?>" />
 <input type="hidden" name="home_page_language" value="<?php echo esc_attr( $home_page_language->slug ); ?>" />
-<h2><?php esc_html_e( 'Homepage', 'polylang' ); ?></h2>
+<h2><?php esc_html_e( 'Homepage', 'linguator' ); ?></h2>
 <p>
 	<?php
 		printf(
 			/* translators: %s is the post title of the front page */
-			esc_html__( 'You defined this page as your static homepage: %s.', 'polylang' ),
+			esc_html__( 'You defined this page as your static homepage: %s.', 'linguator' ),
 			'<strong>' . esc_html( $home_page->post_title ) . '</strong>'
 		);
 		?>
@@ -32,21 +32,21 @@ defined( 'ABSPATH' ) || exit;
 	<?php
 		printf(
 			/* translators: %s is the language of the front page ( flag, native name and locale ) */
-			esc_html__( 'Its language is : %s.', 'polylang' ),
+			esc_html__( 'Its language is : %s.', 'linguator' ),
 			$home_page_language->flag . ' <strong>' . esc_html( $home_page_language->name ) . ' ' . esc_html( $home_page_language->locale ) . '</strong>' //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		);
 		?>
 	<br />
-	<?php esc_html_e( 'For your site to work correctly, this page must be translated in all available languages.', 'polylang' ); ?>
+	<?php esc_html_e( 'For your site to work correctly, this page must be translated in all available languages.', 'linguator' ); ?>
 </p>
 <p>
-	<?php esc_html_e( 'After the pages is created, it is up to you to put the translated content in each page linked to each language.', 'polylang' ); ?>
+	<?php esc_html_e( 'After the pages is created, it is up to you to put the translated content in each page linked to each language.', 'linguator' ); ?>
 </p>
 <?php if ( $translations ) : ?>
 <table id="translated-languages" class="striped">
 	<thead>
 		<tr>
-			<th><?php esc_html_e( 'Your static homepage is already translated in', 'polylang' ); ?></th>
+			<th><?php esc_html_e( 'Your static homepage is already translated in', 'linguator' ); ?></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -66,7 +66,7 @@ defined( 'ABSPATH' ) || exit;
 				<?php if ( $language->is_default ) : ?>
 					<span class="icon-default-lang">
 						<span class="screen-reader-text">
-							<?php esc_html_e( 'Default language', 'polylang' ); ?>
+							<?php esc_html_e( 'Default language', 'linguator' ); ?>
 						</span>
 					</span>
 				<?php endif; ?>
@@ -80,21 +80,21 @@ defined( 'ABSPATH' ) || exit;
 </table>
 <?php endif; ?>
 <table id="untranslated-languages" class="striped">
-	<caption><span class="icon-default-lang"></span> <?php esc_html_e( 'Default language', 'polylang' ); ?></caption>
+	<caption><span class="icon-default-lang"></span> <?php esc_html_e( 'Default language', 'linguator' ); ?></caption>
 	<thead>
 		<?php if ( count( $untranslated_languages ) >= 1 ) : ?>
 			<tr>
-				<th><?php esc_html_e( 'We are going to prepare this page in', 'polylang' ); ?></th>
+				<th><?php esc_html_e( 'We are going to prepare this page in', 'linguator' ); ?></th>
 			</tr>
 		<?php else : ?>
 			<tr>
 				<th>
 					<span class="dashicons dashicons-info"></span>
-					<?php esc_html_e( 'One language is well defined and assigned to your home page.', 'polylang' ); ?>
+					<?php esc_html_e( 'One language is well defined and assigned to your home page.', 'linguator' ); ?>
 				</th>
 			</tr>
 			<tr>
-				<td><?php esc_html_e( "If you add a new language, don't forget to translate your homepage.", 'polylang' ); ?></td>
+				<td><?php esc_html_e( "If you add a new language, don't forget to translate your homepage.", 'linguator' ); ?></td>
 			</tr>
 		<?php endif; ?>
 	</thead>
@@ -111,7 +111,7 @@ defined( 'ABSPATH' ) || exit;
 				<?php if ( $lg->is_default ) : ?>
 					<span class="icon-default-lang">
 						<span class="screen-reader-text">
-							<?php esc_html_e( 'Default language', 'polylang' ); ?>
+							<?php esc_html_e( 'Default language', 'linguator' ); ?>
 						</span>
 					</span>
 				<?php endif; ?>

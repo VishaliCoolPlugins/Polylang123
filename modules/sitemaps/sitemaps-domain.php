@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,9 +8,9 @@
  *
  * @since 3.0
  */
-class PLL_Sitemaps_Domain extends PLL_Abstract_Sitemaps {
+class LMAT_Sitemaps_Domain extends LMAT_Abstract_Sitemaps {
 	/**
-	 * @var PLL_Links_Abstract_Domain
+	 * @var LMAT_Links_Abstract_Domain
 	 */
 	protected $links_model;
 
@@ -19,10 +19,10 @@ class PLL_Sitemaps_Domain extends PLL_Abstract_Sitemaps {
 	 *
 	 * @since 3.0
 	 *
-	 * @param object $polylang Main Polylang object.
+	 * @param object $linguator Main Linguator object.
 	 */
-	public function __construct( &$polylang ) {
-		$this->links_model = &$polylang->links_model;
+	public function __construct( &$linguator ) {
+		$this->links_model = &$linguator->links_model;
 	}
 
 	/**

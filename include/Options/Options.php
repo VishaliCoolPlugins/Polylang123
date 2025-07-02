@@ -1,20 +1,20 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
-namespace WP_Syntex\Polylang\Options;
+namespace WP_Syntex\Linguator\Options;
 
 use WP_Error;
 use ArrayAccess;
 use ArrayIterator;
 use IteratorAggregate;
-use WP_Syntex\Polylang\Options\Abstract_Option;
+use WP_Syntex\Linguator\Options\Abstract_Option;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Class that manages Polylang's options:
+ * Class that manages Linguator's options:
  * - Automatically stores the options into the database on `shutdown` if they have been modified.
  * - Behaves almost like an array, meaning only values can be get/set (implements `ArrayAccess`).
  * - Handles `switch_to_blog()`.
@@ -27,10 +27,10 @@ defined( 'ABSPATH' ) || exit;
  * @implements IteratorAggregate<non-empty-string, mixed>
  */
 class Options implements ArrayAccess, IteratorAggregate {
-	public const OPTION_NAME = 'polylang';
+	public const OPTION_NAME = 'linguator';
 
 	/**
-	 * Polylang's options, by blog ID.
+	 * Linguator's options, by blog ID.
 	 * Raw value if option is not registered yet, `Abstract_Option` instance otherwise.
 	 *
 	 * @var Abstract_Option[][]|mixed[][]
@@ -80,7 +80,7 @@ class Options implements ArrayAccess, IteratorAggregate {
 		// Handle options.
 		$this->init_options_for_current_blog();
 
-		add_filter( 'pre_update_option_polylang', array( $this, 'protect_wp_option_storage' ), 1 );
+		add_filter( 'pre_update_option_linguator', array( $this, 'protect_wp_option_storage' ), 1 );
 		add_action( 'switch_blog', array( $this, 'on_blog_switch' ), -1000 ); // Options must be ready early.
 		add_action( 'shutdown', array( $this, 'save_all' ), 1000 ); // Make sure to save options after everything.
 	}
@@ -149,7 +149,7 @@ class Options implements ArrayAccess, IteratorAggregate {
 			return;
 		}
 
-		if ( ! pll_is_plugin_active( POLYLANG_BASENAME ) && ! doing_action( 'activate_' . POLYLANG_BASENAME ) ) {
+		if ( ! lmat_is_plugin_active( LINGUATOR_BASENAME ) && ! doing_action( 'activate_' . LINGUATOR_BASENAME ) ) {
 			return;
 		}
 
@@ -215,7 +215,7 @@ class Options implements ArrayAccess, IteratorAggregate {
 		$options = get_option( self::OPTION_NAME, array() );
 
 		if ( is_array( $options ) ) {
-			// Preserve options that are not from Polylang.
+			// Preserve options that are not from Linguator.
 			$options = array_merge( $options, $this->get_all() );
 		} else {
 			$options = $this->get_all();
@@ -283,14 +283,14 @@ class Options implements ArrayAccess, IteratorAggregate {
 		// Merge all "unknown option" errors into a single error message.
 		if ( 1 === count( $values ) ) {
 			/* translators: %s is an option name. */
-			$message = __( 'Unknown option key %s.', 'polylang' );
+			$message = __( 'Unknown option key %s.', 'linguator' );
 		} else {
 			/* translators: %s is a list of option names. */
-			$message = __( 'Unknown option keys %s.', 'polylang' );
+			$message = __( 'Unknown option keys %s.', 'linguator' );
 		}
 
 		$errors->add(
-			'pll_unknown_option_keys',
+			'lmat_unknown_option_keys',
 			sprintf(
 				$message,
 				wp_sprintf_l(
@@ -335,7 +335,7 @@ class Options implements ArrayAccess, IteratorAggregate {
 		$this->schema[ $this->current_blog_id ] = array(
 			'$schema'              => 'http://json-schema.org/draft-04/schema#',
 			'title'                => static::OPTION_NAME,
-			'description'          => __( 'Polylang options', 'polylang' ),
+			'description'          => __( 'Linguator options', 'linguator' ),
 			'type'                 => 'object',
 			'properties'           => $properties,
 			'additionalProperties' => false,
@@ -390,7 +390,7 @@ class Options implements ArrayAccess, IteratorAggregate {
 	public function set( string $key, $value ): WP_Error {
 		if ( ! $this->has( $key ) ) {
 			/* translators: %s is the name of an option. */
-			return new WP_Error( 'pll_unknown_option_key', sprintf( __( 'Unknown option key %s.', 'polylang' ), "'$key'" ) );
+			return new WP_Error( 'lmat_unknown_option_key', sprintf( __( 'Unknown option key %s.', 'linguator' ), "'$key'" ) );
 		}
 
 		/** @var Abstract_Option */
@@ -564,6 +564,6 @@ class Options implements ArrayAccess, IteratorAggregate {
 		 * @param Options $options         Instance of the options.
 		 * @param int     $current_blog_id Current blog ID.
 		 */
-		do_action( 'pll_init_options_for_blog', $this, $this->current_blog_id );
+		do_action( 'lmat_init_options_for_blog', $this, $this->current_blog_id );
 	}
 }

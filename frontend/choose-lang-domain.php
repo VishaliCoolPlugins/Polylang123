@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,7 +8,7 @@
  *
  * @since 1.5
  */
-class PLL_Choose_Lang_Domain extends PLL_Choose_Lang_Url {
+class LMAT_Choose_Lang_Domain extends LMAT_Choose_Lang_Url {
 
 	/**
 	 * Don't set any language cookie
@@ -24,7 +24,7 @@ class PLL_Choose_Lang_Domain extends PLL_Choose_Lang_Url {
 	 *
 	 * @since 1.5
 	 *
-	 * @return PLL_Language
+	 * @return LMAT_Language
 	 */
 	public function get_preferred_language() {
 		return $this->model->get_language( $this->links_model->get_language_from_url() );
@@ -40,6 +40,6 @@ class PLL_Choose_Lang_Domain extends PLL_Choose_Lang_Url {
 	public function home_requested() {
 		$this->set_curlang_in_query( $GLOBALS['wp_query'] );
 		/** This action is documented in include/choose-lang.php */
-		do_action( 'pll_home_requested' );
+		do_action( 'lmat_home_requested' );
 	}
 }

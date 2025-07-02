@@ -2,7 +2,7 @@
 /**
  * Loads the integration with cache plugins.
  *
- * @package Polylang
+ * @package Linguator
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -12,8 +12,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 add_action(
 	'plugins_loaded',
 	function () {
-		if ( pll_is_cache_active() ) {
-			add_action( 'pll_init', array( PLL_Integrations::instance()->cache_compat = new PLL_Cache_Compat(), 'init' ) );
+		if ( lmat_is_cache_active() ) {
+			add_action( 'lmat_init', array( LMAT_Integrations::instance()->cache_compat = new LMAT_Cache_Compat(), 'init' ) );
 		}
 	},
 	0

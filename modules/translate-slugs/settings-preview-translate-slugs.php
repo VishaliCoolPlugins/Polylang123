@@ -1,15 +1,15 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
  * Class to advertize the Translate slugs module.
  *
  * @since 1.9
- * @since 3.1 Renamed from PLL_Settings_Translate_Slugs.
+ * @since 3.1 Renamed from LMAT_Settings_Translate_Slugs.
  */
-class PLL_Settings_Preview_Translate_Slugs extends PLL_Settings_Module {
+class LMAT_Settings_Preview_Translate_Slugs extends LMAT_Settings_Module {
 	/**
 	 * Stores the display order priority.
 	 *
@@ -22,7 +22,7 @@ class PLL_Settings_Preview_Translate_Slugs extends PLL_Settings_Module {
 	 *
 	 * @since 1.9
 	 *
-	 * @param PLL_Settings $polylang Polylang object.
+	 * @param LMAT_Settings $linguator Linguator object.
 	 * @param array        $args     Optional. Addition arguments.
 	 *
 	 * @phpstan-param array{
@@ -32,15 +32,15 @@ class PLL_Settings_Preview_Translate_Slugs extends PLL_Settings_Module {
 	 *   active_option?: non-falsy-string
 	 * } $args
 	 */
-	public function __construct( &$polylang, array $args = array() ) {
+	public function __construct( &$linguator, array $args = array() ) {
 		$default = array(
 			'module'        => 'translate-slugs',
-			'title'         => __( 'Translate slugs', 'polylang' ),
+			'title'         => __( 'Translate slugs', 'linguator' ),
 			'description'   => $this->get_description(),
 			'active_option' => 'preview',
 		);
 
-		parent::__construct( $polylang, array_merge( $default, $args ) );
+		parent::__construct( $linguator, array_merge( $default, $args ) );
 	}
 
 	/**
@@ -51,6 +51,6 @@ class PLL_Settings_Preview_Translate_Slugs extends PLL_Settings_Module {
 	 * @return string
 	 */
 	protected function get_description() {
-		return __( 'Allows to translate custom post types and taxonomies slugs in URLs.', 'polylang' );
+		return __( 'Allows to translate custom post types and taxonomies slugs in URLs.', 'linguator' );
 	}
 }

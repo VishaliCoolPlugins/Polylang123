@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Polylang
+ * @package Linguator
  */
 
 /**
@@ -8,7 +8,7 @@
  *
  * @since 2.4
  */
-class PLL_Featured_Content {
+class LMAT_Featured_Content {
 	/**
 	 * Constructor
 	 *
@@ -68,7 +68,7 @@ class PLL_Featured_Content {
 		}
 
 		// Get featured tag translations
-		$tags = PLL()->model->term->get_translations( $term->term_id );
+		$tags = LMAT()->model->term->get_translations( $term->term_id );
 		$ids = array();
 
 		// Query for featured posts in all languages
@@ -112,7 +112,7 @@ class PLL_Featured_Content {
 	 * @return array modified $settings
 	 */
 	public function option_featured_content( $settings ) {
-		if ( $this->is_active() && PLL() instanceof PLL_Frontend && $settings['tag-id'] && $tr = pll_get_term( $settings['tag-id'] ) ) {
+		if ( $this->is_active() && LMAT() instanceof LMAT_Frontend && $settings['tag-id'] && $tr = lmat_get_term( $settings['tag-id'] ) ) {
 			$settings['tag-id'] = $tr;
 		}
 
