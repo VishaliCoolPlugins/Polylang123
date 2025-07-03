@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

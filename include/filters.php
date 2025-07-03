@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -8,7 +8,7 @@
  *
  * @since 1.4
  */
-class LMAT_Filters {
+class PLL_Filters {
 	/**
 	 * Stores the plugin options.
 	 *
@@ -17,21 +17,21 @@ class LMAT_Filters {
 	public $options;
 
 	/**
-	 * @var LMAT_Model
+	 * @var PLL_Model
 	 */
 	public $model;
 
 	/**
-	 * Instance of a child class of LMAT_Links_Model.
+	 * Instance of a child class of PLL_Links_Model.
 	 *
-	 * @var LMAT_Links_Model
+	 * @var PLL_Links_Model
 	 */
 	public $links_model;
 
 	/**
 	 * Current language.
 	 *
-	 * @var LMAT_Language|null
+	 * @var PLL_Language|null
 	 */
 	public $curlang;
 
@@ -40,15 +40,15 @@ class LMAT_Filters {
 	 *
 	 * @since 1.4
 	 *
-	 * @param object $linguator The Linguator object.
+	 * @param object $polylang The Polylang object.
 	 */
-	public function __construct( &$linguator ) {
+	public function __construct( &$polylang ) {
 		global $wp_version;
 
-		$this->links_model = &$linguator->links_model;
-		$this->model = &$linguator->model;
-		$this->options = &$linguator->options;
-		$this->curlang = &$linguator->curlang;
+		$this->links_model = &$polylang->links_model;
+		$this->model = &$polylang->model;
+		$this->options = &$polylang->options;
+		$this->curlang = &$polylang->curlang;
 
 		// Deletes our cache for sticky posts when the list is updated.
 		add_action( 'update_option_sticky_posts', array( $this, 'delete_sticky_posts_cache' ) );
@@ -108,7 +108,7 @@ class LMAT_Filters {
 	 * @since 3.1 Always returns an array. Renamed from get_comments_queried_language().
 	 *
 	 * @param WP_Comment_Query $query WP_Comment_Query object.
-	 * @return LMAT_Language[] The languages to use in the filter.
+	 * @return PLL_Language[] The languages to use in the filter.
 	 */
 	protected function get_comments_queried_languages( $query ) {
 		// Don't filter comments if comment ids or post ids are specified.
@@ -154,7 +154,7 @@ class LMAT_Filters {
 		if ( ! empty( $lang ) ) {
 			$lang = wp_list_pluck( $lang, 'slug' );
 			$key = '_' . implode( ',', $lang );
-			$query->query_vars['cache_domain'] = empty( $query->query_vars['cache_domain'] ) ? 'lmat' . $key : $query->query_vars['cache_domain'] . $key;
+			$query->query_vars['cache_domain'] = empty( $query->query_vars['cache_domain'] ) ? 'pll' . $key : $query->query_vars['cache_domain'] . $key;
 		}
 	}
 
@@ -263,7 +263,7 @@ class LMAT_Filters {
 	 *
 	 * @since 3.2
 	 *
-	 * @param LMAT_Language $language The language to use in the relationship
+	 * @param PLL_Language $language The language to use in the relationship
 	 * @param string       $relation 'IN' or 'NOT IN'.
 	 * @param array        $args     Array of get_pages() arguments.
 	 * @return int[]
@@ -346,7 +346,7 @@ class LMAT_Filters {
 	 * @return string[] Translated email contents.
 	 */
 	public function translate_user_email( $email ) {
-		$blog_name = wp_specialchars_decode( lmat__( get_option( 'blogname' ) ), ENT_QUOTES );
+		$blog_name = wp_specialchars_decode( pll__( get_option( 'blogname' ) ), ENT_QUOTES );
 		$email['subject'] = sprintf( $email['subject'], $blog_name );
 		$email['message'] = str_replace( '###SITENAME###', $blog_name, $email['message'] );
 		return $email;
@@ -396,7 +396,7 @@ class LMAT_Filters {
 	 */
 	public function register_personal_data_exporter( $exporters ) {
 		$exporters[] = array(
-			'exporter_friendly_name' => __( 'Translated user descriptions', 'linguator' ),
+			'exporter_friendly_name' => __( 'Translated user descriptions', 'polylang' ),
 			'callback'               => array( $this, 'user_data_exporter' ),
 		);
 		return $exporters;
@@ -420,7 +420,7 @@ class LMAT_Filters {
 				if ( ! $lang->is_default && $value = get_user_meta( $user->ID, 'description_' . $lang->slug, true ) ) {
 					$user_data_to_export[] = array(
 						/* translators: %s is a language native name */
-						'name'  => sprintf( __( 'User description - %s', 'linguator' ), $lang->name ),
+						'name'  => sprintf( __( 'User description - %s', 'polylang' ), $lang->name ),
 						'value' => $value,
 					);
 				}
@@ -429,7 +429,7 @@ class LMAT_Filters {
 			if ( ! empty( $user_data_to_export ) ) {
 				$data_to_export[] = array(
 					'group_id'    => 'user',
-					'group_label' => __( 'User', 'linguator' ),
+					'group_label' => __( 'User', 'polylang' ),
 					'item_id'     => "user-{$user->ID}",
 					'data'        => $user_data_to_export,
 				);
@@ -444,7 +444,7 @@ class LMAT_Filters {
 
 	/**
 	 * Filters default query arguments for checking if a term exists.
-	 * In `term_exists()`, WP 6.0 uses `get_terms()`, which is filtered by language by Linguator.
+	 * In `term_exists()`, WP 6.0 uses `get_terms()`, which is filtered by language by Polylang.
 	 * This filter prevents `term_exists()` to be filtered by language.
 	 *
 	 * @since 3.2

@@ -7,7 +7,7 @@
 	margin: 0.35em 0 0.5em;
 }
 
-.lmat-legend {
+.pll-legend {
 	display: block;
 	padding: 2px 0;
 	color: #1d2327;
@@ -31,27 +31,27 @@
 }
 
 td.column-default_lang .icon-default-lang:before,
-.lmat-wizard-content .icon-default-lang:before {
+.pll-wizard-content .icon-default-lang:before {
 	font-family: 'dashicons';
 	content: "\f155";
 }
 
-.lmat-icon:before{
+.pll-icon:before{
 	display: inline-block;
 	text-align: left;
 	width: 15px;
 }
-.lmat-circle:before{
+.pll-circle:before{
 	content: "\25cf";
 }
 
-/* about Linguator metabox */
-#lmat-about-box p,
-#lmat-recommended p {
+/* about Polylang metabox */
+#pll-about-box p,
+#pll-recommended p {
 	text-align: justify;
 }
 
-#lmat-about-box input {
+#pll-about-box input {
 	margin: 0;
 	padding: 0;
 	float: right;
@@ -92,84 +92,84 @@ td.column-default_lang .icon-default-lang:before,
 }
 
 /* settings */
-.lmat-settings {
+.pll-settings {
 	margin-top: 20px;
 }
 
-.lmat-settings .plugin-title {
+.pll-settings .plugin-title {
 	width: 25%;
 }
 
-#wpbody-content .lmat-settings .lmat-configure tr {
+#wpbody-content .pll-settings .pll-configure tr {
 	display: table-row;
 }
 
-#wpbody-content .lmat-settings .lmat-configure td {
+#wpbody-content .pll-settings .pll-configure td {
 	display: table-cell;
 }
 
-#wpbody-content .lmat-settings .lmat-configure > td {
+#wpbody-content .pll-settings .pll-configure > td {
 	padding: 20px 20px 20px 40px;
 }
 
-.lmat-configure legend {
+.pll-configure legend {
 	font-size: 14px;
 	font-weight: 600;
 	margin-bottom: 0.5em;
 }
 
-.lmat-configure td .description {
+.pll-configure td .description {
 	margin-top: 2px;
 	margin-bottom: 0.5em;
 }
 
-.lmat-configure p.submit {
+.pll-configure p.submit {
 	margin-top: 20px;
 }
 
-.lmat-configure .button {
+.pll-configure .button {
 	margin-right: 20px;
 }
 
-.lmat-configure fieldset {
+.pll-configure fieldset {
 	margin-bottom: 1.5em;
 }
 
-.lmat-inline-block-list {
+.pll-inline-block-list {
 	margin: 0;
 }
 
-.lmat-inline-block-list li {
+.pll-inline-block-list li {
 	display: inline-block;
 	margin: 0;
 	width: 250px;
 }
 
 /* settings URL modifications */
-#lmat-domains-table td {
+#pll-domains-table td {
 	padding: 2px 2px 2px 1.5em;
 	-webkit-box-shadow: none;
 	box-shadow: none;
 	border: none;
 }
 
-.lmat-settings-url-col {
+.pll-settings-url-col {
 	display: inline-block;
 	width: 49%;
 	vertical-align: top;
 }
 
 /* settings Activation keys */
-.lmat-table-top td {
+.pll-table-top td {
 	vertical-align: top;
 }
 
-#lmat-licenses-table label {
+#pll-licenses-table label {
 	font-size: 1em;
 	font-weight: 600;
 }
 
-.lmat-configure .lmat-deactivate-license {
+.pll-configure .pll-deactivate-license {
 	margin: 0 0 0 20px;
 }
 
@@ -181,18 +181,18 @@ td.column-default_lang .icon-default-lang:before,
 }
 
 /* Text direction in post.php and edit-tags.php */
-.lmat-dir-rtl textarea,
-.lmat-dir-rtl input[type="text"] {
+.pll-dir-rtl textarea,
+.pll-dir-rtl input[type="text"] {
 	direction: rtl;
 }
 
-.lmat-dir-ltr textarea,
-.lmat-dir-ltr input[type="text"] {
+.pll-dir-ltr textarea,
+.pll-dir-ltr input[type="text"] {
 	direction: ltr;
 }
 
-.lmat-dir-ltr .tr_lang,
-.lmat-dir-rtl .tr_lang {
+.pll-dir-ltr .tr_lang,
+.pll-dir-rtl .tr_lang {
 	direction: inherit;
 }
 
@@ -220,8 +220,8 @@ td.column-default_lang .icon-default-lang:before,
 	text-decoration: none;
 }
 
-#post-translations .lmat-language-column,
-#post-translations .lmat-column-icon {
+#post-translations .pll-language-column,
+#post-translations .pll-column-icon {
 	width: 20px;
 }
 
@@ -241,38 +241,38 @@ td.column-default_lang .icon-default-lang:before,
 	width: auto;
 }
 
-#select-post-language .lmat-select-flag {
+#select-post-language .pll-select-flag {
 	padding: 4px;
 	margin-right: 10px;
 }
 
-.rtl #select-post-language .lmat-select-flag {
+.rtl #select-post-language .pll-select-flag {
     padding: 4px;
     margin-right: 0px;
     margin-left: 10px;
 }
 
 /* specific cases for media */
-#select-media-language .lmat-select-flag {
+#select-media-language .pll-select-flag {
 	padding: 4px;
 	margin-right: 10px;
 }
 
-.lmat-media-edit-column {
+.pll-media-edit-column {
 	float: right;
 }
 
 /* language and translations in edit-tags.php */
-.lmat-translation-flag { /* also for media */
+.pll-translation-flag { /* also for media */
 	margin-right: 14px;
 }
 
-#select-add-term-language .lmat-select-flag {
+#select-add-term-language .pll-select-flag {
 	padding: 11px;
 	margin-right: 13px;
 }
 
-#select-edit-term-language .lmat-select-flag {
+#select-edit-term-language .pll-select-flag {
 	padding: 11px;
 	margin-right: 4px;
 }
@@ -290,31 +290,31 @@ td.column-default_lang .icon-default-lang:before,
 	width: 95%;
 }
 
-#term-translations .lmat-language-column {
+#term-translations .pll-language-column {
 	line-height: 28px;
 	width: 20%;
 }
 
-#term-translations .lmat-edit-column,
-#add-term-translations .lmat-language-column {
+#term-translations .pll-edit-column,
+#add-term-translations .pll-language-column {
 	width: 20px;
 }
 
-#edit-term-translations .lmat-language-column {
+#edit-term-translations .pll-language-column {
 	padding: 15px 10px;
 	font-weight: normal;
 }
 
 /* icon fonts */
-.lmat_icon_add:before {
+.pll_icon_add:before {
 	content: "\f132";
 }
 
-.lmat_icon_edit:before {
+.pll_icon_edit:before {
 	content: "\f464";
 }
 
-[class^="lmat_icon_"] {
+[class^="pll_icon_"] {
 	font: 20px/1 'dashicons';
 	vertical-align: middle;
 }
@@ -334,54 +334,54 @@ td.column-default_lang .icon-default-lang:before,
 	top: 1px;
 }
 
-#wp-admin-bar-languages.lmat-filtered-languages {
+#wp-admin-bar-languages.pll-filtered-languages {
 	background: #a03f3f;
 }
 
-#wpadminbar #wp-admin-bar-languages.lmat-filtered-languages span.ab-label{ /* Enforce white color for WordPress admin light theme. */
+#wpadminbar #wp-admin-bar-languages.pll-filtered-languages span.ab-label{ /* Enforce white color for WordPress admin light theme. */
 		color: #fff;
 }
 
 /* Notices */
-.lmat-notice.notice {
+.pll-notice.notice {
 	padding-right: 38px;
 	position: relative;
 }
 
-.lmat-notice a.notice-dismiss {
+.pll-notice a.notice-dismiss {
 	text-decoration: none;
 }
 
-.lmat-notice .button {
+.pll-notice .button {
 	margin-right: 10px;
 }
 
 @media screen and ( max-width: 782px ) {
 	/* settings */
-	#wpbody-content .lmat-settings .lmat-configure > td {
+	#wpbody-content .pll-settings .pll-configure > td {
 		padding: 20px;
 	}
 
-	#wpbody-content .lmat-settings #cb {
+	#wpbody-content .pll-settings #cb {
 		padding: 20px 9px;
 	}
 
 	/* settings URL modifications */
-	.lmat-inline-block {
+	.pll-inline-block {
 		width: auto;
 	}
 
-	.lmat-settings-url-col {
+	.pll-settings-url-col {
 		display: block;
 		width: 100%;
 	}
 
 	/* settings licenses */
-	#wpbody-content .lmat-settings #lmat-licenses-table td {
+	#wpbody-content .pll-settings #pll-licenses-table td {
 		display: block;
 	}
 
-	.lmat-configure .lmat-deactivate-license {
+	.pll-configure .pll-deactivate-license {
 		margin: 10px 0 5px;
 	}
 
@@ -398,9 +398,9 @@ td.column-default_lang .icon-default-lang:before,
 	}
 
 	/* hide selected language flag and translations language name */
-	#select-add-term-language .lmat-select-flag,
-	#select-edit-term-language .lmat-select-flag,
-	#edit-term-translations .lmat-language-name {
+	#select-add-term-language .pll-select-flag,
+	#select-edit-term-language .pll-select-flag,
+	#edit-term-translations .pll-language-name {
 		display: none;
 	}
 
@@ -408,7 +408,7 @@ td.column-default_lang .icon-default-lang:before,
 		width: 100%;
 	}
 
-	#add-term-translations .lmat-language-column {
+	#add-term-translations .pll-language-column {
 		line-height: 38px;
 	}
 
@@ -416,15 +416,15 @@ td.column-default_lang .icon-default-lang:before,
 		padding: 8px 10px;
 	}
 
-	#edit-term-translations .lmat-language-column,
-	#edit-term-translations .lmat-edit-column {
+	#edit-term-translations .pll-language-column,
+	#edit-term-translations .pll-edit-column {
 		width: 20px;
 	}
 
 	/* translations tables should be kept as table */
-	.term-translations .lmat-language-column,
-	.term-translations .lmat-edit-column,
-	.term-translations .lmat-translation-column {
+	.term-translations .pll-language-column,
+	.term-translations .pll-edit-column,
+	.term-translations .pll-translation-column {
 		display: table-cell;
 	}
 

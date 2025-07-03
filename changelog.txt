@@ -36,7 +36,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Pro: Fix locale fallback for translations loaded just in time (requires WP 6.6)
 * Allow to pass an array as context to icl_register_string() #1497
 * Fix admin bar search menu in WP 6.6 #1496
-* Fix a regression in the usage of the filter lmat_flag #1489
+* Fix a regression in the usage of the filter pll_flag #1489
 
 = 3.6.2 (2024-06-03) =
 
@@ -69,7 +69,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Pro: Fix a race condition which could lead to display a notice to the wrong user
 * Pro: Fix a conflict with ACF when rewrite rules are flushed with WP-CLI on a multisite
 * Pro: Fix import of several metas with same sources but different translations
-* Add filter `lmat_cookie_args` to filter the Linguator cookie arguments #1406
+* Add filter `pll_cookie_args` to filter the Polylang cookie arguments #1406
 * Fix wrong translated post types and taxononies after a `switch_to_blog()` #1415
 * Fix a minor performance issue for the page for posts #1412
 * Fix a JS errors after quick edit. Props @mcguffin #1435, #1444
@@ -111,15 +111,15 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Pro: Manage pages translations in the site editor (requires WP 6.3)
 * Pro: Manage patterns translations in the site editor (requires WP 6.3)
 * Pro: Remove compatibility with the navigation screen removed from Gütenberg 15.1
-* Pro: Add filter 'lmat_export_post_fields' to control post fields exported to XLIFF files
-* Pro: Do not set default translation option to "translate" for ACF fields created before Linguator Pro is activated
-* Pro: Fix Linguator not set as recently active when automatically deactivated by Linguator Pro
+* Pro: Add filter 'pll_export_post_fields' to control post fields exported to XLIFF files
+* Pro: Do not set default translation option to "translate" for ACF fields created before Polylang Pro is activated
+* Pro: Fix Polylang not set as recently active when automatically deactivated by Polylang Pro
 * Don't output javascript type for themes supporting html5 #1332
 * Hook WP_Query automatic translation to 'parse_query' instead of 'pre_get_posts' #1339
 * Improve preload paths management for the block editor #1341
 * Fix rewrite rules in WP 6.4 #1345
 * Fix: always assign the default language to new posts and terms if no language is specified #1351
-* Fix 'linguator' option not correctly created when a new site is created on a multisite #1319
+* Fix 'polylang' option not correctly created when a new site is created on a multisite #1319
 * Fix front page display switched to "Your latest posts" when deleting a static home page translation #1311
 * Fix wrong language assigned to terms #1336
 * Fix error when updating a translated option while the blog is switched on a multisite #1342
@@ -134,14 +134,14 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Pro: Fix error in site editor with WP 6.3
 * Pro: Remove usage of block_core_navigation_submenu_build_css_colors() deprecated in WP 6.3
 * Pro: Fix categories and tags kept in old language after the language of a post has been changed
-* Add 'lmat_admin_ajax_params' filter #1326
+* Add 'pll_admin_ajax_params' filter #1326
 * Fix error when changing the language of a post and the post type doesn't support excerpts #1323
 
 = 3.4.4 (2023-07-18) =
 
 * Pro: Register a default (empty) value for the "lang" param when listing posts and terms in REST API
 * Pro: Fix categories list refresh when the language of a post is changed in the block editor
-* Pro: Fix store "lmat/metabox" is already registered
+* Pro: Fix store "pll/metabox" is already registered
 * Add Kirghiz to the predefined list of languages #1308
 * Fix incorrect flag url when WordPress is installed in a subfolder #1296
 * Fix wrong home page url in multisite #1300
@@ -183,9 +183,9 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Pro: Fix update compatibility with WP Umbrella
 * Refactor core to allow to easily translate contents stored in custom tables
 * Strings translations are now stored in a language term meta instead of post meta of specific post type #1209
-* Deprecate the filters `lmat_languages_list` and `lmat_after_languages_cache` #1210
-* Add a new property `LMAT_Language::$is_default` #1228
-* Add a custom admin body class `lmat-lang-{$language_code}` #1190
+* Deprecate the filters `pll_languages_list` and `pll_after_languages_cache` #1210
+* Add a new property `PLL_Language::$is_default` #1228
+* Add a custom admin body class `pll-lang-{$language_code}` #1190
 * Add support for new WPML API filters #1266
 * Fix languages metabox autocomplete field not always returning expected results #1187
 * Fix language not displayed if the transient has been saved with an empty array #1247
@@ -363,7 +363,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 = 3.1.1 (2021-08-16) =
 
 * Pro: Fix a fatal error with The Events Calendar
-* Allow to remove the cookie with the lmat_cookie_expiration filter #905
+* Allow to remove the cookie with the pll_cookie_expiration filter #905
 
 = 3.1 (2021-07-27) =
 
@@ -398,7 +398,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 
 * Pro: fix original post not assigned to a new translation when the languages sidebar is closed
 * Pro: Attempt to fix zip file corrupted on some installations when exporting string translations
-* Support session cookie with the lmat_cookie_expiration filter #835
+* Support session cookie with the pll_cookie_expiration filter #835
 * Fix javascript error when a plugin defines its own editor for translated post types #837
 * Fix languages displayed in screen options when editing a term #850
 * Cache: fix post type archive cache not cleared when saving a post #828
@@ -419,7 +419,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Move hreflang attributes higher in the head section #771
 * Fix custom flags not working (introduced in 3.0)
 * Fix translation of the confirmation modal when changing the language of a post
-* Fix js and css not loaded when Linguator is used as a mu-plugin (introduced in 3.0)
+* Fix js and css not loaded when Polylang is used as a mu-plugin (introduced in 3.0)
 * Fix support for html5 stylesheet link tags #775
 * Fix possible warning in frontend-filters-links.php
 * Yoast SEO Premium: Take over the multilingual compatibility removed in Yoast SEO Premium 15.8 #796
@@ -438,8 +438,8 @@ This file contains only old changelog. See readme.txt for newer versions.
 = 3.0 (2021-03-08) =
 
 * Add compatibility with WordPress 5.7
-* Remove upgrades from Linguator older than 1.8
-* Remove deprecated class LMAT_Pointer
+* Remove upgrades from Polylang older than 1.8
+* Remove deprecated class PLL_Pointer
 * Pro: Hide the license keys
 * Pro: Fix redirect to the home page of a deactivated language
 * Pro: Fix synchronization of post status not working
@@ -471,7 +471,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 
 = 2.9.1 (2020-12-15) =
 
-* Fix PHP notice: Undefined property: LMAT_Cache_Compat::$options with cache plugins. Props bahaa-almahamid. #658
+* Fix PHP notice: Undefined property: PLL_Cache_Compat::$options with cache plugins. Props bahaa-almahamid. #658
 * Fix title of the search results page with Yoast SEO > 14.0
 
 = 2.9 (2020-12-07) =
@@ -521,12 +521,12 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Fix: Don't use a javascript localized string removed in WP 5.5 #568
 * Fix fatal error in site health when no language is defined #563
 * Fix various issues with Yoast SEO 14.x #65, #503, #505
-* Fix fatal error with MU Domain Mapping when saving domains in Linguator settings #569
+* Fix fatal error with MU Domain Mapping when saving domains in Polylang settings #569
 
 = 2.8.1 (2020-08-25) =
 
 * Pro: Fix fatal error with WP 4.9
-* Fix lmat_the_languages() with 'raw' option returning html flag instead of flag url #558
+* Fix pll_the_languages() with 'raw' option returning html flag instead of flag url #558
 * Fix compatibility with Duplicate Posts not correctly loaded #557
 * Fix custom flag size in admin bar language switcher #559
 * Fix tag clouds mixed in the classic editor #561
@@ -540,7 +540,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Pro: Fix SSO causing a wrong redirect when using subdomains (introduced in 2.7.4)
 * Pro: Fix a performance issue on the plugins list
 * Pro: Fix option to automatically duplicate media in all languages when uploading a new file not honored in block image
-* Use composer for autoload and Linguator Pro dependency on Linguator
+* Use composer for autoload and Polylang Pro dependency on Polylang
 * Display a flag for each post in the posts list tables (same for terms). #515
 * Add test for the homepage translations to Site Health
 * Add debug information to Site Health
@@ -572,7 +572,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Pro: Fix PHP notice with ACF when a repeater or group is included in a flexible content
 * Pro: Fix "DevTools failed to load SourceMap" warning in browser console
 * Update plugin updater to 1.7.1
-* Honor the filter "lmat_the_language_link" when the language switcher displays a dropdown #506
+* Honor the filter "pll_the_language_link" when the language switcher displays a dropdown #506
 * Fix "Something went wrong" message when quick editing untranslated post types #508
 * Fix wpseo_opengraph deprecated warning #509
 
@@ -597,7 +597,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Minimum WordPress version is now 4.9
 * Pro: Strings translations can now be exported and imported (in PO format)
 * Pro: Allow to decide individually which ACF fields to copy or synchronize
-* Pro: Add action lmat_inactive_language_requested
+* Pro: Add action pll_inactive_language_requested
 * Pro; Fix fatal error in The Events Calendar compatibility when no language is defined yet
 * Pro: Fix bulk translate when a post has no language
 * Pro: Fix reusable block saved without language
@@ -611,8 +611,8 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Add Vary: Accept-Language http header in home page redirect. Props @chesio #452
 * Improve performance to register/unregister WPML strings
 * Add support for the action wpml_switch_language
-* Add post_status to the list of accepted args of lmat_count_posts()
-* Apply the filter lmat_preferred_language in wp-login.php
+* Add post_status to the list of accepted args of pll_count_posts()
+* Apply the filter pll_preferred_language in wp-login.php
 * Use filtered wrappers to create meta when creating media translations #231
 * Allow to translate the Twenty Seventeen header video Youtube url #460
 * Notices are now dismissed per site instead of per user #478
@@ -679,7 +679,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 = 2.6.3 (2019-08-06) =
 
 * Pro: Fix fatal error when updating an ACF field from frontend
-* Pro: Add action 'lmat_post_synchronized'
+* Pro: Add action 'pll_post_synchronized'
 * Allow to get the current or default language object using the API. Props Jory Hogeveen. #359
 * Fix empty span in languages switcher widget when showing only flags
 * Fix wpml_register_single_string when updating the original string
@@ -712,13 +712,13 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Better management of user capabilities when synchronizing taxonomies terms and custom fields
 * Extend string translations search to translated strings #207
 * Update plugin updater to 1.6.18
-* Honor the filter `lmat_flag` when performing the flag validation when creating a new language
+* Honor the filter `pll_flag` when performing the flag validation when creating a new language
 * Modify the title and the label for the language switcher menu items #307
 * Add support for international domain names
 * Add a title to the link icon used to add a translation #325
 * Add a notice when a static front page is not translated in a language
 * Add support for custom term fields in wpml-config.xml
-* Add filter `lmat_admin_languages_filter` for the list of items the admin bar language filter
+* Add filter `pll_admin_languages_filter` for the list of items the admin bar language filter
 * Add compatibility with WP Offload Media Lite. Props Daniel Berkman
 * Yoast SEO: Add post type archive url in all languages to the sitemap
 * Fix www. not redirected to not www. for the home page in multiple domains #311
@@ -745,7 +745,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 = 2.5.3 (2019-04-16) =
 
 * Add de_AT and pt_AO to the predefined languages list
-* Pro: Add filter lmat_translate_blocks
+* Pro: Add filter pll_translate_blocks
 * Pro: fix PHP notice when the queried post type has been modified to an array
 * Pro: fix PHP warning when combined with The Event Calendar and Page builder by SiteOrigin
 
@@ -791,9 +791,9 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Pro: Fix term not duplicated correctly when the language is set from the content
 * Refactor the core to activate on front and for the REST api actions that were previously available only in the backend (language checks, synchronizations...).
 * Add flags to widgets displayed in only one language (Props Jory Hogeveen) #257
-* Honor the filter 'lmat_the_language_args' for all options in menus #237
+* Honor the filter 'pll_the_language_args' for all options in menus #237
 * Add better filters for default flags and custom flags
-* Custom flags can now be stored in the linguator directory in the theme
+* Custom flags can now be stored in the polylang directory in the theme
 * Custom flags can now use SVG
 * Add compatibility with Jetpack featured content module
 * Fix Twenty Fourteen featured posts possibly not filtered per language
@@ -805,7 +805,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 
 = 2.3.11 (2018-10-03) =
 
-* Pro: Add action 'lmat_created_sync_post'
+* Pro: Add action 'pll_created_sync_post'
 * Pro: Fix language and translations not included for tags in the REST API
 * Fix Assigning a parent category breaking the hierarchy of translated category
 
@@ -816,8 +816,8 @@ This file contains only old changelog. See readme.txt for newer versions.
 
 = 2.3.9 (2018-08-14) =
 
-* Add a notice to inform about Linguator for WooCommerce
-* Deprecate LMAT_Pointer
+* Add a notice to inform about Polylang for WooCommerce
+* Deprecate PLL_Pointer
 * Fix bulk editing pages with no language breaking hierarchy #281
 * Fix an edge case where rewrite rules could be messed on a multisite
 * MU Domain Mapping: fix secondary domain redirected to primary domain
@@ -829,7 +829,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Pro: Fix a fatal error when duplicating posts
 * Set cookie during the home redirect
 * Accept a port in the url to detect the site home
-* Add filter 'lmat_is_cache_active' to allow to load the cache compatibility #270 #274
+* Add filter 'pll_is_cache_active' to allow to load the cache compatibility #270 #274
 * Fix potential fatal error when a 3rd party misuses the 'wpml_active_languages' filter #268
 * Fix Uncaught TypeError: s.split is not a function. Props Wouter Van Vliet #262
 * Fix text alignment for RTL scripts in Lingotek panel #247
@@ -860,10 +860,10 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Pro: Fix translated CPT slugs when one CPT name is a substring of another one. Props Steve Reimer.
 * Pro: Fix canonical redirection for post types archives when the CPT slug is translated
 * Pro: Fix ACF private key uselessly synchronized when the public custom field is not synchronized
-* Add filter 'lmat_filter_query_excluded_query_vars'
+* Add filter 'pll_filter_query_excluded_query_vars'
 * Redirect www. to non www. when using multiple domains
 * Fix Yoast SEO category sitemap not filtered by language when using multiple domains
-* Fix LMAT_COOKIE === false not honored when using a cache plugin. #248
+* Fix PLL_COOKIE === false not honored when using a cache plugin. #248
 * Fix empty predefined languages list
 
 = 2.3.4 (2018-03-27) =
@@ -877,7 +877,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 = 2.3.3 (2018-03-15) =
 
 * Pro: Fix tax query using a term sharing slugs (fix a conflict with Fusion Builder)
-* Restore Linguator (free) on REST requests, while disabling the language filter as in v2.3
+* Restore Polylang (free) on REST requests, while disabling the language filter as in v2.3
 * Rework auto translated query with taxonomy in different language #223
 * Synchronize Yoast SEO primary category (needs Yoast SEO 7.0+)
 * Fix PHP warning introduced by Yoast SEO 7.0 #229
@@ -890,7 +890,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 
 * Pro: Fix REST requests not filtered by the requested language (introduced in 2.3).
 * Pro: Fix error 404 on single posts if posts are untranslatable
-* Deactivate Linguator (free) on REST requests by default.
+* Deactivate Polylang (free) on REST requests by default.
 * Fix translated terms unassigned from posts when deleting a term
 * Fix auto translated query with taxonomy in different language returning empty results since WP 4.9 #223
 * Fix conflict with a homepage option of the theme Extra
@@ -904,7 +904,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 = 2.3 (2018-01-30) =
 
 * Pro: Duplicating a post now duplicates untranslated terms and the featured image (if media are translatable)
-* Pro: Add filter 'lmat_sync_post_fields'
+* Pro: Add filter 'pll_sync_post_fields'
 * Pro: Translate ACF Pro clone fields when creating a new field group translation
 * Pro: Allow to share slugs when creating a post or term with the REST API
 * Pro: Load asynchronously the script added on front for multiple domains and subdomains
@@ -913,9 +913,9 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Refactor the synchronization of taxonomy terms for performance improvement
 * Refactor language and translations saving for performance improvement
 * Refactor the synchronization of sticky posts
-* Remove all languages files. All translations are now maintained on https://translate.wordpress.org/projects/wp-plugins/linguator #199
+* Remove all languages files. All translations are now maintained on https://translate.wordpress.org/projects/wp-plugins/polylang #199
 * Refactor the list of languages to merge predefined languages, Facebook locales and fixes for W3C locales
-* Automatically deactivate Linguator when activating Linguator Pro
+* Automatically deactivate Polylang when activating Polylang Pro
 * Disable programmatically translated post types and taxonomies in settings. Props Ulrich Pogson. #180
 * Set the cookie language in Javascript when a cache plugin is active
 * Automatically remove the home page from cache when requesting the detection of the browser preferred language
@@ -948,7 +948,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Add filter 'get_objects_with_no_lang_limit'
 * Force loading the admin side when using WP CLI (Props chrisschrijver)
 * Fix check for terms with no language not scaling
-* Fix lmat_count_posts not working with multiple post types
+* Fix pll_count_posts not working with multiple post types
 * Fix inconsistent spacing between flag and language name in language switcher parent menu item (Props Amit Tal)
 * Fix spacing between flag and language name when displaying an RTL language
 * Fix get_terms not accepting comma separated values for 'lang' parameter (Props Pavlo Zhukov)
@@ -967,11 +967,11 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Pro: Fix unknown language not redirected to default when using multiple domains
 * Pro: Fix empty 'lang' query var not deactivating the language query filter
 * Pro: Fix conflict with The Events Calendar and Visual Composer when used together
-* Add new filter `lmat_hide_archive_translation_url` #174
+* Add new filter `pll_hide_archive_translation_url` #174
 * Add support for undocumented and deprecated WPML functions `wpml_object_id_filter` and `icl_get_current_language`
 * Fix 'orderby' and 'order' in `wpml_active_languages`. Needs WP 4.7+
 * Fix `icl_get_languages` not returning all languages when skip_missing = 0. Props Loïc Blascos
-* Fix `lmat_translate_string` not working on admin #178
+* Fix `pll_translate_string` not working on admin #178
 * Fix PHP Warning in widget video in WP 4.9
 * Fix query using 'any' post type not filtered per language (introduced in 2.2)
 * Fix untranslatable string in About metabox. Props Farhad Sakhaei
@@ -1020,7 +1020,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Improve speed of the sticky posts filter #41
 * Remove redirect_lang option for multiple domains and subdomains
 * Use secure cookie when using SSL
-* Allow to copy/sync term metas with the filter 'lmat_copy_term_metas'
+* Allow to copy/sync term metas with the filter 'pll_copy_term_metas'
 * Filter ajax requests in term.php according to the term language
 * Add error message in customizer when setting an untranslated static front page #47
 * Load static page class only if we are using a static front page
@@ -1030,7 +1030,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Use wp_doing_ajax() instead of DOING_AJAX constant
 * Fix queries custom tax not excluded from language filter on admin
 * Fix WP translation not loaded when the language is set from the content on multisite.
-* Fix the list of core post types in LMAT_OLT_Manager for WP 4.7+
+* Fix the list of core post types in PLL_OLT_Manager for WP 4.7+
 * Fix post name and tag slug incorrectly sanitized for German and Danish
 * Fix lang attribute in dropdowns
 * Fix wpml_permalink filter #139
@@ -1078,11 +1078,11 @@ This file contains only old changelog. See readme.txt for newer versions.
 
 = 2.1.2 (2017-03-09) =
 
-* Pro: Add filter 'lmat_xdata_nonce_life'
+* Pro: Add filter 'pll_xdata_nonce_life'
 * Pro: Fix translation of WooCommerce product attribute slug
 * Pro: Fix product synchronization in WooCommerce 2.7
 * Pro: Fix error message when bulk trashing synchronized posts
-* Add option to discard item spacing in the output of lmat_the_languages() ( Props Ceslav Przywara ) #93 #95
+* Add option to discard item spacing in the output of pll_the_languages() ( Props Ceslav Przywara ) #93 #95
 * Add as, dzo, kab, km, ml_IN, nl_BE, pa_IN, rhg, sah, ta_IN, tah, te, tt_RU to the predefined list of languages
 * Update plugin updater class to 1.6.10
 * Fix: Remove the dependency to is_ssl() to detect the language in the url ( language set from the directory name )
@@ -1093,8 +1093,8 @@ This file contains only old changelog. See readme.txt for newer versions.
 
 = 2.1.1 (2017-02-15) =
 
-* Pro: Add filter 'lmat_enable_duplicate_media' for a fine control of automatic media duplication
-* Add filter 'lmat_links_model' for the links model class name
+* Pro: Add filter 'pll_enable_duplicate_media' for a fine control of automatic media duplication
+* Add filter 'pll_links_model' for the links model class name
 * Trim any starting ^ from modified rewrite rules
 * Pro: Fix wrong count of plugins to update
 * Fix slashed strings translations not saved #94
@@ -1109,9 +1109,9 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Copy the original post date when creating a translation and when the date is synchronized (Props Jory Hogeveen) #32
 * Remove hreflang attributes on paged pages and paged posts
 * Add label to widget language dropdown for better accessibility (Props Lawrence Francell) #53 #56
-* Remove constants LINGUATOR_URL and LMAT_LOCAL_URL
+* Remove constants POLYLANG_URL and PLL_LOCAL_URL
 * wp_get_sidebars_widgets() and is_active_sidebar() are now filtered according to widgets languages #54
-* Add functions lmat_esc_html__(), lmat_esc_html_e(), lmat_esc_attr__() and lmat_esc_attr_e() to the API (Props jegbagus) #83
+* Add functions pll_esc_html__(), pll_esc_html_e(), pll_esc_attr__() and pll_esc_attr_e() to the API (Props jegbagus) #83
 * Pro: Fix conflict between WooCommerce shop on front and translated shop base slug
 * Pro: Fix $wp_rewrite search base and author_base not translated #68
 * Pro: Fix page preview does not log in the user when using subdomains
@@ -1188,7 +1188,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Remove duplicated strings from the strings translations (even when they have a different name or group)
 * The languages and translations of custom post types and taxonomies are no more activated by default at activation
 * Allow to deactivate auto translation in secondary by setting 'lang' to an empty value
-* Fix: invalidate the cache of LMAT_MO ids when adding a new language
+* Fix: invalidate the cache of PLL_MO ids when adding a new language
 * Fix: don't filter secondary queries when editing a post in an untranslated post type
 
 = 2.0.4 (2016-09-06) =
@@ -1203,7 +1203,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Pro: Fix PHP notice when hiding the language code in url and the language is set from subdomains
 * Pro: Fix one more media being created when the duplicate media in all languages is activated (introduced in 2.0)
 * Pro: Fix shared term slugs not working on PHP 7
-* Pro: Fix Linguator storing integers in some ACF Pro fields where ACF Pro stores strings
+* Pro: Fix Polylang storing integers in some ACF Pro fields where ACF Pro stores strings
 * Pro: Fix ACF Pro custom fields synchronized even when the custom fields synchronization option is deactivated (#40)
 * Fix PHP notice: Undefined variable: original_value in /modules/wpml/wpml-api.php on line 168
 * Fix translations loaded too soon by plugins not correctly reloaded since WP 4.6 (#39)
@@ -1230,7 +1230,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Pro: Fix when sharing slug on the page for posts, only one of them is accessible (#33)
 * Add the possibility to use the language switcher as dropdown in menu
 * Add support for custom logo introduced in WP 4.5 (#6)
-* The backend current language ( LMAT()->curlang ) is now equal to the language of current post or term being edited (#19)
+* The backend current language ( PLL()->curlang ) is now equal to the language of current post or term being edited (#19)
 * The sample permalink is now updated when changing the language in the Languages metabox
 * Revamp the wpml-config.xml reader to use simplexml instead of our custom xml parser
 * Improve support for the WPML API (including Hook API introduced in WPML 3.2)
@@ -1305,8 +1305,8 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Add support for the 'wpml_get_default_language()' function from the WPML API
 * Stop blocking saving settings when errors are detected (invalid domains)
 * Use publicly_queryable => true instead of public => true for the language taxonomy (WP 4.5+)
-* fix: PHP notice when lmat_default_language() is called before a language is created
-* fix: PHP notice undefined property LMAT_Language::$page_on_front
+* fix: PHP notice when pll_default_language() is called before a language is created
+* fix: PHP notice undefined property PLL_Language::$page_on_front
 * fix: canonical redirection of static front page when combining plain permalinks + default language hidden in url
 * fix: YARPP compatibility broken in v1.8
 * fix: Remove the delete link for translations of the default category (introduced back by WP 4.3)
@@ -1325,12 +1325,12 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Minimum WordPress version is now 4.0
 * Add ary, bn_BD, en_ZA, es_AR, fr_CA and fr_BE to the predefined languages list
 * Adopt WordPress coding standards
-* New structure for translated posts and terms (=> several methods of LMAT_Model are deprecated).
+* New structure for translated posts and terms (=> several methods of PLL_Model are deprecated).
 * Revamp the management of the static front page and page for posts
 * Improve performance for navigation menus with a lot of pages
-* The Linguator and WPML API are now loaded when 'plugins_loaded' is fired (on frontend only if at least one language has been defined)
-* Add 'lmat_get_post_translations()' and 'lmat_get_term_translations()' to the API
-* Add filter 'lmat_cookie_expiration' to change the cookie expiration time
+* The Polylang and WPML API are now loaded when 'plugins_loaded' is fired (on frontend only if at least one language has been defined)
+* Add 'pll_get_post_translations()' and 'pll_get_term_translations()' to the API
+* Add filter 'pll_cookie_expiration' to change the cookie expiration time
 * Add support for 'wpml_get_language_information()' function from the WPML API
 * The default language is now managed directly from the languages list table
 * Various accessibility improvements
@@ -1375,8 +1375,8 @@ This file contains only old changelog. See readme.txt for newer versions.
 * The language taxonomy is now public for compatibility with WP 4.4
 * fix: nav menus locations are not correctly populated in customizer in WP 4.4
 * fix: the termmeta table was still deleted at upgrade
-* fix: fatal error when using the argument 'post_id' in 'lmat_the_languages()' (introduced in 1.7.11) [props EKesty](https://wordpress.org/support/topic/bug-on)
-* fix: potential notice in 'lmat_the_languages()' [props mattkeys](https://wordpress.org/support/topic/bug-on)
+* fix: fatal error when using the argument 'post_id' in 'pll_the_languages()' (introduced in 1.7.11) [props EKesty](https://wordpress.org/support/topic/bug-on)
+* fix: potential notice in 'pll_the_languages()' [props mattkeys](https://wordpress.org/support/topic/bug-on)
 
 = 1.7.11 (2015-10-15) =
 
@@ -1390,8 +1390,8 @@ This file contains only old changelog. See readme.txt for newer versions.
 
 * Add Occitan translation contributed by [Cédric Valmary](http://www.totenoc.eu/)
 * Add de_DE_formal, en_NZ, es_CO, hy, oci, ps and tl to the predefined languages list
-* Add the filter 'lmat_predefined_languages' and the actions 'lmat_language_edit_form_fields' and 'lmat_language_add_form_fields'
-* the termmeta table (used in Linguator < 1.2) is no more deleted when uninstalling the plugin (as it will soon be included in WP)
+* Add the filter 'pll_predefined_languages' and the actions 'pll_language_edit_form_fields' and 'pll_language_add_form_fields'
+* the termmeta table (used in Polylang < 1.2) is no more deleted when uninstalling the plugin (as it will soon be included in WP)
 * fix: prevent creating a media translation if one already exists
 * fix: Attempt to translate the nav menus for themes registering a theme location but not using it in wp_nav_menu()
 * fix: Jetpack infinite scroll
@@ -1425,8 +1425,8 @@ This file contains only old changelog. See readme.txt for newer versions.
 * The language locale is now validated with the same pattern as in WP 4.3. See #28303
 * fix: make sure that the language switcher never finds translations for untranslated post types (could occur when the post type was previously translated)
 * fix: display the default category according to the admin language filter in settings->writing
-* fix: flushing rewrite rules at network activation and de-activation is back. [props RavanH](https://linguator.wordpress.com/2015/06/10/linguator-1-7-6-and-multisite/comment-page-1/#comment-1138)
-* fix: avoid a conflict with WP Super Cache preloading (loading 'linguator_mo' posts which are 404). [props ecdltf](https://wordpress.org/support/topic/linguator_mo-and-404s-take-2)
+* fix: flushing rewrite rules at network activation and de-activation is back. [props RavanH](https://polylang.wordpress.com/2015/06/10/polylang-1-7-6-and-multisite/comment-page-1/#comment-1138)
+* fix: avoid a conflict with WP Super Cache preloading (loading 'polylang_mo' posts which are 404). [props ecdltf](https://wordpress.org/support/topic/polylang_mo-and-404s-take-2)
 * fix: customizer menus issues introduced by changes in WP 4.1
 * fix: strings translations are not saved when pressing enter
 * fix: it is not possible to de-activate the translation for custom post types and taxonomies from wpml-config.xml
@@ -1447,7 +1447,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 
 = 1.7.5 (2015-05-11) =
 
-* Add 'lmat_languages_list' filter
+* Add 'pll_languages_list' filter
 * fix: warning when a plugin calls 'icl_object_id' with an untranslated post type (seen in ACF 4.4.1)
 * fix: the language is not correctly set from the url when using PATHINFO permalinks (introduced in 1.6!)
 * fix: notice when a search is filtered by a taxonomy term in a different language
@@ -1467,8 +1467,8 @@ This file contains only old changelog. See readme.txt for newer versions.
 
 = 1.7.3 (2015-04-11) =
 
-* the transient 'lmat_languages_list' now stores an array of arrays instead of an array of LMAT_Language objects
-* fix: fatal error for users hosted at GoDaddy (due to LMAT_Language objects stored in a transient)
+* the transient 'pll_languages_list' now stores an array of arrays instead of an array of PLL_Language objects
+* fix: fatal error for users hosted at GoDaddy (due to PLL_Language objects stored in a transient)
 * fix: additional query vars are removed from home page
 * fix: categories are not filtered by the admin language switcher in posts list table (introduced in 1.7)
 * fix: when using multiple domains, the domain url is lost when modifying the language slug
@@ -1478,8 +1478,8 @@ This file contains only old changelog. See readme.txt for newer versions.
 
 = 1.7.2 (2015-03-23) =
 
-* fix: comments are filtered for posts in a post type not managed by Linguator
-* fix: translated static front page don't work when setting LMAT_CACHE_HOME_URL to false (introduced in 1.7)
+* fix: comments are filtered for posts in a post type not managed by Polylang
+* fix: translated static front page don't work when setting PLL_CACHE_HOME_URL to false (introduced in 1.7)
 * fix: the query for taxonomies on custom post types is broken (when adding the language code to the url)
 
 = 1.7.1 (2015-03-20) =
@@ -1496,7 +1496,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Add the possibility to set the language from the code in url when using default permalinks
 * Adding the language code in url is now default at first activation (should improve the out of the box compatibility with other plugins and themes)
 * Add new language switcher option to hide a language with no translation
-* lmat_the_languages() now outputs the js code to handle language change in dropdown list (as done by the widget)
+* pll_the_languages() now outputs the js code to handle language change in dropdown list (as done by the widget)
 * Improve performance by using base64 encoded flags + various slight optimizations
 * Improve protection against chained redirects
 * The find posts list is now filtered per media language when clicking on attach link in Media library
@@ -1513,7 +1513,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 * fix: using brackets in language name breaks strings translations
 * fix: quick edit may conflict with other plugins
 * fix: impossible to use several dropdown languages widgets
-* fix: lmat_the_languages() may display a dropdown with empty options
+* fix: pll_the_languages() may display a dropdown with empty options
 * fix: the categories widget does not work correctly with dropdown
 * fix: autosave post always created after manual save
 * fix: tax query not filtered by language when using 'NOT IN' operator on a translated taxonomy
@@ -1523,7 +1523,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 * fix: tags in wrong language may be assigned when bulk editing posts in several languages
 * fix: tags created when bulk editing posts are not assigned any language
 * fix: Illegal string offset 'taxonomy' introduced in v1.6.5
-* fix: Undefined property: WP_Query::$queried_object_id when calling lmat_the_languages(array('raw' => 1)) in a function hooked to 'wp'. props [KLicheR](https://wordpress.org/support/profile/klicher)
+* fix: Undefined property: WP_Query::$queried_object_id when calling pll_the_languages(array('raw' => 1)) in a function hooked to 'wp'. props [KLicheR](https://wordpress.org/support/profile/klicher)
 * fix: Notice in admin.php when used with MailPoet plugin
 
 = 1.6.5 (2015-02-18) =
@@ -1539,7 +1539,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Add es_MX to predefined languages list
 * Add compatibility with WordPress SEO sitemaps for multiple domains and subdomains
 * fix: a new post is assigned the wrong (untranslated) default category if no category is assigned by the user
-* fix: the home links now have the right scheme even if LMAT_CACHE_HOME_URL is not set to false
+* fix: the home links now have the right scheme even if PLL_CACHE_HOME_URL is not set to false
 * fix: fatal error when using old versions of WPSEO (I should do what I tell other to do!)
 * fix: strings translations are not switched when using switch_to_blog
 
@@ -1582,7 +1582,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Add widget text translation
 * Add opengraph support for locale and translations when WordPress SEO or Jetpack are activated
 * Add error message if attempting to assign an untranslated page as static front page
-* Add 'lmat_sanitize_string_translation' filter to sanitize registered strings translations when saved
+* Add 'pll_sanitize_string_translation' filter to sanitize registered strings translations when saved
 * Fix: change the en_US flag to US flag. The UK flag is now associated to en_GB
 * Fix: change Belarusian locale from be_BY to bel to in agreement with translate.wordpress.org
 * Fix home pages duplicate urls when using domains or subdomains
@@ -1594,7 +1594,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Fix: the admin language filter is not active for paginated taxonomy in nav menu admin panel
 * Fix: wrong redirection if a domain is a substring of another domain (ex: mysite.com and mysite.co)
 * Fix: impossible to translate numeric values in options defined in wpml-config.xml
-* Fix: call to undefined method LMAT_Links::get_translation_url() with Avada theme
+* Fix: call to undefined method PLL_Links::get_translation_url() with Avada theme
 * Fix: manage_{$this->screen->taxonomy}_custom_icolumn is a filter and not an action
 
 = 1.5.5 (2014-09-10) =
@@ -1608,7 +1608,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 
 = 1.5.4 (2014-08-13) =
 
-* Add new API functions: lmat_get_post_language, lmat_get_term_language, lmat_translate_string
+* Add new API functions: pll_get_post_language, pll_get_term_language, pll_translate_string
 * Add better compatibility with Jetpack 3
 * Fix: attachments don't get any language when uploaded from frontend
 * Fix: authors cannot create tags
@@ -1618,12 +1618,12 @@ This file contains only old changelog. See readme.txt for newer versions.
 = 1.5.3 (2014-07-12) =
 
 * Add: Capability check before creating links in post list table
-* Add: Possibility not to cache languages objects with option LMAT_CACHE_LANGUAGES (for GoDaddy users)
+* Add: Possibility not to cache languages objects with option PLL_CACHE_LANGUAGES (for GoDaddy users)
 * Fix: Saving a header or a background in menu Appearance resets nav menus locations (introduced in 1.5)
 * Fix: sub-sub-options and deeper levels defined in wpml-config.xml are not translated
-* Fix: Fatal error when creating a new site when Linguator is network activated (introduced in v1.5.1)
-* Fix: Admin language forced to English when activating Linguator (before creating any new language)
-* Fix: 'lmat_count_posts' second parameter not taken into account
+* Fix: Fatal error when creating a new site when Polylang is network activated (introduced in v1.5.1)
+* Fix: Admin language forced to English when activating Polylang (before creating any new language)
+* Fix: 'pll_count_posts' second parameter not taken into account
 * Fix: 'edit-post' and 'create-posts' capabilities are not differentiated when saving a post
 
 = 1.5.2 (2014-06-24) =
@@ -1634,7 +1634,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 
 = 1.5.1 (2014-06-19) =
 
-* Add: filter 'lmat_settings_tabs' and action 'lmat_settings_active_tab_{$tab}'
+* Add: filter 'pll_settings_tabs' and action 'pll_settings_active_tab_{$tab}'
 * Add: possibility to add a path when using multiple domains (same path for all languages)
 * Fix: Bad redirection if /language/ is added to urls (introduced in 1.5)
 * Fix: Nav menu locations are not saved in customizer (introduced in 1.4)
@@ -1642,7 +1642,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Fix: Incorrect link for date archives in language switcher (introduced in 1.5)
 * Fix: Fatal error when using featured content in Twenty Fourteen
 * Fix: Posts bulk edit broken (introduced in 1.5)
-* Fix: Linguator does not play nice with switch_to_blog
+* Fix: Polylang does not play nice with switch_to_blog
 * Fix: Warning: reset() expects parameter 1 to be array, null given in admin-filters-columns.php on line 81
 
 = 1.5 (2014-05-29) =
@@ -1658,8 +1658,8 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Add support for Quick draft introduced in WP 3.8
 * Add support for object cache plugins for recent posts and recent comments widgets
 * Add support for pages with modified query in the language switcher (ex: when multiple post types queried on the same page)
-* Add new API functions: lmat_languages_list, lmat_set_post_language, lmat_set_term_language, lmat_save_post_translations, lmat_save_term_translations, lmat_count_posts
-* Add new filter lmat_the_languages_args
+* Add new API functions: pll_languages_list, pll_set_post_language, pll_set_term_language, pll_save_post_translations, pll_save_term_translations, pll_count_posts
+* Add new filter pll_the_languages_args
 * Add support for ICL_LANGUAGE_CODE == 'all' on admin side
 * Fix: Galician flag
 * Fix: static page on front pagination is broken
@@ -1701,7 +1701,7 @@ This file contains only old changelog. See readme.txt for newer versions.
 
 = 1.4.2 (2014-02-24) =
 
-* Add: check multiple post types in LMAT_Model::count_posts
+* Add: check multiple post types in PLL_Model::count_posts
 * Fix: error 404 on category links when setting the language by content (introduced in 1.4.1)
 * Fix: PHP notices in frontend-nav-menu.php with Artisteer themes
 * Fix: decrease the memory usage of untranslated posts list
@@ -1726,11 +1726,11 @@ This file contains only old changelog. See readme.txt for newer versions.
 * Refresh translations metaboxes: now translated posts are chosen in a dropdown list
 * Check if translated archives for category, tag and post format are empty before displaying the language switcher
 * Add specific management of translated featured tag in Twenty Fourteen
-* Add the possibility not to cache homepage urls with option LMAT_CACHE_HOME_URL (for users having several domains).
+* Add the possibility not to cache homepage urls with option PLL_CACHE_HOME_URL (for users having several domains).
 * The function get_pages is now filtered by language
-* Ajax requests on frontend are now automatically detected. It is no more necessary to set 'lmat_load_front' :)
+* Ajax requests on frontend are now automatically detected. It is no more necessary to set 'pll_load_front' :)
 * Various performance improvements
-* 'lmat_get_post_types' and 'lmat_get_taxonomies' filters must be added *before* 'after_setup_theme' is fired
+* 'pll_get_post_types' and 'pll_get_taxonomies' filters must be added *before* 'after_setup_theme' is fired
 * Pre 1.2 data will be removed from DB at first upgrade at least 60 days after upgrade to 1.4
 * Removed some duplicate code between admin and frontend
 * Bug correction: incorrect pagination when using domains or subdomains
@@ -1749,16 +1749,16 @@ This file contains only old changelog. See readme.txt for newer versions.
 * The "Detect browser language" option does now also controls returning visits (based on cookie).
 * Improved performance by optimizing some queries for WP 3.5+
 * The user biography in default language is now stored in default WordPress usermeta
-* Add language parameter in API function lmat_home_url and allow to call it on admin side
+* Add language parameter in API function pll_home_url and allow to call it on admin side
 * Calling 'get_terms' with the 'lang' parameter now uses a cache object per language
 * Bug correction: conflict with unstranslated taxonomies
 * Bug correction: possible malformed translation archive url in language switcher
 * Bug correction: a wrong language may be displayed in quick edit dropdown
 * Bug correction: it is possible to add multiple translations (in the same language) for a single taxonomy term
-* Bug correction: non public post types and taxonomies are visible in Linguator settings
+* Bug correction: non public post types and taxonomies are visible in Polylang settings
 * Bug correction: the language is always chosen from cookie (or browser preferences) in some installations
 * Bug correction: Firefox language preference is not recognized when comparison is made on locale (instead of ISO 639-1 language code)
-* Bug correction: incorrect tax_query in LMAT_Auto_Translate
+* Bug correction: incorrect tax_query in PLL_Auto_Translate
 
 = 1.2.4 (2013-11-28) =
 
@@ -1779,18 +1779,18 @@ This file contains only old changelog. See readme.txt for newer versions.
 
 * Updated Polish translation thanks to [Bartosz](http://www.dfactory.eu/)
 * Delay strings translations upgrade from 'wp_loaded' to 'admin_init' to avoid fatal error when wp-ecommerce is active
-* Remove Jetpack infinite scroll compatibility code as it seems useless with new Linguator 1.2 code structure
+* Remove Jetpack infinite scroll compatibility code as it seems useless with new Polylang 1.2 code structure
 * Bug correction: fatal error when doing ajax on frontend
 * Bug correction: ICL_LANGUAGE_CODE incorrectly defined when doing ajax on frontend
-* Bug correction: ['current_lang'] and ['no-translation'] indexes disappeared from lmat_the_languages raw output
-* Bug correction: invalid argument supplied for foreach() in /linguator/include/mo.php on line 57
+* Bug correction: ['current_lang'] and ['no-translation'] indexes disappeared from pll_the_languages raw output
+* Bug correction: invalid argument supplied for foreach() in /polylang/include/mo.php on line 57
 * Bug correction: cookie may not be correctly set
 * Bug correction: languages columns may not be displayed in custom post types and custom taxonomies tables
 
 = 1.2.1 (2013-11-11) =
 
 * Update badly encoded Latvian translation
-* Suppress one query in LMAT_WPML_Config when not in multisite
+* Suppress one query in PLL_WPML_Config when not in multisite
 * Bug correction: strings translations are not correctly upgraded
 * Bug correction: nav menus locations are not correctly upgraded for non default language
 
@@ -1803,8 +1803,8 @@ This version does include important changes in database. More than ever, make a 
 * Change the language and translations model from meta to taxonomy (no extra termmeta table created anymore)
 * Move the strings translations from option to a custom post type
 * Add support for language code in subdomain and for one different domain per language (experimental)
-* Add support of WordPress Importer plugin. Export must have been done with Linguator 1.2+ (experimental)
-* Add support for theme navigation customizer (was de-activated by Linguator since WP 3.4)
+* Add support of WordPress Importer plugin. Export must have been done with Polylang 1.2+ (experimental)
+* Add support for theme navigation customizer (was de-activated by Polylang since WP 3.4)
 * Request confirmation for deleting a language
 * Better management of default category for each language
 * Now check if date and post type archives are translated before displaying the language switcher
@@ -1815,7 +1815,7 @@ This version does include important changes in database. More than ever, make a 
 * Synchronization is now disabled by default (due to too much conflicts / questions on the forum)
 * Include rel="alternate" hreflang="x" selflink per google recommendation
 * Improve inline documentation
-* Bug correction: wrong datatype for second argument in linguator/include/auto-translate.php (introduced in 1.1.6)
+* Bug correction: wrong datatype for second argument in polylang/include/auto-translate.php (introduced in 1.1.6)
 * Bug correction: same id is used for all language items in menu
 * Bug correction: wpml-config.xml file not loaded for sitewide active plugins on network installations
 * Bug correction: page parent dropdown list (in page attributes metabox) not correctly displayed when switching from a language with empty list
@@ -1823,7 +1823,7 @@ This version does include important changes in database. More than ever, make a 
 = 1.1.6 (2013-10-13) =
 
 * Add the possibility to display the upgrade notice on plugins page
-* Bug correction: Illegal string offset 'taxonomy' in linguator/include/auto-translate.php
+* Bug correction: Illegal string offset 'taxonomy' in polylang/include/auto-translate.php
 * Bug correction: user defined strings translations are not loaded on admin side
 * Bug correction: untranslated post types are auto translated
 * Bug correction: tags are not added to post when the name exists in several languages and they are not translations of each other
@@ -1847,7 +1847,7 @@ This version does include important changes in database. More than ever, make a 
 
 * Add Venetian language contributed by Michele Brunelli
 * Bug correction: wrong rewrite rules for non translated custom post type archives
-* Bug correction: 'post_id' parameter of lmat_the_languages does not work
+* Bug correction: 'post_id' parameter of pll_the_languages does not work
 * Bug correction: warning in wp_nav_menu_objects with Artisteer generated themes
 * Bug correction: warning when used together with theme my login plugin
 * Bug correction: language slug is modified and translations are lost when creating a nav menu with the same name as a language
@@ -1858,8 +1858,8 @@ This version does include important changes in database. More than ever, make a 
 * Improve the compatibility with the plugins Types and The Events Calendar, and again with WordPress SEO
 * Improve performance
 * Improve html validation
-* Add 'raw' argument to 'lmat_the_languages'
-* Add the filter 'lmat_translation_url'
+* Add 'raw' argument to 'pll_the_languages'
+* Add the filter 'pll_translation_url'
 * Bug correction: no language is set for a (translated custom taxonomy) term when added from a (non translated) custom post type edit page
 * Bug correction: warning if 'get_terms' is called with a non-array 'include' argument (introduced in 1.1.1)
 * Bug correction: warning if the menu language switcher has nothing to display
@@ -1867,7 +1867,7 @@ This version does include important changes in database. More than ever, make a 
 = 1.1.1 (2013-05-20) =
 
 * Move nav menu language switcher split from 'wp_nav_menu_objects' to  'wp_get_nav_menu_items' filter
-* Add the filter 'lmat_redirect_home'
+* Add the filter 'pll_redirect_home'
 * Automatically translate ids in 'include' argument of 'get_terms' (useful for the menus in the Suffusion theme)
 * Add compatibility with Jetpack infinite scroll
 * Bug correction: rtl text direction not set when adding the language code to all urls (introduced in 1.1)
@@ -1888,7 +1888,7 @@ This version does include important changes in database. More than ever, make a 
 * When querying posts and terms, ids are now automatically translated
 * Add the possibility to group string translations
 * Add the possibility to delete strings registered with 'icl_register_string'
-* Move the option 'linguator_widgets' in general linguator options
+* Move the option 'polylang_widgets' in general polylang options
 * Better integration of the multilingual nav menus (everything is now integrated in the menus page of WordPress
 * The language switcher is now a menu item which can be placed everywhere in a nav menu
 * Posts or terms created from frontend are now assigned the current language (or another one if specified in the variable 'lang')
@@ -1905,7 +1905,7 @@ This version does include important changes in database. More than ever, make a 
 * Bug correction: error when a post type or taxonomy label is not a string
 * Bug correction: admin text section of wpml-config.xml (introduced in 1.0.3)
 * Bug correction: infinite redirect loop when querying an unattached media and the language code is added to all urls
-* Bug correction: the text direction is not set from Linguator options when the language code is added to all urls
+* Bug correction: the text direction is not set from Polylang options when the language code is added to all urls
 * Bug correction: get_adjacent_post is filtered by language even for post types without language
 * Bug correction: the home url is not not in the correct language in wp-login.php
 * Bug correction: the language is not correctly set when using date and name permalinks (introduced in 1.0.3)
@@ -1916,7 +1916,7 @@ This version does include important changes in database. More than ever, make a 
 * Add Ukrainian translation contributed by [cmd soft](http://www.cmd-soft.com/)
 * Improve compatibility with WordPress SEO (sitemap for categories and tags)
 * A query is no more filtered by language when setting the parameter 'lang' to an empty value
-* Add the possibility to create a custom wpml-config.xml file in wp-content/linguator/
+* Add the possibility to create a custom wpml-config.xml file in wp-content/polylang/
 * Bug correction: custom menus are not displayed on search page (introduced in 1.0.2)
 * Bug correction: sql error when filtering terms by language (introduced in 1.0.2)
 * Bug correction: SSL doesn't work properly
@@ -1929,14 +1929,14 @@ This version does include important changes in database. More than ever, make a 
 = 1.0.2 (2013-02-26) =
 
 * Add the possibility to query comments by language
-* Add the possibility not to set a cookie by defining LMAT_COOKIE to false (Linguator may not work as expected on some pages)
+* Add the possibility not to set a cookie by defining PLL_COOKIE to false (Polylang may not work as expected on some pages)
 * Now a returning visitor is redirected to its preferred language when visiting the front page in the default language
 * Add compatibility with the plugin Custom field template (copy and synchronize custom fields)
 * Improve compatibility with plugins or themes which overwrite columns in posts list table
-* Add the filter 'lmat_get_flag'
+* Add the filter 'pll_get_flag'
 * Add support of 'icl_unregister_string' function from the WPML API
 * Bug correction: synchronizing custom fields breaks the plugin Advanced Custom Fields
-* Bug correction: 'lmat_default_language' broken
+* Bug correction: 'pll_default_language' broken
 * Bug correction: rewrite rules are not flushed when re-activating the plugin
 * Bug correction: feed urls are not correctly escaped when using default permalinks
 * Bug correction: notice Undefined index: media_support
@@ -1947,7 +1947,7 @@ This version does include important changes in database. More than ever, make a 
 = 1.0.1 (2013-01-28) =
 
 * Add Swedish translation contributed by [matsii](http://wordpress.org/support/profile/matsii)
-* Add 2 new API functions : 'lmat_is_translated_post_type' and 'lmat_is_translated_taxonomy'
+* Add 2 new API functions : 'pll_is_translated_post_type' and 'pll_is_translated_taxonomy'
 * Bug correction: when using a static front page, the posts page is not filtered by language (introduced in 1.0)
 * Bug correction: disable translation for hard coded menu as it creates more problems than it solves (introduced in 1.0)
 
@@ -1964,11 +1964,11 @@ This version does include important changes in database. More than ever, make a 
 * Add options to better control the multilingual capability of custom post types and taxonomies
 * Better integration with new media management in WP 3.5
 * Improve menu translation for themes which register a theme location but don't use it in wp_nav_menu (hard coded menu)
-* Add the lmat_preferred_language filter allowing plugins to modify the language set by browser preferences detection
+* Add the pll_preferred_language filter allowing plugins to modify the language set by browser preferences detection
 * Add support of the WPML config file
 * Add support of 'icl_get_languages' and 'icl_link_to_element' functions from the WPML API
 * Add compatibility with YARPP and improve compatibility with WordPress SEO
-* Change cookie name which conflicts with Quick cache and allow users to overwrite it by defining the constant LMAT_COOKIE
+* Change cookie name which conflicts with Quick cache and allow users to overwrite it by defining the constant PLL_COOKIE
 * Bug correction: again the canonical redirection
 * Bug correction: the languages are not correctly displayed after they have been modified using quick edit
 * Bug correction: undefined index notice when saving strings translation when the admin language filter is active
@@ -1986,7 +1986,7 @@ This version does include important changes in database. More than ever, make a 
 
 * Bug correction: the admin language filter does filter non translatable post types
 * Bug correction: again the canonical redirection
-* Bug correction: fatal error when Linguator is used together with 'Author Avatars List'
+* Bug correction: fatal error when Polylang is used together with 'Author Avatars List'
 * Bug correction: widget titles uselessly appear in the strings translations table when the widget is set for only one language
 * Tests done with WordPress 3.5 RC3 and Twenty Twelve
 
@@ -2026,7 +2026,7 @@ This version does include important changes in database. More than ever, make a 
 * Bug correction: automatically added new top-level pages to menus are not filtered by language
 * Bug correction: the admin language filter messes the categories languages when editing a post and the parent dropdown list when editing a category
 * Bug correction: search form does not work when using a static front page (introduced in 0.9.2)
-* Bug correction: can't set languages for categories and post tags on blogs created after linguator has been activated at network level
+* Bug correction: can't set languages for categories and post tags on blogs created after polylang has been activated at network level
 * Bug correction: menus don't work with catch box theme ('has_nav_menu' not correctly filtered)
 
 = 0.9.3 (2012-10-08) =
@@ -2071,20 +2071,20 @@ This version does include important changes in database. More than ever, make a 
 * Add quick edit support for categories and tags
 * The language is now loaded with 'setup_theme' action instead of 'wp' action when always adding language information url
 * Search form now does use javascript only for searchform.php when pretty permalinks are not used
-* Add the option LMAT_SEARCH_FORM_JS to disable the js code used to modify the search form
-* Suppress the option LMAT_SYNC, replaced by an option in the language settings ui
-* Suppress the LMAT_DISPLAY_ALL option
-* Suppress the template tag 'the_languages' (replaced by 'lmat_the_languages' since v0.5)
-* Suppress the function 'lmat_is_front_page' (useless since 0.8.2)
+* Add the option PLL_SEARCH_FORM_JS to disable the js code used to modify the search form
+* Suppress the option PLL_SYNC, replaced by an option in the language settings ui
+* Suppress the PLL_DISPLAY_ALL option
+* Suppress the template tag 'the_languages' (replaced by 'pll_the_languages' since v0.5)
+* Suppress the function 'pll_is_front_page' (useless since 0.8.2)
 * Bug correction: the browser language is sometimes not correctly detected by Android
 * Bug correction: the rtl text direction is not correct when editing an existing language
 * Bug correction: rss feed does not work if translated site title or tagline contains special characters
 * Bug correction: post types and taxonomies labels are not translated on frontend
-* Bug correction: the filter 'lmat_copy_post_metas' does not work for metas with multiple values
+* Bug correction: the filter 'pll_copy_post_metas' does not work for metas with multiple values
 * Bug correction: translations table for post and terms are uselessly serialized two times
 * Bug correction: attempt to suppress conflict with themes which hardcode the name of nav menus (but do define a theme location)
 * Bug correction: homepage displays all posts when the front page displays a static page and no page is selected for front page (but one is selected for posts page)
-* Bug correction: widgets disappear when Linguator is enabled
+* Bug correction: widgets disappear when Polylang is enabled
 
 = 0.8.10 (2012-08-06) =
 
@@ -2104,7 +2104,7 @@ This version does include important changes in database. More than ever, make a 
 * Validation improvement thanks to kg69design
 * Bug correction: custom post types rewrite rules are broken when registered with query_var=>false
 * Bug correction: user admin language not deleted when uninstalling the plugin
-* Bug correction: lmat_current_language('name') returns locale instead of language name
+* Bug correction: pll_current_language('name') returns locale instead of language name
 * Bug correction: ajax on frontend does not work
 * Bug correction: homepage pagination broken when redirecting the language page to a static front page
 * Bug correction: taxonomies conflicts on custom post types
@@ -2112,7 +2112,7 @@ This version does include important changes in database. More than ever, make a 
 
 = 0.8.7 (2012-06-10) =
 
-* Add the possibility to load Linguator API for ajax requests on frontend
+* Add the possibility to load Polylang API for ajax requests on frontend
 * Bug correction: search form is broken when using a static front page
 * Bug correction: admin bar search does not work
 * Tests done with WordPress 3.4 RC2
@@ -2131,7 +2131,7 @@ This version does include important changes in database. More than ever, make a 
 
 = 0.8.4 (2012-05-13) =
 
-* Add a new argument 'post_id' to the function lmat_the_languages to display posts translations within the loop
+* Add a new argument 'post_id' to the function pll_the_languages to display posts translations within the loop
 * Bug correction: every posts in every languages are shown on the homepage when requesting the wrong one with or without 'www.'
 * Bug correction: every posts in every languages are shown when requesting /?p=string
 * Bug correction: the language is not correctly set for wp-signup.php and wp-activate.php
@@ -2163,7 +2163,7 @@ This version does include important changes in database. More than ever, make a 
 * Add Italian translation contributed by [Luca Barbetti](http://wordpress.org/support/profile/lucabarbetti)
 * Improve performance on admin side
 * Comment status and ping status are now copied when adding a new translation
-* Deprecated API function 'lmat_is_front_page' as it is now useless
+* Deprecated API function 'pll_is_front_page' as it is now useless
 * Bug correction: Wrong translation url for taxonomies when adding the language information to all urls
 * Bug correction: "translation" of search page does not work if the site is only made of pages
 * Bug correction: wrong language permalink structure introduced in 0.8.1
@@ -2176,9 +2176,9 @@ This version does include important changes in database. More than ever, make a 
 
 * Add Latvian translation contributed by [@AndyDeGroo](http://twitter.com/AndyDeGroo)
 * It is now possible to synchronize multiple values for custom fields
-* Add new API function lmat_current_language
-* Add the lmat_rewrite_rules filter allowing plugins to filter rewrite rules by language
-* WP 3.4 preparation: disable the menu section in the customize theme admin panel (unusable with Linguator)
+* Add new API function pll_current_language
+* Add the pll_rewrite_rules filter allowing plugins to filter rewrite rules by language
+* WP 3.4 preparation: disable the menu section in the customize theme admin panel (unusable with Polylang)
 * Bug correction: removing 'language' in permalinks does not work in WP 3.4 alpha
 * Bug correction: problems with custom post type archives when 'has_archive' is set (thanks to AndyDeGroo)
 * Bug correction: 404 error when combining %postname% permastructure with "Add language information to all URL" option
@@ -2190,10 +2190,10 @@ This version does include important changes in database. More than ever, make a 
 
 * Sticky posts are now filtered by language
 * It is now possible to use the language page as home page
-* Add an "About Linguator" metabox on the languages admin page
-* Add the lmat_the_languages filter allowing to filter the whole output of the language switcher
-* Add a new argument 'display_names_as' to the function lmat_the_languages
-* Add lmat_get_post_types & lmat_get_taxonomies filters allowing to enable / disable the language filter for post types & taxonomies
+* Add an "About Polylang" metabox on the languages admin page
+* Add the pll_the_languages filter allowing to filter the whole output of the language switcher
+* Add a new argument 'display_names_as' to the function pll_the_languages
+* Add pll_get_post_types & pll_get_taxonomies filters allowing to enable / disable the language filter for post types & taxonomies
 * Add ckb to predefined languages list
 * Completely reworked the string translation storage in the database
 * Some performance improvements on admin side
@@ -2235,7 +2235,7 @@ This version does include important changes in database. More than ever, make a 
 * Allow using 3 characters languages codes (ISO 639-2 or 639-3)
 * The predefined languages dropdown list now displays the locale to help differentiate some languages
 * Add 5 new languages to predefined list
-* Bug correction: the filter 'lmat_copy_post_metas' does not work
+* Bug correction: the filter 'pll_copy_post_metas' does not work
 * Bug correction: impossible to add a tag in the edit post panel
 * Bug correction: rewrite rules not correct
 * Bug correction: cache issue with css and js files
@@ -2252,9 +2252,9 @@ This version does include important changes in database. More than ever, make a 
 * Add support for post formats
 * Add option allowing not to show the current language in the language switcher (for both menu and widget)
 * Add a title attribute (and the possibility to personalize it with a filter) to flags
-* lmat_get_post and lmat_get_term second parameter is now optional and defaults to current language
-* Add lmat_the_language_link filter allowing to filter translation links outputted by the language switcher
-* The option LMAT_DISPLAY_ALL is no longer supported
+* pll_get_post and pll_get_term second parameter is now optional and defaults to current language
+* Add pll_the_language_link filter allowing to filter translation links outputted by the language switcher
+* The option PLL_DISPLAY_ALL is no longer supported
 * Bug correction: Autosave reset to default language
 * Bug correction: blog info not translated in feeds
 * Bug correction: post comments feed always in default language
@@ -2274,7 +2274,7 @@ This version does include important changes in database. More than ever, make a 
 * Bug correction: string translations does not work for WP < 3.3
 * Bug correction: fix fatal error in string translations caused by widgets using the old API
 * Bug correction: the strings translation panel is unable to translate strings with special characters
-* Bug correction: Linguator "is_front_page" returns true on archives pages
+* Bug correction: Polylang "is_front_page" returns true on archives pages
 
 = 0.6 (2012-01-07) =
 
@@ -2285,8 +2285,8 @@ This version does include important changes in database. More than ever, make a 
 * Categories, post tags, featured image, page parent, page template and menu order are now copied when adding a new translation
 * Translations are now accessibles in the "Posts", "Pages", "Categories" and "Post tags" admin panels
 * Improve the dropdown language switcher widget (sends now to translated page or home page based on options)
-* Move custom flags from linguator/local_flags to wp_content/linguator
-* Add two options to "lmat_the_languages" ('hide_if_no_translation' and 'hide_current'). *The function does not output ul tag anymore*
+* Move custom flags from polylang/local_flags to wp_content/polylang
+* Add two options to "pll_the_languages" ('hide_if_no_translation' and 'hide_current'). *The function does not output ul tag anymore*
 * Improve API
 * Bug correction: Twenty eleven custom Header problem with v0.5.1
 * Bug correction: front-page.php not loaded for translated front page
@@ -2297,13 +2297,13 @@ This version does include important changes in database. More than ever, make a 
 * Bug correction: translated homepage not recognized as home page when it displays posts
 * Bug correction: predefined language list does not work on IE8
 * Bug correction: on some installations, "Add New" post doesn't keep intended language
-* Bug correction: fatal error when Linguator is used together with the plugin Tabbed Widgets
+* Bug correction: fatal error when Polylang is used together with the plugin Tabbed Widgets
 * Bug correction: language Switcher points sometimes to wrong places
 
 = 0.5 (2011-12-07) =
 
 * Add multisite support
-* Rework the Linguator admin panel. There is now a set of predefined languages
+* Rework the Polylang admin panel. There is now a set of predefined languages
 * Improve categories and tags language filter in the edit post panel
 * Categories and tags created in the edit post panel are now created with the same language as the post
 * The language switcher can now force the link to the front page instead of the translated page
@@ -2373,7 +2373,7 @@ This version does include important changes in database. More than ever, make a 
 
 = 0.3.1 (2011-10-16) =
 
-* Bug correction: the widget settings cannot be saved when activating Linguator
+* Bug correction: the widget settings cannot be saved when activating Polylang
 * Bug correction: the archives widget does not display any links
 * Bug correction: ajax form for translations not working in the 'Categories' and 'Post tags' admin panels
 

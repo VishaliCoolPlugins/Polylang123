@@ -2,12 +2,12 @@
 /**
  * Loads the integration with Aqua Resizer.
  *
- * @package Linguator
+ * @package Polylang
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Don't access directly.
 }
 
-LMAT_Integrations::instance()->aq_resizer = new LMAT_Aqua_Resizer();
-LMAT_Integrations::instance()->aq_resizer->init();
+PLL_Integrations::instance()->aq_resizer = new PLL_Aqua_Resizer();
+PLL_Integrations::instance()->aq_resizer->init();

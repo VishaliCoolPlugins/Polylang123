@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
@@ -12,7 +12,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
  *
  * @since 1.8
  */
-class LMAT_Table_Settings extends WP_List_Table {
+class PLL_Table_Settings extends WP_List_Table {
 
 	/**
 	 * Constructor
@@ -34,7 +34,7 @@ class LMAT_Table_Settings extends WP_List_Table {
 	 * @since 1.8
 	 */
 	protected function get_table_classes() {
-		return array( 'wp-list-table', 'widefat', 'plugins', 'lmat-settings' ); // get the style of the plugins list table + one specific class
+		return array( 'wp-list-table', 'widefat', 'plugins', 'pll-settings' ); // get the style of the plugins list table + one specific class
 	}
 
 	/**
@@ -42,7 +42,7 @@ class LMAT_Table_Settings extends WP_List_Table {
 	 *
 	 * @since 1.8
 	 *
-	 * @param LMAT_Settings_Module $item Settings module item.
+	 * @param PLL_Settings_Module $item Settings module item.
 	 * @return void
 	 */
 	public function single_row( $item ) {
@@ -53,7 +53,7 @@ class LMAT_Table_Settings extends WP_List_Table {
 		}
 
 		// Display the columns
-		printf( '<tr id="lmat-module-%s" class="%s">', esc_attr( $item->module ), esc_attr( $classes ) );
+		printf( '<tr id="pll-module-%s" class="%s">', esc_attr( $item->module ), esc_attr( $classes ) );
 		$this->single_row_columns( $item );
 		echo '</tr>';
 
@@ -71,7 +71,7 @@ class LMAT_Table_Settings extends WP_List_Table {
 		// "inactive" class to reuse css from the plugins list table
 		if ( $form = $item->get_form() ) {
 			printf(
-				'<tr id="lmat-configure-%s" class="lmat-configure inactive inline-edit-row" style="display: none;">
+				'<tr id="pll-configure-%s" class="pll-configure inactive inline-edit-row" style="display: none;">
 					<td colspan="3">
 						<legend>%s</legend>
 						%s
@@ -93,7 +93,7 @@ class LMAT_Table_Settings extends WP_List_Table {
 	 *
 	 * @since 1.8
 	 *
-	 * @param LMAT_Settings_Module $item Settings module item.
+	 * @param PLL_Settings_Module $item Settings module item.
 	 * @return void
 	 */
 	protected function single_row_columns( $item ) {
@@ -124,7 +124,7 @@ class LMAT_Table_Settings extends WP_List_Table {
 	 *
 	 * @since 1.8
 	 *
-	 * @param LMAT_Settings_Module $item        Settings module item.
+	 * @param PLL_Settings_Module $item        Settings module item.
 	 * @param string              $column_name Column name.
 	 * @return string The column name.
 	 */
@@ -145,8 +145,8 @@ class LMAT_Table_Settings extends WP_List_Table {
 	public function get_columns() {
 		return array(
 			'cb'           => '', // For the 4px border inherited from plugins when the module is activated
-			'plugin-title' => esc_html__( 'Module', 'linguator' ), // plugin-title for styling
-			'description'  => esc_html__( 'Description', 'linguator' ),
+			'plugin-title' => esc_html__( 'Module', 'polylang' ), // plugin-title for styling
+			'description'  => esc_html__( 'Description', 'polylang' ),
 		);
 	}
 
@@ -166,7 +166,7 @@ class LMAT_Table_Settings extends WP_List_Table {
 	 *
 	 * @since 1.8
 	 *
-	 * @param LMAT_Settings_Module[] $items Array of settings module items.
+	 * @param PLL_Settings_Module[] $items Array of settings module items.
 	 * @return void
 	 */
 	public function prepare_items( $items = array() ) {

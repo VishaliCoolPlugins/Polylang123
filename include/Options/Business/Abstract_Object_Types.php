@@ -1,13 +1,13 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
-namespace WP_Syntex\Linguator\Options\Business;
+namespace WP_Syntex\Polylang\Options\Business;
 
 use WP_Error;
-use WP_Syntex\Linguator\Options\Primitive\Abstract_List;
-use WP_Syntex\Linguator\Options\Options;
+use WP_Syntex\Polylang\Options\Primitive\Abstract_List;
+use WP_Syntex\Polylang\Options\Options;
 
 defined( 'ABSPATH' ) || exit;
 

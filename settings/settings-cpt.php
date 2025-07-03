@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -8,7 +8,7 @@
  *
  * @since 1.8
  */
-class LMAT_Settings_CPT extends LMAT_Settings_Module {
+class PLL_Settings_CPT extends PLL_Settings_Module {
 	/**
 	 * Stores the display order priority.
 	 *
@@ -49,33 +49,33 @@ class LMAT_Settings_CPT extends LMAT_Settings_Module {
 	 *
 	 * @since 1.8
 	 *
-	 * @param object $linguator The Linguator object.
+	 * @param object $polylang The Polylang object.
 	 */
-	public function __construct( &$linguator ) {
+	public function __construct( &$polylang ) {
 		parent::__construct(
-			$linguator,
+			$polylang,
 			array(
 				'module'      => 'cpt',
-				'title'       => __( 'Custom post types and Taxonomies', 'linguator' ),
-				'description' => __( 'Activate languages and translations management for the custom post types and the taxonomies.', 'linguator' ),
+				'title'       => __( 'Custom post types and Taxonomies', 'polylang' ),
+				'description' => __( 'Activate languages and translations management for the custom post types and the taxonomies.', 'polylang' ),
 			)
 		);
 
 		$public_post_types = get_post_types( array( 'public' => true, '_builtin' => false ) );
 		/** This filter is documented in include/model.php */
-		$this->post_types = array_unique( apply_filters( 'lmat_get_post_types', $public_post_types, true ) );
+		$this->post_types = array_unique( apply_filters( 'pll_get_post_types', $public_post_types, true ) );
 
 		/** This filter is documented in include/model.php */
-		$programmatically_active_post_types = array_unique( apply_filters( 'lmat_get_post_types', array(), false ) );
+		$programmatically_active_post_types = array_unique( apply_filters( 'pll_get_post_types', array(), false ) );
 		$this->disabled_post_types = array_intersect( $programmatically_active_post_types, $this->post_types );
 
 		$public_taxonomies = get_taxonomies( array( 'public' => true, '_builtin' => false ) );
-		$public_taxonomies = array_diff( $public_taxonomies, get_taxonomies( array( '_lmat' => true ) ) );
+		$public_taxonomies = array_diff( $public_taxonomies, get_taxonomies( array( '_pll' => true ) ) );
 		/** This filter is documented in include/model.php */
-		$this->taxonomies = array_unique( apply_filters( 'lmat_get_taxonomies', $public_taxonomies, true ) );
+		$this->taxonomies = array_unique( apply_filters( 'pll_get_taxonomies', $public_taxonomies, true ) );
 
 		/** This filter is documented in include/model.php */
-		$programmatically_active_taxonomies = array_unique( apply_filters( 'lmat_get_taxonomies', array(), false ) );
+		$programmatically_active_taxonomies = array_unique( apply_filters( 'pll_get_taxonomies', array(), false ) );
 		$this->disabled_taxonomies = array_intersect( $programmatically_active_taxonomies, $this->taxonomies );
 	}
 
@@ -97,8 +97,8 @@ class LMAT_Settings_CPT extends LMAT_Settings_Module {
 	 */
 	protected function form() {
 		if ( ! empty( $this->post_types ) ) {?>
-			<h4><?php esc_html_e( 'Custom post types', 'linguator' ); ?></h4>
-			<ul class="lmat-inline-block-list">
+			<h4><?php esc_html_e( 'Custom post types', 'polylang' ); ?></h4>
+			<ul class="pll-inline-block-list">
 				<?php
 				foreach ( $this->post_types as $post_type ) {
 					$pt = get_post_type_object( $post_type );
@@ -112,7 +112,7 @@ class LMAT_Settings_CPT extends LMAT_Settings_Module {
 							esc_html(
 								sprintf(
 									/* translators: 1 is a post type or taxonomy label, 2 is a post type or taxonomy key. */
-									_x( '%1$s (%2$s)', 'content type setting choice', 'linguator' ),
+									_x( '%1$s (%2$s)', 'content type setting choice', 'polylang' ),
 									$pt->labels->name,
 									$pt->name
 								)
@@ -122,14 +122,14 @@ class LMAT_Settings_CPT extends LMAT_Settings_Module {
 				}
 				?>
 			</ul>
-			<p class="description"><?php esc_html_e( 'Activate languages and translations for custom post types.', 'linguator' ); ?></p>
+			<p class="description"><?php esc_html_e( 'Activate languages and translations for custom post types.', 'polylang' ); ?></p>
 			<?php
 		}
 
 		if ( ! empty( $this->taxonomies ) ) {
 			?>
-			<h4><?php esc_html_e( 'Custom taxonomies', 'linguator' ); ?></h4>
-			<ul class="lmat-inline-block-list">
+			<h4><?php esc_html_e( 'Custom taxonomies', 'polylang' ); ?></h4>
+			<ul class="pll-inline-block-list">
 				<?php
 				foreach ( $this->taxonomies as $taxonomy ) {
 					$tax = get_taxonomy( $taxonomy );
@@ -143,7 +143,7 @@ class LMAT_Settings_CPT extends LMAT_Settings_Module {
 							esc_html(
 								sprintf(
 									/* translators: 1 is a post type or taxonomy label, 2 is a post type or taxonomy key. */
-									_x( '%1$s (%2$s)', 'content type setting choice', 'linguator' ),
+									_x( '%1$s (%2$s)', 'content type setting choice', 'polylang' ),
 									$tax->labels->name,
 									$tax->name
 								)
@@ -153,7 +153,7 @@ class LMAT_Settings_CPT extends LMAT_Settings_Module {
 				}
 				?>
 			</ul>
-			<p class="description"><?php esc_html_e( 'Activate languages and translations for custom taxonomies.', 'linguator' ); ?></p>
+			<p class="description"><?php esc_html_e( 'Activate languages and translations for custom taxonomies.', 'polylang' ); ?></p>
 			<?php
 		}
 	}

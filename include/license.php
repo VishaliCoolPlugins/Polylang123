@@ -1,14 +1,14 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
- * A class to easily manage licenses for Linguator Pro and addons
+ * A class to easily manage licenses for Polylang Pro and addons
  *
  * @since 1.9
  */
-class LMAT_License {
+class PLL_License {
 	/**
 	 * Sanitized plugin name.
 	 *
@@ -63,7 +63,7 @@ class LMAT_License {
 	 *
 	 * @var string.
 	 */
-	private $api_url = 'https://linguator.pro';
+	private $api_url = 'https://polylang.pro';
 
 	/**
 	 * Constructor
@@ -84,7 +84,7 @@ class LMAT_License {
 		$this->author  = $author;
 		$this->api_url = empty( $api_url ) ? $this->api_url : $api_url;
 
-		$licenses          = (array) get_option( 'linguator_licenses', array() );
+		$licenses          = (array) get_option( 'polylang_licenses', array() );
 		$license           = isset( $licenses[ $this->id ] ) && is_array( $licenses[ $this->id ] ) ? $licenses[ $this->id ] : array();
 		$this->license_key = ! empty( $license['key'] ) ? (string) $license['key'] : '';
 
@@ -96,14 +96,14 @@ class LMAT_License {
 		$this->auto_updater();
 
 		// Register settings
-		add_filter( 'lmat_settings_licenses', array( $this, 'settings' ) );
+		add_filter( 'pll_settings_licenses', array( $this, 'settings' ) );
 
 		// Weekly schedule
-		if ( ! wp_next_scheduled( 'linguator_check_licenses' ) ) {
-			wp_schedule_event( time(), 'weekly', 'linguator_check_licenses' );
+		if ( ! wp_next_scheduled( 'polylang_check_licenses' ) ) {
+			wp_schedule_event( time(), 'weekly', 'polylang_check_licenses' );
 		}
 
-		add_action( 'linguator_check_licenses', array( $this, 'check_license' ) );
+		add_action( 'polylang_check_licenses', array( $this, 'check_license' ) );
 	}
 
 	/**
@@ -122,7 +122,7 @@ class LMAT_License {
 		);
 
 		// Setup the updater
-		new LMAT_Plugin_Updater( $this->api_url, $this->file, $args );
+		new PLL_Plugin_Updater( $this->api_url, $this->file, $args );
 	}
 
 	/**
@@ -130,8 +130,8 @@ class LMAT_License {
 	 *
 	 * @since 1.9
 	 *
-	 * @param LMAT_License[] $items Array of objects allowing to manage a license.
-	 * @return LMAT_License[]
+	 * @param PLL_License[] $items Array of objects allowing to manage a license.
+	 * @return PLL_License[]
 	 */
 	public function settings( $items ) {
 		$items[ $this->id ] = $this;
@@ -144,7 +144,7 @@ class LMAT_License {
 	 * @since 1.9
 	 *
 	 * @param string $license_key Activation key.
-	 * @return LMAT_License Updated LMAT_License object.
+	 * @return PLL_License Updated PLL_License object.
 	 */
 	public function activate_license( $license_key ) {
 		$this->license_key = $license_key;
@@ -161,7 +161,7 @@ class LMAT_License {
 	 *
 	 * @since 1.9
 	 *
-	 * @return LMAT_License Updated LMAT_License object.
+	 * @return PLL_License Updated PLL_License object.
 	 */
 	public function deactivate_license() {
 		$this->api_request( 'deactivate_license' );
@@ -189,7 +189,7 @@ class LMAT_License {
 	 * @return void
 	 */
 	private function api_request( $request ) {
-		$licenses = get_option( 'linguator_licenses' );
+		$licenses = get_option( 'polylang_licenses' );
 
 		if ( is_array( $licenses ) ) {
 			unset( $licenses[ $this->id ] );
@@ -231,7 +231,7 @@ class LMAT_License {
 			}
 		}
 
-		update_option( 'linguator_licenses', $licenses ); // FIXME called multiple times when saving all licenses
+		update_option( 'polylang_licenses', $licenses ); // FIXME called multiple times when saving all licenses
 	}
 
 	/**
@@ -250,8 +250,8 @@ class LMAT_License {
 		$message = '';
 
 		$out = sprintf(
-			'<td><label for="lmat-licenses[%1$s]">%2$s</label></td>' .
-			'<td><input name="licenses[%1$s]" id="lmat-licenses[%1$s]" type="password" value="%3$s" class="regular-text code" />',
+			'<td><label for="pll-licenses[%1$s]">%2$s</label></td>' .
+			'<td><input name="licenses[%1$s]" id="pll-licenses[%1$s]" type="password" value="%3$s" class="regular-text code" />',
 			esc_attr( $this->id ),
 			esc_attr( $this->name ),
 			esc_html( $this->license_key )
@@ -274,23 +274,23 @@ class LMAT_License {
 					case 'expired':
 						$message = sprintf(
 							/* translators: %1$s is a date, %2$s is link start tag, %3$s is link end tag. */
-							esc_html__( 'Your license key expired on %1$s. Please %2$srenew your license key%3$s.', 'linguator' ),
+							esc_html__( 'Your license key expired on %1$s. Please %2$srenew your license key%3$s.', 'polylang' ),
 							esc_html( date_i18n( get_option( 'date_format' ), $expiration ) ),
-							sprintf( '<a href="%s" target="_blank">', 'https://linguator.pro/account/' ),
+							sprintf( '<a href="%s" target="_blank">', 'https://polylang.pro/account/' ),
 							'</a>'
 						);
 						break;
 
 					case 'disabled':
 					case 'revoked':
-						$message = esc_html__( 'Your license key has been disabled.', 'linguator' );
+						$message = esc_html__( 'Your license key has been disabled.', 'polylang' );
 						break;
 
 					case 'missing':
 						$message = sprintf(
 							/* translators: %1$s is link start tag, %2$s is link end tag. */
-							esc_html__( 'Invalid license. Please %1$svisit your account page%2$s and verify it.', 'linguator' ),
-							sprintf( '<a href="%s" target="_blank">', 'https://linguator.pro/account/' ),
+							esc_html__( 'Invalid license. Please %1$svisit your account page%2$s and verify it.', 'polylang' ),
+							sprintf( '<a href="%s" target="_blank">', 'https://polylang.pro/account/' ),
 							'</a>'
 						);
 						break;
@@ -299,23 +299,23 @@ class LMAT_License {
 					case 'site_inactive':
 						$message = sprintf(
 							/* translators: %1$s is a product name, %2$s is link start tag, %3$s is link end tag. */
-							esc_html__( 'Your %1$s license key is not active for this URL. Please %2$svisit your account page%3$s to manage your license key URLs.', 'linguator' ),
+							esc_html__( 'Your %1$s license key is not active for this URL. Please %2$svisit your account page%3$s to manage your license key URLs.', 'polylang' ),
 							esc_html( $this->name ),
-							sprintf( '<a href="%s" target="_blank">', 'https://linguator.pro/account/' ),
+							sprintf( '<a href="%s" target="_blank">', 'https://polylang.pro/account/' ),
 							'</a>'
 						);
 						break;
 
 					case 'item_name_mismatch':
 						/* translators: %s is a product name */
-						$message = sprintf( esc_html__( 'This is not a %s license key.', 'linguator' ), esc_html( $this->name ) );
+						$message = sprintf( esc_html__( 'This is not a %s license key.', 'polylang' ), esc_html( $this->name ) );
 						break;
 
 					case 'no_activations_left':
 						$message = sprintf(
 							/* translators: %1$s is link start tag, %2$s is link end tag */
-							esc_html__( 'Your license key has reached its activation limit. %1$sView possible upgrades%2$s now.', 'linguator' ),
-							sprintf( '<a href="%s" target="_blank">', 'https://linguator.pro/account/' ),
+							esc_html__( 'Your license key has reached its activation limit. %1$sView possible upgrades%2$s now.', 'polylang' ),
+							sprintf( '<a href="%s" target="_blank">', 'https://polylang.pro/account/' ),
 							'</a>'
 						);
 						break;
@@ -323,23 +323,23 @@ class LMAT_License {
 			} else {
 				$class = 'license-valid';
 
-				$out .= sprintf( '<button id="deactivate_%s" type="button" class="button button-secondary lmat-deactivate-license">%s</button>', esc_attr( $this->id ), esc_html__( 'Deactivate', 'linguator' ) );
+				$out .= sprintf( '<button id="deactivate_%s" type="button" class="button button-secondary pll-deactivate-license">%s</button>', esc_attr( $this->id ), esc_html__( 'Deactivate', 'polylang' ) );
 
 				if ( 'lifetime' === $license->expires ) {
-					$message = esc_html__( 'The license key never expires.', 'linguator' );
+					$message = esc_html__( 'The license key never expires.', 'polylang' );
 				} elseif ( $expiration > $now && $expiration - $now < ( DAY_IN_SECONDS * 30 ) ) {
 					$class = 'notice-warning notice-alt';
 					$message = sprintf(
 						/* translators: %1$s is a date, %2$s is link start tag, %3$s is link end tag. */
-						esc_html__( 'Your license key will expire soon! Precisely, it will expire on %1$s. %2$sRenew your license key today!%3$s', 'linguator' ),
+						esc_html__( 'Your license key will expire soon! Precisely, it will expire on %1$s. %2$sRenew your license key today!%3$s', 'polylang' ),
 						esc_html( date_i18n( get_option( 'date_format' ), $expiration ) ),
-						sprintf( '<a href="%s" target="_blank">', 'https://linguator.pro/account/' ),
+						sprintf( '<a href="%s" target="_blank">', 'https://polylang.pro/account/' ),
 						'</a>'
 					);
 				} else {
 					$message = sprintf(
 						/* translators: %s is a date */
-						esc_html__( 'Your license key expires on %s.', 'linguator' ),
+						esc_html__( 'Your license key expires on %s.', 'polylang' ),
 						esc_html( date_i18n( get_option( 'date_format' ), $expiration ) )
 					);
 				}
@@ -350,6 +350,6 @@ class LMAT_License {
 			$out .= '<p>' . $message . '</p>';
 		}
 
-		return sprintf( '<tr id="lmat-license-%s" class="%s">%s</tr>', esc_attr( $this->id ), $class, $out );
+		return sprintf( '<tr id="pll-license-%s" class="%s">%s</tr>', esc_attr( $this->id ), $class, $out );
 	}
 }

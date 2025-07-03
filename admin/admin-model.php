@@ -1,11 +1,11 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
- * Extends the LMAT_Model class with methods needed only in Linguator settings pages.
+ * Extends the PLL_Model class with methods needed only in Polylang settings pages.
  *
  * @since 1.2
  */
-class LMAT_Admin_Model extends LMAT_Model {}
+class PLL_Admin_Model extends PLL_Model {}

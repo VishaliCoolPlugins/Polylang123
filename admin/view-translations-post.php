@@ -2,16 +2,16 @@
 /**
  * Displays the translations fields for posts
  *
- * @package Linguator
+ * @package Polylang
  *
- * @var LMAT_Admin_Classic_Editor $this    LMAT_Admin_Classic_Editor object.
- * @var LMAT_Language             $lang    The post language. Default language if no language assigned yet.
+ * @var PLL_Admin_Classic_Editor $this    PLL_Admin_Classic_Editor object.
+ * @var PLL_Language             $lang    The post language. Default language if no language assigned yet.
  * @var int                      $post_ID The post id.
  */
 
 defined( 'ABSPATH' ) || exit;
 ?>
-<p><strong><?php esc_html_e( 'Translations', 'linguator' ); ?></strong></p>
+<p><strong><?php esc_html_e( 'Translations', 'polylang' ); ?></strong></p>
 <table>
 	<?php
 	foreach ( $this->model->get_languages_list() as $language ) {
@@ -37,9 +37,9 @@ defined( 'ABSPATH' ) || exit;
 		}
 		?>
 		<tr>
-			<th class = "lmat-language-column"><?php echo $language->flag ?: esc_html( $language->slug ); // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+			<th class = "pll-language-column"><?php echo $language->flag ?: esc_html( $language->slug ); // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
 			<td class = "hidden"><?php echo $add_link; // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
-			<td class = "lmat-edit-column lmat-column-icon"><?php echo $link; // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
+			<td class = "pll-edit-column pll-column-icon"><?php echo $link; // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
 			<?php
 
 			/**
@@ -48,9 +48,9 @@ defined( 'ABSPATH' ) || exit;
 			 *
 			 * @since 2.1
 			 */
-			do_action( 'lmat_before_post_translation_' . $language->slug );
+			do_action( 'pll_before_post_translation_' . $language->slug );
 			?>
-			<td class = "lmat-translation-column">
+			<td class = "pll-translation-column">
 				<?php
 				printf(
 					'<label class="screen-reader-text" for="tr_lang_%1$s">%2$s</label>
@@ -58,7 +58,7 @@ defined( 'ABSPATH' ) || exit;
 					<span lang="%5$s" dir="%6$s"><input type="text" class="tr_lang" id="tr_lang_%1$s" value="%4$s" /></span>',
 					esc_attr( $language->slug ),
 					/* translators: accessibility text */
-					esc_html__( 'Translation', 'linguator' ),
+					esc_html__( 'Translation', 'polylang' ),
 					( empty( $translation ) ? '0' : esc_attr( (string) $translation->ID ) ),
 					( empty( $translation ) ? '' : esc_attr( $translation->post_title ) ),
 					esc_attr( $language->get_locale( 'display' ) ),

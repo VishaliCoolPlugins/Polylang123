@@ -1,63 +1,63 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
- * Main Linguator class for admin (except Linguator pages), accessible from @see LMAT().
+ * Main Polylang class for admin (except Polylang pages), accessible from @see PLL().
  *
  * @since 1.2
  */
-class LMAT_Admin extends LMAT_Admin_Base {
+class PLL_Admin extends PLL_Admin_Base {
 	/**
-	 * @var LMAT_Admin_Filters|null
+	 * @var PLL_Admin_Filters|null
 	 */
 	public $filters;
 
 	/**
-	 * @var LMAT_Admin_Filters_Columns|null
+	 * @var PLL_Admin_Filters_Columns|null
 	 */
 	public $filters_columns;
 
 	/**
-	 * @var LMAT_Admin_Filters_Post|null
+	 * @var PLL_Admin_Filters_Post|null
 	 */
 	public $filters_post;
 
 	/**
-	 * @var LMAT_Admin_Filters_Term|null
+	 * @var PLL_Admin_Filters_Term|null
 	 */
 	public $filters_term;
 
 	/**
-	 * @var LMAT_Admin_Filters_Media|null
+	 * @var PLL_Admin_Filters_Media|null
 	 */
 	public $filters_media;
 
 	/**
 	 * @since 2.9
 	 *
-	 * @var LMAT_Filters_Sanitization|null
+	 * @var PLL_Filters_Sanitization|null
 	 */
 	public $filters_sanitization;
 
 	/**
-	 * @var LMAT_Admin_Block_Editor|null
+	 * @var PLL_Admin_Block_Editor|null
 	 */
 	public $block_editor;
 
 	/**
-	 * @var LMAT_Admin_Classic_Editor|null
+	 * @var PLL_Admin_Classic_Editor|null
 	 */
 	public $classic_editor;
 
 	/**
-	 * @var LMAT_Admin_Nav_Menu|null
+	 * @var PLL_Admin_Nav_Menu|null
 	 */
 	public $nav_menu;
 
 	/**
-	 * @var LMAT_Admin_Filters_Widgets_Options|null
+	 * @var PLL_Admin_Filters_Widgets_Options|null
 	 */
 	public $filters_widgets_options;
 
@@ -66,14 +66,14 @@ class LMAT_Admin extends LMAT_Admin_Base {
 	 *
 	 * @since 1.2
 	 *
-	 * @param LMAT_Links_Model $links_model Reference to the links model.
+	 * @param PLL_Links_Model $links_model Reference to the links model.
 	 */
 	public function __construct( &$links_model ) {
 		parent::__construct( $links_model );
 
 		// Adds a 'settings' link in the plugins table
-		add_filter( 'plugin_action_links_' . LINGUATOR_BASENAME, array( $this, 'plugin_action_links' ) );
-		add_action( 'in_plugin_update_message-' . LINGUATOR_BASENAME, array( $this, 'plugin_update_message' ), 10, 2 );
+		add_filter( 'plugin_action_links_' . POLYLANG_BASENAME, array( $this, 'plugin_action_links' ) );
+		add_action( 'in_plugin_update_message-' . POLYLANG_BASENAME, array( $this, 'plugin_update_message' ), 10, 2 );
 	}
 
 	/**
@@ -101,7 +101,7 @@ class LMAT_Admin extends LMAT_Admin_Base {
 	 * @return string[] Modified list of links.
 	 */
 	public function plugin_action_links( $links ) {
-		array_unshift( $links, '<a href="admin.php?page=mlang">' . __( 'Settings', 'linguator' ) . '</a>' );
+		array_unshift( $links, '<a href="admin.php?page=mlang">' . __( 'Settings', 'polylang' ) . '</a>' );
 		return $links;
 	}
 
@@ -124,12 +124,12 @@ class LMAT_Admin extends LMAT_Admin_Base {
 	 * Setup filters for admin pages
 	 *
 	 * @since 1.2
-	 * @since 2.7 instantiate a LMAT_Bulk_Translate instance.
+	 * @since 2.7 instantiate a PLL_Bulk_Translate instance.
 	 * @return void
 	 */
 	public function add_filters() {
-		$this->filters_sanitization = new LMAT_Filters_Sanitization( $this->get_locale_for_sanitization() );
-		$this->filters_widgets_options = new LMAT_Admin_Filters_Widgets_Options( $this );
+		$this->filters_sanitization = new PLL_Filters_Sanitization( $this->get_locale_for_sanitization() );
+		$this->filters_widgets_options = new PLL_Admin_Filters_Widgets_Options( $this );
 
 		// All these are separated just for convenience and maintainability
 		$classes = array( 'Filters', 'Filters_Columns', 'Filters_Post', 'Filters_Term', 'Nav_Menu', 'Classic_Editor', 'Block_Editor' );
@@ -149,7 +149,7 @@ class LMAT_Admin extends LMAT_Admin_Base {
 			 *
 			 * @param string $class class name
 			 */
-			$class = apply_filters( 'lmat_' . $obj, 'LMAT_Admin_' . $class );
+			$class = apply_filters( 'pll_' . $obj, 'PLL_Admin_' . $class );
 			$this->$obj = new $class( $this );
 		}
 	}

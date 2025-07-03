@@ -1,16 +1,16 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
-namespace WP_Syntex\Linguator\Model;
+namespace WP_Syntex\Polylang\Model;
 
-use LMAT_Translated_Post;
+use PLL_Translated_Post;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Model for post types translated by Linguator.
+ * Model for post types translated by Polylang.
  *
  * @since 3.7
  */
@@ -18,7 +18,7 @@ class Post_Types {
 	/**
 	 * Translated post model.
 	 *
-	 * @var LMAT_Translated_Post
+	 * @var PLL_Translated_Post
 	 */
 	public $translated_object;
 
@@ -27,9 +27,9 @@ class Post_Types {
 	 *
 	 * @since 3.7
 	 *
-	 * @param LMAT_Translated_Post $translated_object Posts model.
+	 * @param PLL_Translated_Post $translated_object Posts model.
 	 */
-	public function __construct( LMAT_Translated_Post $translated_object ) {
+	public function __construct( PLL_Translated_Post $translated_object ) {
 		$this->translated_object = $translated_object;
 	}
 
@@ -40,20 +40,20 @@ class Post_Types {
 	 * to allow themes adding the filter in functions.php.
 	 *
 	 * @since 1.2
-	 * @since 3.7 Moved from `LMAT_Model::get_translated_post_types()` to `WP_Syntex\Linguator\Model\Taxonomies::get_translated()`.
+	 * @since 3.7 Moved from `PLL_Model::get_translated_post_types()` to `WP_Syntex\Polylang\Model\Taxonomies::get_translated()`.
 	 *
 	 * @param bool $filter True if we should return only valid registered post types.
-	 * @return string[] Post type names for which Linguator manages languages and translations.
+	 * @return string[] Post type names for which Polylang manages languages and translations.
 	 */
 	public function get_translated( $filter = true ): array {
 		return $this->translated_object->get_translated_object_types( $filter );
 	}
 
 	/**
-	 * Returns true if Linguator manages languages and translations for this post type.
+	 * Returns true if Polylang manages languages and translations for this post type.
 	 *
 	 * @since 1.2
-	 * @since 3.7 Moved from `LMAT_Model::is_translated_post_type()` to `WP_Syntex\Linguator\Model\Taxonomies::is_translated()`.
+	 * @since 3.7 Moved from `PLL_Model::is_translated_post_type()` to `WP_Syntex\Polylang\Model\Taxonomies::is_translated()`.
 	 *
 	 * @param string|string[] $post_type Post type name or array of post type names.
 	 * @return bool

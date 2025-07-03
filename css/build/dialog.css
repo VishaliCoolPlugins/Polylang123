@@ -1,14 +1,14 @@
-/*  By default Linguator dialog box use WordPress jQuery UI dialog styles.
+/*  By default Polylang dialog box use WordPress jQuery UI dialog styles.
 	However WooCommerce loads its own jQuery UI dialog styles and we need to override them by ours
 	to revert to the default WordPress ones.
 */
-.lmat-confirmation-modal.ui-widget,
-.lmat-confirmation-modal.ui-widget .ui-widget,
-.lmat-confirmation-modal .ui-widget {
+.pll-confirmation-modal.ui-widget,
+.pll-confirmation-modal.ui-widget .ui-widget,
+.pll-confirmation-modal .ui-widget {
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 	font-size: 13px;
 }
-.lmat-confirmation-modal.ui-dialog {
+.pll-confirmation-modal.ui-dialog {
 	padding: 0;
 	z-index: 100102;
 	background: #fff;
@@ -16,7 +16,7 @@
 	color: #444;
 	border-radius: 0; /* Override WooCommerce dialog styles - jQuery UI 1.11.4 - WP < 5.6 */
 }
-.ui-dialog.lmat-confirmation-modal .ui-dialog-titlebar {
+.ui-dialog.pll-confirmation-modal .ui-dialog-titlebar {
 	background: #fcfcfc;
 	border-radius: 0;
 	border: 0;
@@ -29,16 +29,16 @@
 	color: #444;
 	position: static;
 }
-.ui-dialog.lmat-confirmation-modal .ui-dialog-title {
+.ui-dialog.pll-confirmation-modal .ui-dialog-title {
 	float: none;
 	width: auto;
 	margin: 0;
 }
-.lmat-confirmation-modal .ui-widget-header .ui-icon {
+.pll-confirmation-modal .ui-widget-header .ui-icon {
 	background: none;
 	position: static;
 }
-.lmat-confirmation-modal .ui-button.ui-dialog-titlebar-close {
+.pll-confirmation-modal .ui-button.ui-dialog-titlebar-close {
 	padding: 0;
 	margin: 0;
 	top: 0;
@@ -48,21 +48,21 @@
 	border: 0; /* Override WooCommerce dialog styles - jQuery UI 1.11.4 - WP < 5.6 */
 	background: none; /* Override WooCommerce dialog styles - jQuery UI 1.11.4 - WP < 5.6 */
 }
-.ui-dialog.lmat-confirmation-modal .ui-dialog-content {
+.ui-dialog.pll-confirmation-modal .ui-dialog-content {
 	border: 0;
 	padding: 16px;
 	color: #444;
 	position: static;
 	box-sizing: border-box;
 }
-.ui-dialog.lmat-confirmation-modal .ui-dialog-buttonpane{
+.ui-dialog.pll-confirmation-modal .ui-dialog-buttonpane{
 	margin: 0;
 	padding: 16px;
 	border: 0;
 	background: #fcfcfc;
 	border-top: 1px solid #dfdfdf;
 }
-.ui-dialog.lmat-confirmation-modal .ui-dialog-buttonpane .ui-button{
+.ui-dialog.pll-confirmation-modal .ui-dialog-buttonpane .ui-button{
 	margin: 0 0 0 16px;
 	padding: 0 10px 1px;
 	background: #f7f7f7;
@@ -72,13 +72,13 @@
 	line-height: 2;
 	vertical-align: top;
 }
-.ui-dialog.lmat-confirmation-modal .ui-button:hover,
-.ui-dialog.lmat-confirmation-modal .ui-button:focus {
+.ui-dialog.pll-confirmation-modal .ui-button:hover,
+.ui-dialog.pll-confirmation-modal .ui-button:focus {
 	background: #fafafa;
 	border-color: #999;
 	color: #23282d;
 }
-.lmat-confirmation-modal + .ui-widget-overlay {
+.pll-confirmation-modal + .ui-widget-overlay {
 	background: #000;
 	opacity: 0.7;
 	z-index: 100101;

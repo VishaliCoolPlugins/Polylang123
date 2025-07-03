@@ -1,5 +1,5 @@
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -54,9 +54,9 @@ jQuery(
 					 * Filters the category checklist.
 					 */
 					function filter_terms( lang ) {
-						if ( "undefined" != typeof( lmat_term_languages ) ) {
+						if ( "undefined" != typeof( pll_term_languages ) ) {
 							$.each(
-								lmat_term_languages,
+								pll_term_languages,
 								function ( lg, term_tax ) {
 									$.each(
 										term_tax,
@@ -64,7 +64,7 @@ jQuery(
 											$.each(
 												terms,
 												function ( i ) {
-													id = '#' + tax + '-' + lmat_term_languages[ lg ][ tax ][ i ];
+													id = '#' + tax + '-' + pll_term_languages[ lg ][ tax ][ i ];
 													lang == lg ? $( id ).show() : $( id ).hide();
 												}
 											);
@@ -79,14 +79,14 @@ jQuery(
 					 * Filters the parent page dropdown list.
 					 */
 					function filter_pages( lang ) {
-						if ( "undefined" != typeof( lmat_page_languages ) ) {
+						if ( "undefined" != typeof( pll_page_languages ) ) {
 							$.each(
-								lmat_page_languages,
+								pll_page_languages,
 								function ( lg, pages ) {
 									$.each(
 										pages,
 										function ( i ) {
-											v = $( '#post_parent option[value="' + lmat_page_languages[ lg ][ i ] + '"]' );
+											v = $( '#post_parent option[value="' + pll_page_languages[ lg ][ i ] + '"]' );
 											lang == lg ? v.show() : v.hide();
 										}
 									);
@@ -127,12 +127,12 @@ jQuery(
 					);
 
 					var data = {
-						action:       'lmat_update_post_rows',
+						action:       'pll_update_post_rows',
 						post_id:      post_id,
 						translations: translations.join( ',' ),
 						post_type:    $( "input[name='post_type']" ).val(),
 						screen:       $( "input[name='screen']" ).val(),
-						_lmat_nonce:   $( "input[name='_inline_edit']" ).val() // reuse quick edit nonce
+						_pll_nonce:   $( "input[name='_inline_edit']" ).val() // reuse quick edit nonce
 					};
 
 					// get the modified rows in ajax and update them
@@ -143,14 +143,14 @@ jQuery(
 							if ( response ) {
 								// Since WP changeset #52710 parseAjaxResponse() return content to notice the user in a HTML tag with ajax-response id.
 								// Not to disturb this behaviour by executing another ajax request in the ajaxSuccess event, we need to target another unexisting id.
-								var res = wpAjax.parseAjaxResponse( response, 'lmat-ajax-response' );
+								var res = wpAjax.parseAjaxResponse( response, 'pll-ajax-response' );
 								$.each(
 									res.responses,
 									function () {
 										if ( 'row' == this.what ) {
 											// data is built with a call to WP_Posts_List_Table::single_row method
 											// which uses internally other WordPress methods which escape correctly values.
-											// For Linguator language columns the HTML code is correctly escaped in LMAT_Admin_Filters_Columns::post_column method.
+											// For Polylang language columns the HTML code is correctly escaped in PLL_Admin_Filters_Columns::post_column method.
 											$( "#post-" + this.supplemental.post_id ).replaceWith( this.data ); // phpcs:ignore WordPressVIPMinimum.JS.HTMLExecutingFunctions.replaceWith
 										}
 									}

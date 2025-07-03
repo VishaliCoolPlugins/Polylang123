@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -10,7 +10,7 @@
  *
  * @since 2.6
  */
-class LMAT_T15S {
+class PLL_T15S {
 	/**
 	 * Transient key
 	 *

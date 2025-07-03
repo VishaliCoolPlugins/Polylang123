@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -8,9 +8,9 @@
  *
  * @since 1.2
  */
-class LMAT_Admin_Sync extends LMAT_Sync {
+class PLL_Admin_Sync extends PLL_Sync {
 	/**
-	 * @var LMAT_Admin_Links
+	 * @var PLL_Admin_Links
 	 */
 	private $links;
 
@@ -19,12 +19,12 @@ class LMAT_Admin_Sync extends LMAT_Sync {
 	 *
 	 * @since 1.2
 	 *
-	 * @param object $linguator The Linguator object.
+	 * @param object $polylang The Polylang object.
 	 */
-	public function __construct( &$linguator ) {
-		parent::__construct( $linguator );
+	public function __construct( &$polylang ) {
+		parent::__construct( $polylang );
 
-		$this->links = &$linguator->links;
+		$this->links = &$polylang->links;
 
 		add_filter( 'wp_insert_post_parent', array( $this, 'wp_insert_post_parent' ), 10, 3 );
 		add_filter( 'wp_insert_post_data', array( $this, 'wp_insert_post_data' ) );
@@ -186,8 +186,8 @@ class LMAT_Admin_Sync extends LMAT_Sync {
 	 * @param WP_Post $post         Post object.
 	 * @param int[]   $translations Post translations.
 	 */
-	public function lmat_save_post( $post_id, $post, $translations ) {
-		parent::lmat_save_post( $post_id, $post, $translations );
+	public function pll_save_post( $post_id, $post, $translations ) {
+		parent::pll_save_post( $post_id, $post, $translations );
 
 		// Sticky posts
 		if ( in_array( 'sticky_posts', $this->options['sync'] ) ) {
@@ -202,9 +202,9 @@ class LMAT_Admin_Sync extends LMAT_Sync {
 	}
 
 	/**
-	 * Some backward compatibility with Linguator < 2.3
-	 * allows to call LMAT()->sync->copy_post_metas() and LMAT()->sync->copy_taxonomies()
-	 * used for example in Linguator for WooCommerce
+	 * Some backward compatibility with Polylang < 2.3
+	 * allows to call PLL()->sync->copy_post_metas() and PLL()->sync->copy_taxonomies()
+	 * used for example in Polylang for WooCommerce
 	 * the compatibility is however only partial as the 4th argument $sync is lost
 	 *
 	 * @since 2.3
@@ -223,7 +223,7 @@ class LMAT_Admin_Sync extends LMAT_Sync {
 
 				trigger_error( // phpcs:ignore WordPress.PHP.DevelopmentFunctions
 					sprintf(
-						'%1$s was called incorrectly in %3$s on line %4$s: the call to LMAT()->sync->%1$s() has been deprecated in Linguator 2.3, use LMAT()->sync->%2$s->copy() instead.' . "\nError handler",
+						'%1$s was called incorrectly in %3$s on line %4$s: the call to PLL()->sync->%1$s() has been deprecated in Polylang 2.3, use PLL()->sync->%2$s->copy() instead.' . "\nError handler",
 						esc_html( $func ),
 						esc_html( $obj ),
 						esc_html( $debug[ $i ]['file'] ),
@@ -237,7 +237,7 @@ class LMAT_Admin_Sync extends LMAT_Sync {
 		$debug = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions
 		trigger_error( // phpcs:ignore WordPress.PHP.DevelopmentFunctions
 			sprintf(
-				'Call to undefined function LMAT()->sync->%1$s() in %2$s on line %3$s' . "\nError handler",
+				'Call to undefined function PLL()->sync->%1$s() in %2$s on line %3$s' . "\nError handler",
 				esc_html( $func ),
 				esc_html( $debug[0]['file'] ),
 				absint( $debug[0]['line'] )

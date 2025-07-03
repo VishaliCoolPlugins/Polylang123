@@ -1,7 +1,7 @@
 /**
  * Adds one biography input field per language in the user profile.
  *
- * @package Linguator
+ * @package Polylang
  */
 
 jQuery(

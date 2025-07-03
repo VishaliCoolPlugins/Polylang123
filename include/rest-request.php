@@ -1,52 +1,52 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
- * Main Linguator class for REST API requests, accessible from @see LMAT().
+ * Main Polylang class for REST API requests, accessible from @see PLL().
  *
  * @since 2.6
  */
-class LMAT_REST_Request extends LMAT_Base {
+class PLL_REST_Request extends PLL_Base {
 	/**
-	 * @var LMAT_Language|false|null A `LMAT_Language` when defined, `false` otherwise. `null` until the language
+	 * @var PLL_Language|false|null A `PLL_Language` when defined, `false` otherwise. `null` until the language
 	 *                              definition process runs.
 	 */
 	public $curlang;
 
 	/**
-	 * @var LMAT_Default_Term|null
+	 * @var PLL_Default_Term|null
 	 */
 	public $default_term;
 
 	/**
-	 * @var LMAT_Filters|null
+	 * @var PLL_Filters|null
 	 */
 	public $filters;
 
 	/**
-	 * @var LMAT_Filters_Links|null
+	 * @var PLL_Filters_Links|null
 	 */
 	public $filters_links;
 
 	/**
-	 * @var LMAT_Admin_Links|null
+	 * @var PLL_Admin_Links|null
 	 */
 	public $links;
 
 	/**
-	 * @var LMAT_Nav_Menu|null
+	 * @var PLL_Nav_Menu|null
 	 */
 	public $nav_menu;
 
 	/**
-	 * @var LMAT_Static_Pages|null
+	 * @var PLL_Static_Pages|null
 	 */
 	public $static_pages;
 
 	/**
-	 * @var LMAT_Filters_Widgets_Options|null
+	 * @var PLL_Filters_Widgets_Options|null
 	 */
 	public $filters_widgets_options;
 
@@ -55,7 +55,7 @@ class LMAT_REST_Request extends LMAT_Base {
 	 *
 	 * @since 3.4
 	 *
-	 * @param LMAT_Links_Model $links_model Reference to the links model.
+	 * @param PLL_Links_Model $links_model Reference to the links model.
 	 */
 	public function __construct( &$links_model ) {
 		parent::__construct( $links_model );
@@ -63,7 +63,7 @@ class LMAT_REST_Request extends LMAT_Base {
 		// Static front page and page for posts.
 		// Early instantiated to be able to correctly initialize language properties.
 		if ( 'page' === get_option( 'show_on_front' ) ) {
-			$this->static_pages = new LMAT_Static_Pages( $this );
+			$this->static_pages = new PLL_Static_Pages( $this );
 		}
 
 		$this->model->set_languages_ready();
@@ -79,7 +79,7 @@ class LMAT_REST_Request extends LMAT_Base {
 	public function init() {
 		parent::init();
 
-		$this->default_term = new LMAT_Default_Term( $this );
+		$this->default_term = new PLL_Default_Term( $this );
 		$this->default_term->add_hooks();
 
 		if ( ! $this->model->has_languages() ) {
@@ -88,12 +88,12 @@ class LMAT_REST_Request extends LMAT_Base {
 
 		add_filter( 'rest_pre_dispatch', array( $this, 'set_language' ), 10, 3 );
 
-		$this->filters_links           = new LMAT_Filters_Links( $this );
-		$this->filters                 = new LMAT_Filters( $this );
-		$this->filters_widgets_options = new LMAT_Filters_Widgets_Options( $this );
+		$this->filters_links           = new PLL_Filters_Links( $this );
+		$this->filters                 = new PLL_Filters( $this );
+		$this->filters_widgets_options = new PLL_Filters_Widgets_Options( $this );
 
-		$this->links    = new LMAT_Admin_Links( $this );
-		$this->nav_menu = new LMAT_Frontend_Nav_Menu( $this ); // For auto added pages to menu.
+		$this->links    = new PLL_Admin_Links( $this );
+		$this->nav_menu = new PLL_Frontend_Nav_Menu( $this ); // For auto added pages to menu.
 	}
 
 	/**
@@ -122,10 +122,10 @@ class LMAT_REST_Request extends LMAT_Base {
 
 		if ( ! empty( $this->curlang ) ) {
 			/** This action is documented in frontend/choose-lang.php */
-			do_action( 'lmat_language_defined', $this->curlang->slug, $this->curlang );
+			do_action( 'pll_language_defined', $this->curlang->slug, $this->curlang );
 		} else {
-			/** This action is documented in include/class-linguator.php */
-			do_action( 'lmat_no_language_defined' ); // To load overridden textdomains.
+			/** This action is documented in include/class-polylang.php */
+			do_action( 'pll_no_language_defined' ); // To load overridden textdomains.
 		}
 
 		return $result;

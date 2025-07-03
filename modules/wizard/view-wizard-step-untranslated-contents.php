@@ -2,25 +2,25 @@
 /**
  * Displays the wizard unstranslated content step
  *
- * @package Linguator
+ * @package Polylang
  *
  * @since 2.7
  *
- * @var LMAT_Model $model `LMAT_Model` instance.
+ * @var PLL_Model $model `PLL_Model` instance.
  */
 
 defined( 'ABSPATH' ) || exit;
 
 $languages_list = $model->languages->get_list();
 ?>
-<h2><?php esc_html_e( 'Content without language', 'linguator' ); ?></h2>
+<h2><?php esc_html_e( 'Content without language', 'polylang' ); ?></h2>
 <p>
-	<?php esc_html_e( 'There are posts, pages, categories or tags without language.', 'linguator' ); ?><br />
-	<?php esc_html_e( 'For your site to work correctly, you need to assign a language to all your contents.', 'linguator' ); ?><br />
-	<?php esc_html_e( 'The selected language below will be applied to all your content without an assigned language.', 'linguator' ); ?>
+	<?php esc_html_e( 'There are posts, pages, categories or tags without language.', 'polylang' ); ?><br />
+	<?php esc_html_e( 'For your site to work correctly, you need to assign a language to all your contents.', 'polylang' ); ?><br />
+	<?php esc_html_e( 'The selected language below will be applied to all your content without an assigned language.', 'polylang' ); ?>
 </p>
 <div class="form-field">
-	<label for="lang_list"><?php esc_html_e( 'Choose the language to be assigned', 'linguator' ); ?></label>
+	<label for="lang_list"><?php esc_html_e( 'Choose the language to be assigned', 'polylang' ); ?></label>
 	<select name="language" id="lang_list">
 		<?php
 		foreach ( $languages_list as $lg ) {

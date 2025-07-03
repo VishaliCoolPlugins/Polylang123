@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -8,7 +8,7 @@
  *
  * @since 1.9
  */
-class LMAT_Settings_Licenses extends LMAT_Settings_Module {
+class PLL_Settings_Licenses extends PLL_Settings_Module {
 	/**
 	 * Stores the display order priority.
 	 *
@@ -19,7 +19,7 @@ class LMAT_Settings_Licenses extends LMAT_Settings_Module {
 	/**
 	 * Stores an array of objects allowing to manage a license.
 	 *
-	 * @var LMAT_License[]
+	 * @var PLL_License[]
 	 */
 	protected $items;
 
@@ -28,23 +28,23 @@ class LMAT_Settings_Licenses extends LMAT_Settings_Module {
 	 *
 	 * @since 1.9
 	 *
-	 * @param object $linguator linguator object
+	 * @param object $polylang polylang object
 	 */
-	public function __construct( &$linguator ) {
+	public function __construct( &$polylang ) {
 		parent::__construct(
-			$linguator,
+			$polylang,
 			array(
 				'module'      => 'licenses',
-				'title'       => __( 'License keys', 'linguator' ),
-				'description' => __( 'Manage licenses for Linguator Pro and add-ons.', 'linguator' ),
+				'title'       => __( 'License keys', 'polylang' ),
+				'description' => __( 'Manage licenses for Polylang Pro and add-ons.', 'polylang' ),
 			)
 		);
 
-		$this->buttons['cancel'] = sprintf( '<button type="button" class="button button-secondary cancel">%s</button>', __( 'Close', 'linguator' ) );
+		$this->buttons['cancel'] = sprintf( '<button type="button" class="button button-secondary cancel">%s</button>', __( 'Close', 'polylang' ) );
 
-		$this->items = apply_filters( 'lmat_settings_licenses', array() );
+		$this->items = apply_filters( 'pll_settings_licenses', array() );
 
-		add_action( 'wp_ajax_lmat_deactivate_license', array( $this, 'deactivate_license' ) );
+		add_action( 'wp_ajax_pll_deactivate_license', array( $this, 'deactivate_license' ) );
 	}
 
 	/**
@@ -65,7 +65,7 @@ class LMAT_Settings_Licenses extends LMAT_Settings_Module {
 	 */
 	protected function form() {
 		if ( ! empty( $this->items ) ) { ?>
-			<table id="lmat-licenses-table" class="form-table lmat-table-top">
+			<table id="pll-licenses-table" class="form-table pll-table-top">
 				<?php
 				foreach ( $this->items as $item ) {
 					echo $this->get_row( $item ); // phpcs:ignore WordPress.Security.EscapeOutput
@@ -81,7 +81,7 @@ class LMAT_Settings_Licenses extends LMAT_Settings_Module {
 	 *
 	 * @since 1.9
 	 *
-	 * @param LMAT_License $item Object allowing to manage a license.
+	 * @param PLL_License $item Object allowing to manage a license.
 	 * @return string
 	 */
 	protected function get_row( $item ) {
@@ -95,7 +95,7 @@ class LMAT_Settings_Licenses extends LMAT_Settings_Module {
 	 * @since 1.9
 	 */
 	public function save_options() {
-		check_ajax_referer( 'lmat_options', '_lmat_nonce' );
+		check_ajax_referer( 'pll_options', '_pll_nonce' );
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die( -1 );
 		}
@@ -110,9 +110,9 @@ class LMAT_Settings_Licenses extends LMAT_Settings_Module {
 			}
 
 			// Updated message
-			lmat_add_notice( new WP_Error( 'settings_updated', __( 'Settings saved.', 'linguator' ), 'success' ) );
+			pll_add_notice( new WP_Error( 'settings_updated', __( 'Settings saved.', 'polylang' ), 'success' ) );
 			ob_start();
-			settings_errors( 'linguator' );
+			settings_errors( 'polylang' );
 			$x->Add( array( 'what' => 'success', 'data' => ob_get_clean() ) );
 			$x->send();
 		}
@@ -126,7 +126,7 @@ class LMAT_Settings_Licenses extends LMAT_Settings_Module {
 	 * @return void
 	 */
 	public function deactivate_license() {
-		check_ajax_referer( 'lmat_options', '_lmat_nonce' );
+		check_ajax_referer( 'pll_options', '_pll_nonce' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die( -1 );

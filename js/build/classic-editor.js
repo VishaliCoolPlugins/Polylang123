@@ -2,7 +2,7 @@
 
 ;// ./js/src/lib/confirmation-modal.js
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 const languagesList = jQuery( '.post_lang_choice' );
@@ -17,10 +17,10 @@ const initializeConfirmationModal = () => {
 	const dialogContainer = jQuery(
 		'<div/>',
 		{
-			id: 'lmat-dialog',
+			id: 'pll-dialog',
 			style: 'display:none;'
 		}
-	).text( __( 'Are you sure you want to change the language of the current content?', 'linguator' ) );
+	).text( __( 'Are you sure you want to change the language of the current content?', 'polylang' ) );
 
 	// Put it after languages list dropdown.
 	// PHPCS ignore dialogContainer is a new safe HTML code generated above.
@@ -50,7 +50,7 @@ const initializeConfirmationModal = () => {
 				modal: true,
 				draggable: false,
 				resizable: false,
-				title: __( 'Change language', 'linguator' ),
+				title: __( 'Change language', 'polylang' ),
 				minWidth: 600,
 				maxWidth: '100%',
 				open: function ( event, ui ) {
@@ -70,13 +70,13 @@ const initializeConfirmationModal = () => {
 				},
 				buttons: [
 					{
-						text: __( 'OK', 'linguator' ),
+						text: __( 'OK', 'polylang' ),
 						click: function ( event ) {
 							confirmDialog( 'yes' );
 						}
 					},
 					{
-						text: __( 'Cancel', 'linguator' ),
+						text: __( 'Cancel', 'polylang' ),
 						click: function ( event ) {
 							confirmDialog( 'no' );
 						}
@@ -85,9 +85,9 @@ const initializeConfirmationModal = () => {
 			};
 
 			if ( jQuery.ui.version >= '1.12.0' ) {
-				Object.assign( dialogOptions, { classes: { 'ui-dialog': 'lmat-confirmation-modal' } } );
+				Object.assign( dialogOptions, { classes: { 'ui-dialog': 'pll-confirmation-modal' } } );
 			} else {
-			Object.assign( dialogOptions, { dialogClass: 'lmat-confirmation-modal' } ); // jQuery UI 1.11.4 - WP < 5.6
+			Object.assign( dialogOptions, { dialogClass: 'pll-confirmation-modal' } ); // jQuery UI 1.11.4 - WP < 5.6
 			}
 
 			dialogContainer.dialog( dialogOptions );
@@ -103,7 +103,7 @@ const initializeLanguageOldValue = () => {
 
 ;// ./js/src/lib/metabox-autocomplete.js
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 // Translations autocomplete input box.
@@ -111,16 +111,16 @@ function initMetaboxAutoComplete() {
 	jQuery('.tr_lang').each(
 		function () {
 			var tr_lang = jQuery(this).attr('id').substring(8);
-			var td = jQuery(this).parent().parent().siblings('.lmat-edit-column');
+			var td = jQuery(this).parent().parent().siblings('.pll-edit-column');
 
 			jQuery(this).autocomplete(
 				{
 					minLength: 0,
-					source: ajaxurl + '?action=lmat_posts_not_translated' +
+					source: ajaxurl + '?action=pll_posts_not_translated' +
 						'&post_language=' + jQuery('.post_lang_choice').val() +
 						'&translation_language=' + tr_lang +
 						'&post_type=' + jQuery('#post_type').val() +
-						'&_lmat_nonce=' + jQuery('#_lmat_nonce').val(),
+						'&_pll_nonce=' + jQuery('#_pll_nonce').val(),
 					select: function (event, ui) {
 						jQuery('#htr_lang_' + tr_lang).val(ui.item.id);
 						// ui.item.link is built and come from server side and is well escaped when necessary
@@ -146,7 +146,7 @@ function initMetaboxAutoComplete() {
 
 ;// ./js/src/classic-editor.js
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 
@@ -271,7 +271,7 @@ jQuery(
 							post_type:  $( '#post_type' ).val(),
 							taxonomies: taxonomies,
 							post_id:    $( '#post_ID' ).val(),
-							_lmat_nonce: $( '#_lmat_nonce' ).val()
+							_pll_nonce: $( '#_pll_nonce' ).val()
 						}
 
 						$.post(
@@ -279,7 +279,7 @@ jQuery(
 							data,
 							function ( response ) {
 								// Target a non existing WP HTML id to avoid a conflict with WP ajax requests.
-								var res = wpAjax.parseAjaxResponse( response, 'lmat-ajax-response' );
+								var res = wpAjax.parseAjaxResponse( response, 'pll-ajax-response' );
 								$.each(
 									res.responses,
 									function () {
@@ -297,7 +297,7 @@ jQuery(
 												// @see wp_popular_terms_checklist https://github.com/WordPress/WordPress/blob/5.2.2/wp-admin/includes/template.php#L236
 												$( '#' + tax + 'checklist-pop' ).html( this.supplemental.populars ); // phpcs:ignore WordPressVIPMinimum.JS.HTMLExecutingFunctions.html
 												// @see wp_dropdown_categories https://github.com/WordPress/WordPress/blob/5.5.1/wp-includes/category-template.php#L336
-												// which is called by LMAT_Admin_Classic_Editor::post_lang_choice to generate supplemental.dropdown
+												// which is called by PLL_Admin_Classic_Editor::post_lang_choice to generate supplemental.dropdown
 												$( '#new' + tax + '_parent' ).replaceWith( this.supplemental.dropdown ); // phpcs:ignore WordPressVIPMinimum.JS.HTMLExecutingFunctions.replaceWith
 												$( '#' + tax + '-lang' ).val( $( '.post_lang_choice' ).val() ); // hidden field
 											break;
@@ -308,7 +308,7 @@ jQuery(
 											break;
 											case 'flag': // flag in front of the select dropdown
 												// Data is built and come from server side and is well escaped when necessary
-												$( '.lmat-select-flag' ).html( this.data ); // phpcs:ignore WordPressVIPMinimum.JS.HTMLExecutingFunctions.html
+												$( '.pll-select-flag' ).html( this.data ); // phpcs:ignore WordPressVIPMinimum.JS.HTMLExecutingFunctions.html
 											break;
 											case 'permalink': // Sample permalink
 												var div = $( '#edit-slug-box' );
@@ -364,12 +364,12 @@ jQuery(
 
 				// Modifies the text direction.
 				let dir = e.detail.lang.is_rtl ? 'rtl' : 'ltr'
-				$( 'body' ).removeClass( 'lmat-dir-rtl' ).removeClass( 'lmat-dir-ltr' ).addClass( 'lmat-dir-' + dir );
+				$( 'body' ).removeClass( 'pll-dir-rtl' ).removeClass( 'pll-dir-ltr' ).addClass( 'pll-dir-' + dir );
 				$( '#content_ifr' ).contents().find( 'html' ).attr( 'lang', e.detail.lang.locale ).attr( 'dir', dir );
 				$( '#content_ifr' ).contents().find( 'body' ).attr( 'dir', dir );
 
 				// Refresh media libraries.
-				lmat.media.resetAllAttachmentsCollections();
+				pll.media.resetAllAttachmentsCollections();
 			}
 		);
 
@@ -380,26 +380,26 @@ jQuery(
 /**
  * @since 3.0
  *
- * @namespace lmat
+ * @namespace pll
  */
-var lmat = window.lmat || {};
+var pll = window.pll || {};
 
 /**
  * @since 3.0
  *
- * @namespace lmat.media
+ * @namespace pll.media
  */
-_.extend( lmat, { media: {} } );
+_.extend( pll, { media: {} } );
 
 /**
  * @since 3.0
  *
- * @alias lmat.media
- * @memberOf lmat
+ * @alias pll.media
+ * @memberOf pll
  * @namespace
  */
 var media = _.extend(
-	lmat.media, /** @lends lmat.media.prototype */
+	pll.media, /** @lends pll.media.prototype */
 	{
 		/**
 		 * TODO: Find a way to delete references to Attachments collections that are not used anywhere else.
@@ -415,9 +415,9 @@ var media = _.extend(
 		 * @return {wp.media.model.Attachments}
 		 */
 		query: function ( props ) {
-			var attachments = lmat.media.query.delegate( props );
+			var attachments = pll.media.query.delegate( props );
 
-			lmat.media.attachmentsCollections.push( attachments );
+			pll.media.attachmentsCollections.push( attachments );
 
 			return attachments;
 		},
@@ -447,10 +447,10 @@ if ( 'undefined' !== typeof wp && 'undefined' !== typeof wp.media ) {
 	/**
 	 * @since 3.0
 	 *
-	 * @memberOf lmat.media
+	 * @memberOf pll.media
 	 */
 	media.query = _.extend(
-		media.query, /** @lends lmat.media.query prototype */
+		media.query, /** @lends pll.media.query prototype */
 		{
 			/**
 			 * @type Function References WordPress { @see wp.media.query } constructor

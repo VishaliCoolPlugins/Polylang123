@@ -7,7 +7,7 @@ body {
 	border: 0; /* fix-pro #856 override WP install.css */
 }
 
-#lmat-logo {
+#pll-logo {
 	border: 0;
 	margin: 0 0 24px;
 	padding: 0;
@@ -18,36 +18,36 @@ body {
 	color: #000;
 	line-height: normal;
 }
-#lmat-logo a {
+#pll-logo a {
 	display: flex;
 	justify-content: center;
 	color: #000;
 	text-decoration: none;
 }
 
-#lmat-logo img {
+#pll-logo img {
 	max-width: 100%;
 	margin-right: 16px;
 }
-.rtl #lmat-logo img {
+.rtl #pll-logo img {
 	margin-right: 0;
 	margin-left: 16px;
 }
 
-.lmat-wizard-footer {
+.pll-wizard-footer {
 	text-align: center
 }
 
-.lmat-wizard .select2-container {
+.pll-wizard .select2-container {
 	text-align: left;
 	width: auto
 }
 
-.lmat-wizard .hidden {
+.pll-wizard .hidden {
 	display: none
 }
 
-.lmat-wizard-content {
+.pll-wizard-content {
 	box-shadow: 0 1px 3px rgba(0, 0, 0, .13);
 	padding: 2em;
 	margin: 0 0 20px;
@@ -56,14 +56,14 @@ body {
 	zoom: 1;
 	text-align: left;
 }
-.rtl .lmat-wizard-content{
+.rtl .pll-wizard-content{
 	text-align: right;
 }
 
-.lmat-wizard-content h1,
-.lmat-wizard-content h2,
-.lmat-wizard-content h3,
-.lmat-wizard-content table {
+.pll-wizard-content h1,
+.pll-wizard-content h2,
+.pll-wizard-content h3,
+.pll-wizard-content table {
 	margin: 0 0 20px;
 	border: 0;
 	padding: 0;
@@ -72,81 +72,81 @@ body {
 	font-weight: 500
 }
 
-.lmat-wizard-content p {
+.pll-wizard-content p {
 	margin: 20px 0;
 	font-size: 1em;
 	line-height: 1.75em;
 	color: #666
 }
 
-.lmat-wizard-content table {
+.pll-wizard-content table {
 	font-size: 1em;
 	line-height: 1.75em;
 	color: #666;
 	width: 100%;
 	margin-top: 20px;
 }
-.lmat-wizard-content table td span{
+.pll-wizard-content table td span{
 	display: inline-block;
 }
 
-.lmat-wizard-content table caption {
+.pll-wizard-content table caption {
 	caption-side: bottom;
 	font-style: italic;
 	text-align: right;
 }
-.rtl .lmat-wizard-content table caption {
+.rtl .pll-wizard-content table caption {
 	text-align: left;
 }
 
-.lmat-wizard-content table caption .icon-default-lang{
+.pll-wizard-content table caption .icon-default-lang{
 	font-style: normal;
 }
 
-.lmat-wizard-content a {
+.pll-wizard-content a {
 	color: #a03f3f;
 }
 
-.lmat-wizard-content a:focus,
-.lmat-wizard-content a:hover,
-.lmat-wizard-footer-links:hover {
+.pll-wizard-content a:focus,
+.pll-wizard-content a:hover,
+.pll-wizard-footer-links:hover {
 	color: #dd5454
 }
 
-.lmat-wizard-content .lmat-wizard-next-steps {
+.pll-wizard-content .pll-wizard-next-steps {
 	overflow: hidden;
 	margin: 0 0 24px;
 	padding-bottom: 2px
 }
 
-.lmat-wizard-content .lmat-wizard-next-steps h2 {
+.pll-wizard-content .pll-wizard-next-steps h2 {
 	margin-bottom: 12px
 }
 
-.lmat-wizard-content .lmat-wizard-next-steps .lmat-wizard-next-steps-first {
+.pll-wizard-content .pll-wizard-next-steps .pll-wizard-next-steps-first {
 	float: left;
 	width: 50%;
 	box-sizing: border-box
 }
 
-.lmat-wizard-content .lmat-wizard-next-steps .lmat-wizard-next-steps-last {
+.pll-wizard-content .pll-wizard-next-steps .pll-wizard-next-steps-last {
 	float: right;
 	width: 50%;
 	box-sizing: border-box
 }
 
-.lmat-wizard-content .lmat-wizard-next-steps ul {
+.pll-wizard-content .pll-wizard-next-steps ul {
 	padding: 0 2em 0 0;
 	list-style: none outside;
 	margin: 0
 }
 
-.lmat-wizard-content .lmat-wizard-next-steps ul li a {
+.pll-wizard-content .pll-wizard-next-steps ul li a {
 	display: block;
 	padding: 0 0 .75em
 }
 
-.lmat-wizard-content .lmat-wizard-next-steps ul li a::before {
+.pll-wizard-content .pll-wizard-next-steps ul li a::before {
 	color: #82878c;
 	font: normal 20px/1 dashicons;
 	speak: none;
@@ -158,7 +158,7 @@ body {
 	vertical-align: top
 }
 
-.lmat-wizard-steps {
+.pll-wizard-steps {
 	padding: 0 0 24px;
 	margin: 0;
 	list-style: none outside;
@@ -170,7 +170,7 @@ body {
 	display: inline-flex
 }
 
-.lmat-wizard-steps li {
+.pll-wizard-steps li {
 	width: 100%;
 	float: left;
 	padding: 0 0 .8em;
@@ -181,7 +181,7 @@ body {
 	line-height: 1.4em
 }
 
-.lmat-wizard-steps li a {
+.pll-wizard-steps li a {
 	color: #a03f3f;
 	text-decoration: none;
 	padding: 1.5em;
@@ -190,13 +190,13 @@ body {
 	z-index: 1
 }
 
-.lmat-wizard-steps li a:focus,
-.lmat-wizard-steps li a:hover {
+.pll-wizard-steps li a:focus,
+.pll-wizard-steps li a:hover {
 	color: #dd5454;
 	text-decoration: underline
 }
 
-.lmat-wizard-steps li::before {
+.pll-wizard-steps li::before {
 	content: "";
 	border: 4px solid #ccc;
 	border-radius: 100%;
@@ -210,33 +210,33 @@ body {
 	background: #fff
 }
 
-.lmat-wizard-steps li.active {
+.pll-wizard-steps li.active {
 	border-color: #a03f3f;
 	color: #a03f3f;
 	font-weight: 700
 }
 
-.lmat-wizard-steps li.active::before {
+.pll-wizard-steps li.active::before {
 	border-color: #a03f3f
 }
 
-.lmat-wizard-steps li.done {
+.pll-wizard-steps li.done {
 	border-color: #a03f3f;
 	color: #a03f3f
 }
 
-.lmat-wizard-steps li.done::before {
+.pll-wizard-steps li.done::before {
 	border-color: #a03f3f;
 	background: #a03f3f
 }
 
-.lmat-wizard .lmat-wizard-actions {
+.pll-wizard .pll-wizard-actions {
 	overflow: hidden;
 	margin: 20px 0 0;
 	position: relative
 }
 
-.lmat-wizard .lmat-wizard-actions .button {
+.pll-wizard .pll-wizard-actions .button {
 	font-size: 16px;
 	font-weight: 300;
 	padding: 1em 2em;
@@ -252,13 +252,13 @@ body {
 	color: #a03f3f;
 }
 
-.lmat-wizard .lmat-wizard-content .button {
+.pll-wizard .pll-wizard-content .button {
 	border-color: #a03f3f;
 	color: #a03f3f;
 }
 
-.lmat-wizard .lmat-wizard-content .button-primary,
-.lmat-wizard .lmat-wizard-actions .button-primary {
+.pll-wizard .pll-wizard-content .button-primary,
+.pll-wizard .pll-wizard-actions .button-primary {
 	background-color: #a03f3f;
 	border-color: #a03f3f;
 	color: #fff;
@@ -268,23 +268,23 @@ body {
 	opacity: 1
 }
 
-.lmat-wizard .lmat-wizard-content .button-small .dashicons {
+.pll-wizard .pll-wizard-content .button-small .dashicons {
 	font-size: 15px;
 	height: auto;
 	vertical-align: middle;
 }
 
-.lmat-wizard .button-primary:active,
-.lmat-wizard .button-primary:focus,
-.lmat-wizard input[type="checkbox"]:focus + label.button-primary,
-.lmat-wizard .button-primary:hover {
+.pll-wizard .button-primary:active,
+.pll-wizard .button-primary:focus,
+.pll-wizard input[type="checkbox"]:focus + label.button-primary,
+.pll-wizard .button-primary:hover {
 	background: #dd5454;
 	border-color: #dd5454;
 	box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25), 0 1px 0 #dd5454
 }
-.lmat-wizard .lmat-wizard-actions .button-primary[disabled],
-.lmat-wizard .lmat-wizard-actions .button-primary:disabled,
-.lmat-wizard .lmat-wizard-actions .button-primary.disabled {
+.pll-wizard .pll-wizard-actions .button-primary[disabled],
+.pll-wizard .pll-wizard-actions .button-primary:disabled,
+.pll-wizard .pll-wizard-actions .button-primary.disabled {
 	cursor: wait;
 	background-color: #bb5454 !important;
 	border-color: #bb5454 !important;
@@ -292,11 +292,11 @@ body {
 	text-shadow: 0 -1px 1px #bb5454, 1px 0 1px #bb5454, 0 1px 1px #bb5454, -1px 0 1px #bb5454 !important;
 	color: #ffa3a3 !important;
 }
-.lmat-wizard-content p:last-child {
+.pll-wizard-content p:last-child {
 	margin-bottom: 0
 }
 
-.lmat-wizard-footer-links {
+.pll-wizard-footer-links {
 	font-size: .85em;
 	color: #7b7b7b;
 	margin: 1.18em auto;
@@ -304,7 +304,7 @@ body {
 	text-align: center
 }
 
-.lmat-wizard-services {
+.pll-wizard-services {
 	border: 1px solid #eee;
 	padding: 0;
 	margin: 0 0 1em;
@@ -313,14 +313,14 @@ body {
 	overflow: hidden
 }
 
-.lmat-wizard-services p {
+.pll-wizard-services p {
 	margin: 0 0 1em 0;
 	padding: 0;
 	font-size: 1em;
 	line-height: 1.5em
 }
 
-.lmat-wizard-service-item {
+.pll-wizard-service-item {
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
@@ -337,23 +337,23 @@ body {
 	align-items: center
 }
 
-.media-step .lmat-wizard-service-item{
+.media-step .pll-wizard-service-item{
 	border: 0;
 }
 
-.media-step .lmat-wizard-service-item:last-child{
+.media-step .pll-wizard-service-item:last-child{
 	display: block;
 }
 
-.media-step .lmat-wizard-service-item .lmat-wizard-service-enable{
+.media-step .pll-wizard-service-item .pll-wizard-service-enable{
 	padding-bottom: 0;
 }
 
-.lmat-wizard-service-item:last-child {
+.pll-wizard-service-item:last-child {
 	border-bottom: 0
 }
 
-.lmat-wizard-service-item .lmat-wizard-service-name {
+.pll-wizard-service-item .pll-wizard-service-name {
 	-webkit-flex-basis: 0;
 	flex-basis: 0;
 	min-width: 160px;
@@ -370,43 +370,43 @@ body {
 	align-items: baseline
 }
 
-.lmat-wizard-service-item .lmat-wizard-service-name img {
+.pll-wizard-service-item .pll-wizard-service-name img {
 	max-width: 75px
 }
 
-.lmat-wizard-service-item .lmat-wizard-service-description {
+.pll-wizard-service-item .pll-wizard-service-description {
 	-webkit-box-flex: 1;
 	-webkit-flex-grow: 1;
 	flex-grow: 1;
 	padding: 20px
 }
 
-.lmat-wizard-service-item .lmat-wizard-service-example {
+.pll-wizard-service-item .pll-wizard-service-example {
 	padding: 0 20px 20px
 }
 
-.lmat-wizard-service-item .lmat-wizard-service-example p{
+.pll-wizard-service-item .pll-wizard-service-example p{
 	text-align: right;
 }
-.rtl .lmat-wizard-service-item .lmat-wizard-service-example p{
+.rtl .pll-wizard-service-item .pll-wizard-service-example p{
 	text-align: left;
 }
 
-.lmat-wizard-service-item .lmat-wizard-service-description p {
+.pll-wizard-service-item .pll-wizard-service-description p {
 	margin-bottom: 1em
 }
 
-.lmat-wizard-service-item .lmat-wizard-service-description p:last-child {
+.pll-wizard-service-item .pll-wizard-service-description p:last-child {
 	margin-bottom: 0
 }
 
-.lmat-wizard-service-item .lmat-wizard-service-description .lmat-wizard-service-settings-description {
+.pll-wizard-service-item .pll-wizard-service-description .pll-wizard-service-settings-description {
 	display: block;
 	font-style: italic;
 	color: #999
 }
 
-.lmat-wizard-service-item .lmat-wizard-service-enable {
+.pll-wizard-service-item .pll-wizard-service-enable {
 	-webkit-flex-basis: 0;
 	flex-basis: 0;
 	min-width: 75px;
@@ -422,16 +422,16 @@ body {
 	order: 3
 }
 
-.lmat-wizard-service-item .lmat-wizard-service-toggle {
+.pll-wizard-service-item .pll-wizard-service-toggle {
 	position: relative
 }
 
-.lmat-wizard-service-item .lmat-wizard-service-toggle input[type=checkbox] {
+.pll-wizard-service-item .pll-wizard-service-toggle input[type=checkbox] {
 	position:absolute;
 	opacity: 0;
 }
 
-.lmat-wizard-service-item .lmat-wizard-service-toggle input[type=checkbox] + label {
+.pll-wizard-service-item .pll-wizard-service-toggle input[type=checkbox] + label {
 	position: relative;
 	display: inline-block;
 	width: 44px;
@@ -441,17 +441,17 @@ body {
 	text-indent: -9999px;
 }
 
-.lmat-wizard-service-item .lmat-wizard-service-toggle input[type=checkbox]:focus + label {
+.pll-wizard-service-item .pll-wizard-service-toggle input[type=checkbox]:focus + label {
 	border:1px dashed #777;
 }
 
-.lmat-wizard-service-item .lmat-wizard-service-toggle input[type=checkbox] + label::before,
-.lmat-wizard-service-item .lmat-wizard-service-toggle input[type=checkbox] + label::after {
+.pll-wizard-service-item .pll-wizard-service-toggle input[type=checkbox] + label::before,
+.pll-wizard-service-item .pll-wizard-service-toggle input[type=checkbox] + label::after {
 	content: '';
 	position: absolute;
 }
 
-.lmat-wizard-service-item .lmat-wizard-service-toggle input[type=checkbox] + label::before {
+.pll-wizard-service-item .pll-wizard-service-toggle input[type=checkbox] + label::before {
 	left: 0;
 	top: 0;
 	width: 44px;
@@ -461,7 +461,7 @@ body {
 	transition: background-color .2s;
 }
 
-.lmat-wizard-service-item .lmat-wizard-service-toggle input[type=checkbox] + label::after {
+.pll-wizard-service-item .pll-wizard-service-toggle input[type=checkbox] + label::after {
 	width: 16px;
 	height: 16px;
 	transition: all .2s;
@@ -472,35 +472,35 @@ body {
 	left: 0;
 }
 
-.lmat-wizard-service-item .lmat-wizard-service-toggle input[type=checkbox]:checked + label::before {
+.pll-wizard-service-item .pll-wizard-service-toggle input[type=checkbox]:checked + label::before {
 	background:#a03f3f;
 }
 
-.lmat-wizard-service-item .lmat-wizard-service-toggle input[type=checkbox]:checked + label::after {
+.pll-wizard-service-item .pll-wizard-service-toggle input[type=checkbox]:checked + label::after {
 	right: 0;
 	left:auto;
 }
 
-.lmat-wizard-service-item .lmat-wizard-service-settings {
+.pll-wizard-service-item .pll-wizard-service-settings {
 	display: none;
 	margin-top: .75em;
 	margin-bottom: 0;
 	cursor: default
 }
 
-.lmat-wizard-service-item .lmat-wizard-service-settings.hide {
+.pll-wizard-service-item .pll-wizard-service-settings.hide {
 	display: none
 }
 
-.lmat-wizard-service-item.checked .lmat-wizard-service-settings {
+.pll-wizard-service-item.checked .pll-wizard-service-settings {
 	display: inline-block
 }
 
-.lmat-wizard-service-item.checked .lmat-wizard-service-settings.hide {
+.pll-wizard-service-item.checked .pll-wizard-service-settings.hide {
 	display: none
 }
 
-.lmat-wizard-service-item.closed {
+.pll-wizard-service-item.closed {
 	border-bottom: 0
 }
 
@@ -508,49 +508,49 @@ body {
 	text-align: center
 }
 
-.lmat-wizard .button .dashicons{
+.pll-wizard .button .dashicons{
 	vertical-align: middle;
 }
 .rtl .dashicons-arrow-right-alt2:before {
 	content: "\f341";
 }
-.lmat-wizard .lmat-wizard-actions .button:active,
-.lmat-wizard .lmat-wizard-actions .button:focus,
-.lmat-wizard .lmat-wizard-actions .button:hover {
+.pll-wizard .pll-wizard-actions .button:active,
+.pll-wizard .pll-wizard-actions .button:focus,
+.pll-wizard .pll-wizard-actions .button:hover {
 	box-shadow: none
 }
 
-.lmat-wizard-next-steps {
+.pll-wizard-next-steps {
 	border: 1px solid #eee;
 	border-radius: 4px;
 	list-style: none;
 	padding: 0
 }
 
-.lmat-wizard-next-steps li {
+.pll-wizard-next-steps li {
 	padding: 0
 }
 
-.lmat-wizard-next-steps .lmat-wizard-next-step-item {
+.pll-wizard-next-steps .pll-wizard-next-step-item {
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
 	border-top: 1px solid #eee
 }
 
-.lmat-wizard-next-steps .lmat-wizard-next-step-item.no-border,
-.lmat-wizard-next-steps .lmat-wizard-next-step-item:first-child {
+.pll-wizard-next-steps .pll-wizard-next-step-item.no-border,
+.pll-wizard-next-steps .pll-wizard-next-step-item:first-child {
 	border-top: 0
 }
 
-.lmat-wizard-next-steps .lmat-wizard-next-step-description {
+.pll-wizard-next-steps .pll-wizard-next-step-description {
 	-webkit-box-flex: 1;
 	-webkit-flex-grow: 1;
 	flex-grow: 1;
 	margin: 1.5em
 }
 
-.lmat-wizard-next-steps .lmat-wizard-next-step-action {
+.pll-wizard-next-steps .pll-wizard-next-step-action {
 	-webkit-box-flex: 0;
 	-webkit-flex-grow: 0;
 	flex-grow: 0;
@@ -562,77 +562,77 @@ body {
 	align-items: center
 }
 
-.lmat-wizard-next-steps .lmat-wizard-next-step-action .button {
+.pll-wizard-next-steps .pll-wizard-next-step-action .button {
 	margin: 1em 1.5em
 }
 
-.lmat-wizard-next-steps .lmat-wizard-next-step-item.no-border .lmat-wizard-next-step-description,
-.lmat-wizard-next-steps .lmat-wizard-next-step-item.no-border .lmat-wizard-actions,
-.lmat-wizard-next-steps .lmat-wizard-next-step-item.no-border .lmat-wizard-next-step-action .button{
+.pll-wizard-next-steps .pll-wizard-next-step-item.no-border .pll-wizard-next-step-description,
+.pll-wizard-next-steps .pll-wizard-next-step-item.no-border .pll-wizard-actions,
+.pll-wizard-next-steps .pll-wizard-next-step-item.no-border .pll-wizard-next-step-action .button{
 	margin-top: 0;
 }
 
 
-.lmat-wizard-next-steps p.next-step-heading {
+.pll-wizard-next-steps p.next-step-heading {
 	margin: 0;
 	font-size: .95em;
 	font-weight: 400;
 	font-variant: all-petite-caps
 }
 
-.lmat-wizard-next-steps p.next-step-extra-info {
+.pll-wizard-next-steps p.next-step-extra-info {
 	margin: 0
 }
 
-.lmat-wizard-next-steps h3.next-step-description {
+.pll-wizard-next-steps h3.next-step-description {
 	margin: 0;
 	font-size: 16px;
 	font-weight: 600;
 }
 
-.lmat-wizard-next-steps .lmat-wizard-additional-steps {
+.pll-wizard-next-steps .pll-wizard-additional-steps {
 	border-top: 1px solid #eee;
 }
 
-.lmat-wizard-next-steps .lmat-wizard-additional-steps .lmat-wizard-next-step-description {
+.pll-wizard-next-steps .pll-wizard-additional-steps .pll-wizard-next-step-description {
 	margin-bottom: 0
 }
 
-.lmat-wizard-next-steps .lmat-wizard-additional-steps .lmat-wizard-actions {
+.pll-wizard-next-steps .pll-wizard-additional-steps .pll-wizard-actions {
 	margin: 0 0 1.5em 0;
 }
 
-.lmat-wizard-next-steps .lmat-wizard-additional-steps .lmat-wizard-actions .button {
+.pll-wizard-next-steps .pll-wizard-additional-steps .pll-wizard-actions .button {
 	font-size: 15px;
 	margin: 1em 0 1em 1.5em;
 }
-.rtl .lmat-wizard-next-steps .lmat-wizard-additional-steps .lmat-wizard-actions .button {
+.rtl .pll-wizard-next-steps .pll-wizard-additional-steps .pll-wizard-actions .button {
 	margin: 1em 1.5em 1em 0;
 }
 
-.lmat-wizard-next-steps .lmat-wizard-additional-steps .lmat-wizard-actions .button::last-child {
+.pll-wizard-next-steps .pll-wizard-additional-steps .pll-wizard-actions .button::last-child {
 	margin-right: 1.5em;
 }
 
-.lmat-wizard-content img{
+.pll-wizard-content img{
 	max-width: 100%;
 	margin-right: 0.5em;
 }
-.rtl .lmat-wizard-content img{
+.rtl .pll-wizard-content img{
 	margin-left: 0.5em;
 }
 
-.lmat-wizard-content .form-field label{
+.pll-wizard-content .form-field label{
 	margin-bottom: 5px;
 	display: block;
 }
 
-.lmat-wizard-content .form-field select{
+.pll-wizard-content .form-field select{
 	padding: 3px;
 }
 
-.lmat-wizard-content .languages-step select,
-.lmat-wizard-content .untranslated-contents-step select{
+.pll-wizard-content .languages-step select,
+.pll-wizard-content .untranslated-contents-step select{
 	width: 100%;
 }
 
@@ -651,59 +651,59 @@ body {
 	margin-right: 0;
 }
 
-.lmat-wizard-content .languages-step .select-language-field{
+.pll-wizard-content .languages-step .select-language-field{
 	display: flex;
 }
 
-.lmat-wizard-content #languages{
+.pll-wizard-content #languages{
 	display: none;
 }
-.lmat-wizard-content #languages tr th:first-child{
+.pll-wizard-content #languages tr th:first-child{
 	width: 80%;
 }
-.lmat-wizard-content #languages .dashicons{
+.pll-wizard-content #languages .dashicons{
 	color: #a03f3f;
 }
-.lmat-wizard-content #languages img{
+.pll-wizard-content #languages img{
 	margin-right: 5px;
 }
-.lmat-wizard-content .error{
+.pll-wizard-content .error{
 	color: #a03f3f;
 	font-weight: bold;
 }
-.lmat-wizard-content #messages .error{
+.pll-wizard-content #messages .error{
 	background: #fccfcf;
 	padding: 0.5rem;
 	border: 1px solid #a03f3f;
 	margin-bottom: 0.5rem;
 }
 
-.lmat-wizard-content #slide-toggle{
+.pll-wizard-content #slide-toggle{
 	position:absolute;
 	opacity: 0;
 }
 
-.lmat-wizard-content #slide-toggle + label{
+.pll-wizard-content #slide-toggle + label{
 	position:relative;
 }
-.lmat-wizard-content #slide-toggle + label + span{
+.pll-wizard-content #slide-toggle + label + span{
 	display: block;
 }
 
-.lmat-wizard-content #slide-toggle + label .dashicons{
+.pll-wizard-content #slide-toggle + label .dashicons{
 	margin-right: 0.3em;
 }
-.rtl .lmat-wizard-content #slide-toggle + label .dashicons{
+.rtl .pll-wizard-content #slide-toggle + label .dashicons{
 	margin-left: 0.3em;
 	margin-right: 0;
 }
-.lmat-wizard-content #slide-toggle ~ #screenshot > img {
+.pll-wizard-content #slide-toggle ~ #screenshot > img {
 	max-height: 500px;
 	margin-top: 10px;
 	-webkit-transition: all .5s cubic-bezier(0, 1, 0.5, 1);
 	transition: all .5s cubic-bezier(0, 1, 0.5, 1);
 }
-.lmat-wizard-content #slide-toggle:checked ~ #screenshot > img {
+.pll-wizard-content #slide-toggle:checked ~ #screenshot > img {
 	max-height: 0;
 }
 .hide {
@@ -769,26 +769,26 @@ span.field-in-error:focus,
 .form-table input.field-in-error{
 	border-color: #a03f3f;
 }
-#lmat-licenses-table td{
+#pll-licenses-table td{
 	padding: 10px 9px;
 }
-#lmat-licenses-table .license-valid td p{
+#pll-licenses-table .license-valid td p{
 	min-width: 35em;
 }
-#lmat-licenses-table .lmat-deactivate-license{
+#pll-licenses-table .pll-deactivate-license{
 	margin: 0 0 0 20px;
 }
-.rtl #lmat-licenses-table .lmat-deactivate-license{
+.rtl #pll-licenses-table .pll-deactivate-license{
 	margin: 0 10px 0 0;
 }
-.lmat-wizard-content .documentation {
+.pll-wizard-content .documentation {
 	padding: 24px 24px 0;
 	margin: 0 0 24px;
 	overflow: hidden;
 	background: #f5f5f5
 }
 
-.lmat-wizard-content .documentation p {
+.pll-wizard-content .documentation p {
 	padding: 0;
 	margin: 0 0 12px;
 }
@@ -813,10 +813,10 @@ span.field-in-error:focus,
 #dialog{
 	display: none;
 }
-.lmat-wizard .ui-dialog.ui-widget-content{
+.pll-wizard .ui-dialog.ui-widget-content{
 	max-height: none;
 }
-.lmat-wizard .ui-dialog-title::before{
+.pll-wizard .ui-dialog-title::before{
 	content: "\f534";
 	font-family: dashicons;
 	display: inline-block;
@@ -837,19 +837,19 @@ span.field-in-error:focus,
 	margin: 0 5px 5px 0;
 	transition: color 0.1s ease-in;
 }
-.rtl.lmat-wizard .ui-dialog-title::before{
+.rtl.pll-wizard .ui-dialog-title::before{
 	margin-right: 0;
 	margin-left: 5px;
 }
-.lmat-wizard .ui-dialog ul{
+.pll-wizard .ui-dialog ul{
 	list-style: disc;
 	padding-left: 20px;
 }
-.rtl.lmat-wizard .ui-dialog ul{
+.rtl.pll-wizard .ui-dialog ul{
 	padding-left: 0;
 	padding-right: 20px;
 }
-.lmat-wizard li{
+.pll-wizard li{
 	margin-bottom: 0;
 }
 #translations{
@@ -861,10 +861,10 @@ span.field-in-error:focus,
 #translations.striped > tbody > :nth-child(odd) {
 	background-color: transparent; /* Override common WordPress style */
 }
-.lmat-wizard-content mark{
+.pll-wizard-content mark{
 	background: transparent none;
 }
-.lmat-wizard-content mark{
+.pll-wizard-content mark{
 	color: #7ad03a;
 }
 @media screen and (max-width: 782px) {
@@ -877,7 +877,7 @@ span.field-in-error:focus,
 		vertical-align: top;
 	}
 
-	#lmat-licenses-table .lmat-deactivate-license{
+	#pll-licenses-table .pll-deactivate-license{
 		margin: 10px 0 5px;
 	}
 }
@@ -889,7 +889,7 @@ span.field-in-error:focus,
 
 }
 @media only screen and (max-width:500px) {
-	#lmat-logo a,
+	#pll-logo a,
 	.select-language-field{
 		flex-direction: column;
 	}
@@ -902,50 +902,50 @@ span.field-in-error:focus,
 	}
 }
 @media only screen and (max-width:400px) {
-	#lmat-logo {
+	#pll-logo {
 		font-size: 56px;
 	}
-	.lmat-wizard-steps {
+	.pll-wizard-steps {
 		display: none
 	}
-	.lmat-wizard-service-item {
+	.pll-wizard-service-item {
 		-webkit-flex-wrap: wrap;
 		flex-wrap: wrap
 	}
-	.lmat-wizard-service-item .lmat-wizard-service-enable {
+	.pll-wizard-service-item .pll-wizard-service-enable {
 		-webkit-box-ordinal-group: 3;
 		-webkit-order: 2;
 		order: 2;
 		padding: 20px 0 0
 	}
-	.lmat-wizard-service-item .lmat-wizard-service-description {
+	.pll-wizard-service-item .pll-wizard-service-description {
 		-webkit-box-ordinal-group: 4;
 		-webkit-order: 3;
 		order: 3
 	}
-	.lmat-wizard-service-item .lmat-wizard-service-name {
+	.pll-wizard-service-item .pll-wizard-service-name {
 		padding: 20px 20px 0;
 		text-align: left;
 		-webkit-box-pack: justify!important;
 		-webkit-justify-content: space-between!important;
 		justify-content: space-between!important
 	}
-	.lmat-wizard-service-item .lmat-wizard-service-name img {
+	.pll-wizard-service-item .pll-wizard-service-name img {
 		margin: 0
 	}
-	.lmat-wizard-next-steps .lmat-wizard-next-step-item {
+	.pll-wizard-next-steps .pll-wizard-next-step-item {
 		-webkit-flex-wrap: wrap;
 		flex-wrap: wrap
 	}
-	.lmat-wizard-next-steps .lmat-wizard-next-step-item .lmat-wizard-next-step-description {
+	.pll-wizard-next-steps .pll-wizard-next-step-item .pll-wizard-next-step-description {
 		margin-bottom: 0
 	}
-	.lmat-wizard-next-steps .lmat-wizard-next-step-item .lmat-wizard-next-step-action p {
+	.pll-wizard-next-steps .pll-wizard-next-step-item .pll-wizard-next-step-action p {
 		margin: 0
 	}
 }
 @media only screen and (max-width:360px) {
-	#lmat-logo {
+	#pll-logo {
 		font-size: 48px;
 	}
 }

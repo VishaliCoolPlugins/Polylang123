@@ -1,17 +1,17 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Don't access directly.
 }
 
-if ( $linguator->model->has_languages() ) {
-	if ( $linguator->links_model instanceof LMAT_Links_Abstract_Domain ) {
-		$linguator->sitemaps = new LMAT_Sitemaps_Domain( $linguator );
+if ( $polylang->model->has_languages() ) {
+	if ( $polylang->links_model instanceof PLL_Links_Abstract_Domain ) {
+		$polylang->sitemaps = new PLL_Sitemaps_Domain( $polylang );
 	} else {
-		$linguator->sitemaps = new LMAT_Sitemaps( $linguator );
+		$polylang->sitemaps = new PLL_Sitemaps( $polylang );
 	}
-	$linguator->sitemaps->init();
+	$polylang->sitemaps->init();
 }

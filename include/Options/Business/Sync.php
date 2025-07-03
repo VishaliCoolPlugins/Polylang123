@@ -1,13 +1,13 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
-namespace WP_Syntex\Linguator\Options\Business;
+namespace WP_Syntex\Polylang\Options\Business;
 
 use NOOP_Translations;
-use LMAT_Settings_Sync;
-use WP_Syntex\Linguator\Options\Primitive\Abstract_List;
+use PLL_Settings_Sync;
+use WP_Syntex\Polylang\Options\Primitive\Abstract_List;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 3.7
  *
- * @phpstan-import-type SchemaType from \WP_Syntex\Linguator\Options\Abstract_Option
+ * @phpstan-import-type SchemaType from \WP_Syntex\Polylang\Options\Abstract_Option
  */
 class Sync extends Abstract_List {
 	/**
@@ -42,9 +42,9 @@ class Sync extends Abstract_List {
 	 * @phpstan-return array{type: 'array', items: array{type: SchemaType, enum: non-empty-list<non-falsy-string>}}
 	 */
 	protected function get_data_structure(): array {
-		$GLOBALS['l10n']['linguator'] = new NOOP_Translations(); // Prevents loading the translations too early.
-		$enum = array_keys( LMAT_Settings_Sync::list_metas_to_sync() );
-		unset( $GLOBALS['l10n']['linguator'] );
+		$GLOBALS['l10n']['polylang'] = new NOOP_Translations(); // Prevents loading the translations too early.
+		$enum = array_keys( PLL_Settings_Sync::list_metas_to_sync() );
+		unset( $GLOBALS['l10n']['polylang'] );
 
 		return array(
 			'type'  => 'array',
@@ -63,6 +63,6 @@ class Sync extends Abstract_List {
 	 * @return string
 	 */
 	protected function get_description(): string {
-		return __( 'List of data to synchronize.', 'linguator' );
+		return __( 'List of data to synchronize.', 'polylang' );
 	}
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -8,7 +8,7 @@
  *
  * @since 3.3
  */
-class LMAT_Canonical {
+class PLL_Canonical {
 	/**
 	 * Stores the plugin options.
 	 *
@@ -17,21 +17,21 @@ class LMAT_Canonical {
 	protected $options;
 
 	/**
-	 * @var LMAT_Model
+	 * @var PLL_Model
 	 */
 	protected $model;
 
 	/**
-	 * Instance of a child class of LMAT_Links_Model.
+	 * Instance of a child class of PLL_Links_Model.
 	 *
-	 * @var LMAT_Links_Model
+	 * @var PLL_Links_Model
 	 */
 	protected $links_model;
 
 	/**
 	 * Current language.
 	 *
-	 * @var LMAT_Language
+	 * @var PLL_Language
 	 */
 	protected $curlang;
 
@@ -40,13 +40,13 @@ class LMAT_Canonical {
 	 *
 	 * @since 3.3
 	 *
-	 * @param object $linguator Main Linguator object.
+	 * @param object $polylang Main Polylang object.
 	 */
-	public function __construct( &$linguator ) {
-		$this->links_model = &$linguator->links_model;
-		$this->model       = &$linguator->model;
-		$this->options     = &$linguator->options;
-		$this->curlang     = &$linguator->curlang;
+	public function __construct( &$polylang ) {
+		$this->links_model = &$polylang->links_model;
+		$this->model       = &$polylang->model;
+		$this->options     = &$polylang->options;
+		$this->curlang     = &$polylang->curlang;
 	}
 
 	/**
@@ -84,7 +84,7 @@ class LMAT_Canonical {
 		}
 
 		if ( empty( $requested_url ) ) {
-			$requested_url = lmat_get_requested_url();
+			$requested_url = pll_get_requested_url();
 		}
 
 		if ( ( is_single() && ( ! is_attachment() || get_option( 'wp_attachment_pages_enabled' ) ) ) || ( is_page() && ! is_front_page() ) ) {
@@ -135,14 +135,14 @@ class LMAT_Canonical {
 
 
 		/**
-		 * Filters the canonical url detected by Linguator.
+		 * Filters the canonical url detected by Polylang.
 		 *
 		 * @since 1.6
 		 *
 		 * @param string|false $redirect_url False or the url to redirect to.
-		 * @param LMAT_Language $language The language detected.
+		 * @param PLL_Language $language The language detected.
 		 */
-		$redirect_url = apply_filters( 'lmat_check_canonical_url', $redirect_url, $language );
+		$redirect_url = apply_filters( 'pll_check_canonical_url', $redirect_url, $language );
 
 		if ( ! $redirect_url || $requested_url === $redirect_url ) {
 			return $requested_url;
@@ -154,7 +154,7 @@ class LMAT_Canonical {
 
 		// Protect against chained redirects.
 		if ( $redirect_url === $this->check_canonical_url( $redirect_url, false ) && wp_validate_redirect( $redirect_url ) ) {
-			wp_safe_redirect( $redirect_url, 301, LINGUATOR );
+			wp_safe_redirect( $redirect_url, 301, POLYLANG );
 			exit;
 		}
 	}
@@ -242,7 +242,7 @@ class LMAT_Canonical {
 	 * @global WP_Query $wp_query WordPress Query object.
 	 *
 	 * @param string       $url      Requested url.
-	 * @param LMAT_Language $language Language of the queried object.
+	 * @param PLL_Language $language Language of the queried object.
 	 * @return string
 	 */
 	protected function redirect_canonical( $url, $language ) {

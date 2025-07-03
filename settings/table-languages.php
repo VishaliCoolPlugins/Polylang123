@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
@@ -8,12 +8,12 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 }
 
 /**
- * A class to create the languages table in Linguator settings
+ * A class to create the languages table in Polylang settings
  * Thanks to Matt Van Andel ( http://www.mattvanandel.com ) for its plugin "Custom List Table Example" !
  *
  * @since 0.1
  */
-class LMAT_Table_Languages extends WP_List_Table {
+class PLL_Table_Languages extends WP_List_Table {
 
 	/**
 	 * Constructor
@@ -34,7 +34,7 @@ class LMAT_Table_Languages extends WP_List_Table {
 	 *
 	 * @since 1.8
 	 *
-	 * @param LMAT_Language $item The language item.
+	 * @param PLL_Language $item The language item.
 	 * @return void
 	 */
 	public function single_row( $item ) {
@@ -44,9 +44,9 @@ class LMAT_Table_Languages extends WP_List_Table {
 		 * @since 1.8
 		 *
 		 * @param array        $classes The list of class names.
-		 * @param LMAT_Language $item    The language item.
+		 * @param PLL_Language $item    The language item.
 		 */
-		$classes = apply_filters( 'lmat_languages_row_classes', array(), $item );
+		$classes = apply_filters( 'pll_languages_row_classes', array(), $item );
 		echo '<tr' . ( empty( $classes ) ? '>' : ' class="' . esc_attr( implode( ' ', $classes ) ) . '">' );
 		$this->single_row_columns( $item );
 		echo '</tr>';
@@ -57,7 +57,7 @@ class LMAT_Table_Languages extends WP_List_Table {
 	 *
 	 * @since 0.1
 	 *
-	 * @param LMAT_Language $item        The language item.
+	 * @param PLL_Language $item        The language item.
 	 * @param string       $column_name The column name.
 	 * @return string|int
 	 */
@@ -84,14 +84,14 @@ class LMAT_Table_Languages extends WP_List_Table {
 	 *
 	 * @since 0.1
 	 *
-	 * @param LMAT_Language $item The language item.
+	 * @param PLL_Language $item The language item.
 	 * @return string
 	 */
 	public function column_name( $item ) {
 		return sprintf(
 			'<a title="%s" href="%s">%s</a>',
-			esc_attr__( 'Edit this language', 'linguator' ),
-			esc_url( admin_url( 'admin.php?page=mlang&amp;lmat_action=edit&amp;lang=' . $item->term_id ) ),
+			esc_attr__( 'Edit this language', 'polylang' ),
+			esc_url( admin_url( 'admin.php?page=mlang&amp;pll_action=edit&amp;lang=' . $item->term_id ) ),
 			esc_html( $item->name )
 		);
 	}
@@ -102,7 +102,7 @@ class LMAT_Table_Languages extends WP_List_Table {
 	 *
 	 * @since 1.8
 	 *
-	 * @param LMAT_Language $item The language item.
+	 * @param PLL_Language $item The language item.
 	 * @return string
 	 */
 	public function column_default_lang( $item ) {
@@ -111,10 +111,10 @@ class LMAT_Table_Languages extends WP_List_Table {
 				'<div class="row-actions"><span class="default-lang">
 				<a class="icon-default-lang" title="%1$s" href="%2$s"><span class="screen-reader-text">%3$s</span></a>
 				</span></div>',
-				esc_attr__( 'Select as default language', 'linguator' ),
-				wp_nonce_url( '?page=mlang&amp;lmat_action=default-lang&amp;noheader=true&amp;lang=' . $item->term_id, 'default-lang' ),
+				esc_attr__( 'Select as default language', 'polylang' ),
+				wp_nonce_url( '?page=mlang&amp;pll_action=default-lang&amp;noheader=true&amp;lang=' . $item->term_id, 'default-lang' ),
 				/* translators: accessibility text, %s is a native language name */
-				esc_html( sprintf( __( 'Choose %s as default language', 'linguator' ), $item->name ) )
+				esc_html( sprintf( __( 'Choose %s as default language', 'polylang' ), $item->name ) )
 			);
 
 			/**
@@ -123,14 +123,14 @@ class LMAT_Table_Languages extends WP_List_Table {
 			 * @since 1.8
 			 *
 			 * @param string       $s    The html markup of the action.
-			 * @param LMAT_Language $item The language item.
+			 * @param PLL_Language $item The language item.
 			 */
-			$s = apply_filters( 'lmat_default_lang_row_action', $s, $item );
+			$s = apply_filters( 'pll_default_lang_row_action', $s, $item );
 		} else {
 			$s = sprintf(
 				'<span class="icon-default-lang"><span class="screen-reader-text">%1$s</span></span>',
 				/* translators: accessibility text */
-				esc_html__( 'Default language', 'linguator' )
+				esc_html__( 'Default language', 'polylang' )
 			);
 		}
 
@@ -146,13 +146,13 @@ class LMAT_Table_Languages extends WP_List_Table {
 	 */
 	public function get_columns() {
 		return array(
-			'name'         => esc_html__( 'Full name', 'linguator' ),
-			'locale'       => esc_html__( 'Locale', 'linguator' ),
-			'slug'         => esc_html__( 'Code', 'linguator' ),
-			'default_lang' => sprintf( '<span title="%1$s" class="icon-default-lang"><span class="screen-reader-text">%2$s</span></span>', esc_attr__( 'Default language', 'linguator' ), esc_html__( 'Default language', 'linguator' ) ),
-			'term_group'   => esc_html__( 'Order', 'linguator' ),
-			'flag'         => esc_html__( 'Flag', 'linguator' ),
-			'count'        => esc_html__( 'Posts', 'linguator' ),
+			'name'         => esc_html__( 'Full name', 'polylang' ),
+			'locale'       => esc_html__( 'Locale', 'polylang' ),
+			'slug'         => esc_html__( 'Code', 'polylang' ),
+			'default_lang' => sprintf( '<span title="%1$s" class="icon-default-lang"><span class="screen-reader-text">%2$s</span></span>', esc_attr__( 'Default language', 'polylang' ), esc_html__( 'Default language', 'polylang' ) ),
+			'term_group'   => esc_html__( 'Order', 'polylang' ),
+			'flag'         => esc_html__( 'Flag', 'polylang' ),
+			'count'        => esc_html__( 'Posts', 'polylang' ),
 		);
 	}
 
@@ -189,7 +189,7 @@ class LMAT_Table_Languages extends WP_List_Table {
 	 *
 	 * @since 1.8
 	 *
-	 * @param LMAT_Language $item        The language item being acted upon.
+	 * @param PLL_Language $item        The language item being acted upon.
 	 * @param string       $column_name Current column name.
 	 * @param string       $primary     Primary column name.
 	 * @return string The row actions output.
@@ -202,16 +202,16 @@ class LMAT_Table_Languages extends WP_List_Table {
 		$actions = array(
 			'edit'   => sprintf(
 				'<a title="%s" href="%s">%s</a>',
-				esc_attr__( 'Edit this language', 'linguator' ),
-				esc_url( admin_url( 'admin.php?page=mlang&amp;lmat_action=edit&amp;lang=' . $item->term_id ) ),
-				esc_html__( 'Edit', 'linguator' )
+				esc_attr__( 'Edit this language', 'polylang' ),
+				esc_url( admin_url( 'admin.php?page=mlang&amp;pll_action=edit&amp;lang=' . $item->term_id ) ),
+				esc_html__( 'Edit', 'polylang' )
 			),
 			'delete' => sprintf(
 				'<a title="%s" href="%s" onclick = "return confirm( \'%s\' );">%s</a>',
-				esc_attr__( 'Delete this language and all its associated data', 'linguator' ),
-				wp_nonce_url( '?page=mlang&amp;lmat_action=delete&amp;noheader=true&amp;lang=' . $item->term_id, 'delete-lang' ),
-				esc_js( __( 'You are about to permanently delete this language. Are you sure?', 'linguator' ) ),
-				esc_html__( 'Delete', 'linguator' )
+				esc_attr__( 'Delete this language and all its associated data', 'polylang' ),
+				wp_nonce_url( '?page=mlang&amp;pll_action=delete&amp;noheader=true&amp;lang=' . $item->term_id, 'delete-lang' ),
+				esc_js( __( 'You are about to permanently delete this language. Are you sure?', 'polylang' ) ),
+				esc_html__( 'Delete', 'polylang' )
 			),
 		);
 
@@ -221,9 +221,9 @@ class LMAT_Table_Languages extends WP_List_Table {
 		 * @since 1.8
 		 *
 		 * @param array        $actions A list of html markup actions.
-		 * @param LMAT_Language $item    The language item.
+		 * @param PLL_Language $item    The language item.
 		 */
-		$actions = apply_filters( 'lmat_languages_row_actions', $actions, $item );
+		$actions = apply_filters( 'pll_languages_row_actions', $actions, $item );
 
 		return $this->row_actions( $actions );
 	}
@@ -233,8 +233,8 @@ class LMAT_Table_Languages extends WP_List_Table {
 	 *
 	 * @since 0.1
 	 *
-	 * @param LMAT_Language $a The first language to compare.
-	 * @param LMAT_Language $b The second language to compare.
+	 * @param PLL_Language $a The first language to compare.
+	 * @param PLL_Language $b The second language to compare.
 	 * @return int -1 or 1 if $a is considered to be respectively less than or greater than $b.
 	 */
 	protected function usort_reorder( $a, $b ) {
@@ -254,11 +254,11 @@ class LMAT_Table_Languages extends WP_List_Table {
 	 *
 	 * @since 0.1
 	 *
-	 * @param LMAT_Language[] $data The list of languages.
+	 * @param PLL_Language[] $data The list of languages.
 	 * @return void
 	 */
 	public function prepare_items( $data = array() ) {
-		$per_page = $this->get_items_per_page( 'lmat_lang_per_page' );
+		$per_page = $this->get_items_per_page( 'pll_lang_per_page' );
 		$this->_column_headers = array( $this->get_columns(), array(), $this->get_sortable_columns() );
 
 		usort( $data, array( $this, 'usort_reorder' ) );

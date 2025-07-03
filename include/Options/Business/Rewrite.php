@@ -1,13 +1,13 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
-namespace WP_Syntex\Linguator\Options\Business;
+namespace WP_Syntex\Polylang\Options\Business;
 
 use WP_Error;
-use WP_Syntex\Linguator\Options\Primitive\Abstract_Boolean;
-use WP_Syntex\Linguator\Options\Options;
+use WP_Syntex\Polylang\Options\Primitive\Abstract_Boolean;
+use WP_Syntex\Polylang\Options\Options;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -51,7 +51,7 @@ class Rewrite extends Abstract_Boolean {
 	protected function get_description(): string {
 		return sprintf(
 			/* translators: %1$s is a URL slug: `/language/`. %2$s and %3$s are "true/false" values. */
-			__( 'Remove %1$s in pretty permalinks: %2$s to remove, %3$s to keep.', 'linguator' ),
+			__( 'Remove %1$s in pretty permalinks: %2$s to remove, %3$s to keep.', 'polylang' ),
 			'`/language/`',
 			'`true`',
 			'`false`'

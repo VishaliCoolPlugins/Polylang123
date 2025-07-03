@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -11,11 +11,11 @@
  *
  * @since 2.0
  */
-class LMAT_WPML_API {
+class PLL_WPML_API {
 	/**
 	 * Stores the original language when the language is switched.
 	 *
-	 * @var LMAT_Language|null
+	 * @var PLL_Language|null
 	 */
 	private static $original_language = null;
 
@@ -31,8 +31,8 @@ class LMAT_WPML_API {
 		add_filter( 'wpml_active_languages', array( $this, 'wpml_active_languages' ), 10, 2 );
 		add_filter( 'wpml_display_language_names', array( $this, 'wpml_display_language_names' ), 10, 2 ); // Because we don't translate language names, 3rd to 5th parameters are not supported.
 		// wpml_translated_language_name           => not applicable.
-		add_filter( 'wpml_current_language', 'lmat_current_language', 10, 0 );
-		add_filter( 'wpml_default_language', 'lmat_default_language', 10, 0 );
+		add_filter( 'wpml_current_language', 'pll_current_language', 10, 0 );
+		add_filter( 'wpml_default_language', 'pll_default_language', 10, 0 );
 		// wpml_add_language_selector              => not implemented.
 		// wpml_footer_language_selector           => not applicable.
 		add_action( 'wpml_add_language_form_field', array( $this, 'wpml_add_language_form_field' ) );
@@ -60,7 +60,7 @@ class LMAT_WPML_API {
 		/*
 		 * Retrieving Localized Content.
 		 */
-		add_filter( 'wpml_home_url', 'lmat_home_url', 10, 0 );
+		add_filter( 'wpml_home_url', 'pll_home_url', 10, 0 );
 		add_filter( 'wpml_element_link', 'icl_link_to_element', 10, 7 );
 		add_filter( 'wpml_object_id', 'icl_object_id', 10, 4 );
 		add_filter( 'wpml_translate_single_string', array( $this, 'wpml_translate_single_string' ), 10, 4 );
@@ -144,7 +144,7 @@ class LMAT_WPML_API {
 
 	/**
 	 * In WPML, get a language's native and translated name for display in a custom language switcher
-	 * Since Linguator does not implement the translated name, always returns only the native name,
+	 * Since Polylang does not implement the translated name, always returns only the native name,
 	 * so the 3rd, 4th and 5th parameters are not used.
 	 *
 	 * @since 2.2
@@ -165,7 +165,7 @@ class LMAT_WPML_API {
 	 * @return void
 	 */
 	public function wpml_add_language_form_field() {
-		$lang = lmat_current_language();
+		$lang = pll_current_language();
 
 		if ( empty( $lang ) ) {
 			return;
@@ -186,7 +186,7 @@ class LMAT_WPML_API {
 	 * @return bool
 	 */
 	public function wpml_language_is_active( $null, $slug ) {
-		$language = LMAT()->model->get_language( $slug );
+		$language = PLL()->model->get_language( $slug );
 		return ! empty( $language ) && $language->active;
 	}
 
@@ -198,7 +198,7 @@ class LMAT_WPML_API {
 	 * @return bool
 	 */
 	public function wpml_is_rtl() {
-		return lmat_current_language( 'is_rtl' );
+		return pll_current_language( 'is_rtl' );
 	}
 
 	/**
@@ -215,12 +215,12 @@ class LMAT_WPML_API {
 		if ( 0 === strpos( $element_type, 'tax_' ) ) {
 			$element = get_term_by( 'term_taxonomy_id', $element_id );
 			if ( $element instanceof WP_Term ) {
-				$tr_term = LMAT()->model->term->get_object_term( $element->term_id, 'term_translations' );
+				$tr_term = PLL()->model->term->get_object_term( $element->term_id, 'term_translations' );
 			}
 		}
 
 		if ( 0 === strpos( $element_type, 'post_' ) ) {
-			$tr_term = LMAT()->model->post->get_object_term( $element_id, 'post_translations' );
+			$tr_term = PLL()->model->post->get_object_term( $element_id, 'post_translations' );
 		}
 
 		if ( isset( $tr_term ) && $tr_term instanceof WP_Term ) {
@@ -244,7 +244,7 @@ class LMAT_WPML_API {
 		$return = array();
 
 		if ( 0 === strpos( $element_type, 'tax_' ) ) {
-			$translations = LMAT()->model->term->get_translations_from_term_id( $trid );
+			$translations = PLL()->model->term->get_translations_from_term_id( $trid );
 			if ( empty( $translations ) ) {
 				return array();
 			}
@@ -292,7 +292,7 @@ class LMAT_WPML_API {
 		}
 
 		if ( 0 === strpos( $element_type, 'post_' ) ) {
-			$translations = LMAT()->model->post->get_translations_from_term_id( $trid );
+			$translations = PLL()->model->post->get_translations_from_term_id( $trid );
 			if ( empty( $translations ) ) {
 				return array();
 			}
@@ -348,19 +348,19 @@ class LMAT_WPML_API {
 	 */
 	public static function wpml_switch_language( $lang = null, $cookie = false ) {
 		if ( null === self::$original_language ) {
-			self::$original_language = LMAT()->curlang;
+			self::$original_language = PLL()->curlang;
 		}
 
 		if ( empty( $lang ) ) {
-			LMAT()->curlang = self::$original_language;
+			PLL()->curlang = self::$original_language;
 		} elseif ( 'all' === $lang ) {
-			LMAT()->curlang = null;
-		} elseif ( in_array( $lang, lmat_languages_list() ) ) {
-			LMAT()->curlang = LMAT()->model->get_language( $lang );
+			PLL()->curlang = null;
+		} elseif ( in_array( $lang, pll_languages_list() ) ) {
+			PLL()->curlang = PLL()->model->get_language( $lang );
 		}
 
-		if ( $cookie && isset( LMAT()->choose_lang ) ) {
-			LMAT()->choose_lang->maybe_setcookie();
+		if ( $cookie && isset( PLL()->choose_lang ) ) {
+			PLL()->choose_lang->maybe_setcookie();
 		}
 
 		do_action( 'wpml_language_has_switched', $lang, $cookie, self::$original_language );
@@ -379,17 +379,17 @@ class LMAT_WPML_API {
 		$type = $args['element_type'];
 		$id   = $args['element_id'];
 
-		if ( 'post' === $type || lmat_is_translated_post_type( $type ) ) {
-			$language = lmat_get_post_language( $id );
+		if ( 'post' === $type || pll_is_translated_post_type( $type ) ) {
+			$language = pll_get_post_language( $id );
 			return is_string( $language ) ? $language : null;
 		}
 
-		if ( 'term' === $type || lmat_is_translated_taxonomy( $type ) ) {
+		if ( 'term' === $type || pll_is_translated_taxonomy( $type ) ) {
 			$term = get_term_by( 'term_taxonomy_id', $id );
 			if ( $term instanceof WP_Term ) {
 				$id = $term->term_id;
 			}
-			$language = lmat_get_term_language( $id );
+			$language = pll_get_term_language( $id );
 			return is_string( $language ) ? $language : null;
 		}
 
@@ -422,13 +422,13 @@ class LMAT_WPML_API {
 	 * @return string
 	 */
 	public function wpml_permalink( $url, $lang = '' ) {
-		$lang = LMAT()->model->get_language( $lang );
+		$lang = PLL()->model->get_language( $lang );
 
-		if ( empty( $lang ) && ! empty( LMAT()->curlang ) ) {
-			$lang = LMAT()->curlang;
+		if ( empty( $lang ) && ! empty( PLL()->curlang ) ) {
+			$lang = PLL()->curlang;
 		}
 
-		return empty( $lang ) ? $url : LMAT()->links_model->switch_language_in_link( $url, $lang );
+		return empty( $lang ) ? $url : PLL()->links_model->switch_language_in_link( $url, $lang );
 	}
 
 	/**
@@ -442,12 +442,12 @@ class LMAT_WPML_API {
 	 * @return string
 	 */
 	public function wpml_get_translated_slug( $slug, $post_type, $lang = null ) {
-		if ( isset( LMAT()->translate_slugs ) ) {
+		if ( isset( PLL()->translate_slugs ) ) {
 			if ( empty( $lang ) ) {
-				$lang = lmat_current_language();
+				$lang = pll_current_language();
 			}
 
-			$slug = LMAT()->translate_slugs->slugs_model->get_translated_slug( $post_type, $lang );
+			$slug = PLL()->translate_slugs->slugs_model->get_translated_slug( $post_type, $lang );
 		}
 		return $slug;
 	}
@@ -463,10 +463,10 @@ class LMAT_WPML_API {
 	 * @return bool
 	 */
 	public function wpml_element_has_translations( $null, $id, $type ) {
-		if ( 'post' === $type || lmat_is_translated_post_type( $type ) ) {
-			return count( lmat_get_post_translations( $id ) ) > 1;
-		} elseif ( 'term' === $type || lmat_is_translated_taxonomy( $type ) ) {
-			return count( lmat_get_term_translations( $id ) ) > 1;
+		if ( 'post' === $type || pll_is_translated_post_type( $type ) ) {
+			return count( pll_get_post_translations( $id ) ) > 1;
+		} elseif ( 'term' === $type || pll_is_translated_taxonomy( $type ) ) {
+			return count( pll_get_term_translations( $id ) ) > 1;
 		}
 
 		return false;
@@ -482,7 +482,7 @@ class LMAT_WPML_API {
 	 * @return bool
 	 */
 	public function wpml_is_translated_post_type( $value, $post_type ) {
-		return lmat_is_translated_post_type( $post_type );
+		return pll_is_translated_post_type( $post_type );
 	}
 
 	/**
@@ -495,6 +495,6 @@ class LMAT_WPML_API {
 	 * @return bool
 	 */
 	public function wpml_is_translated_taxonomy( $value, $taxonomy ) {
-		return lmat_is_translated_taxonomy( $taxonomy );
+		return pll_is_translated_taxonomy( $taxonomy );
 	}
 }

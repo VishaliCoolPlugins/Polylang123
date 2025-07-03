@@ -1,14 +1,14 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
-namespace WP_Syntex\Linguator\Options\Business;
+namespace WP_Syntex\Polylang\Options\Business;
 
 use WP_Error;
-use WP_Syntex\Linguator\Model\Languages;
-use WP_Syntex\Linguator\Options\Options;
-use WP_Syntex\Linguator\Options\Primitive\Abstract_String;
+use WP_Syntex\Polylang\Model\Languages;
+use WP_Syntex\Polylang\Options\Options;
+use WP_Syntex\Polylang\Options\Primitive\Abstract_String;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -55,7 +55,7 @@ class Default_Lang extends Abstract_String {
 	 * @return string
 	 */
 	protected function get_description(): string {
-		return __( 'Slug of the default language.', 'linguator' );
+		return __( 'Slug of the default language.', 'polylang' );
 	}
 
 	/**
@@ -78,7 +78,7 @@ class Default_Lang extends Abstract_String {
 
 		/** @var string $value */
 		if ( ! get_term_by( 'slug', $value, 'language' ) ) {
-			return new WP_Error( 'lmat_invalid_language', sprintf( 'The language slug \'%s\' is not a valid language.', $value ) );
+			return new WP_Error( 'pll_invalid_language', sprintf( 'The language slug \'%s\' is not a valid language.', $value ) );
 		}
 
 		return $value;

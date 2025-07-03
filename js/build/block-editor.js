@@ -2,7 +2,7 @@
 
 ;// ./js/src/lib/confirmation-modal.js
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 const languagesList = jQuery( '.post_lang_choice' );
@@ -17,10 +17,10 @@ const initializeConfirmationModal = () => {
 	const dialogContainer = jQuery(
 		'<div/>',
 		{
-			id: 'lmat-dialog',
+			id: 'pll-dialog',
 			style: 'display:none;'
 		}
-	).text( __( 'Are you sure you want to change the language of the current content?', 'linguator' ) );
+	).text( __( 'Are you sure you want to change the language of the current content?', 'polylang' ) );
 
 	// Put it after languages list dropdown.
 	// PHPCS ignore dialogContainer is a new safe HTML code generated above.
@@ -50,7 +50,7 @@ const initializeConfirmationModal = () => {
 				modal: true,
 				draggable: false,
 				resizable: false,
-				title: __( 'Change language', 'linguator' ),
+				title: __( 'Change language', 'polylang' ),
 				minWidth: 600,
 				maxWidth: '100%',
 				open: function ( event, ui ) {
@@ -70,13 +70,13 @@ const initializeConfirmationModal = () => {
 				},
 				buttons: [
 					{
-						text: __( 'OK', 'linguator' ),
+						text: __( 'OK', 'polylang' ),
 						click: function ( event ) {
 							confirmDialog( 'yes' );
 						}
 					},
 					{
-						text: __( 'Cancel', 'linguator' ),
+						text: __( 'Cancel', 'polylang' ),
 						click: function ( event ) {
 							confirmDialog( 'no' );
 						}
@@ -85,9 +85,9 @@ const initializeConfirmationModal = () => {
 			};
 
 			if ( jQuery.ui.version >= '1.12.0' ) {
-				Object.assign( dialogOptions, { classes: { 'ui-dialog': 'lmat-confirmation-modal' } } );
+				Object.assign( dialogOptions, { classes: { 'ui-dialog': 'pll-confirmation-modal' } } );
 			} else {
-			Object.assign( dialogOptions, { dialogClass: 'lmat-confirmation-modal' } ); // jQuery UI 1.11.4 - WP < 5.6
+			Object.assign( dialogOptions, { dialogClass: 'pll-confirmation-modal' } ); // jQuery UI 1.11.4 - WP < 5.6
 			}
 
 			dialogContainer.dialog( dialogOptions );
@@ -103,7 +103,7 @@ const initializeLanguageOldValue = () => {
 
 ;// ./js/src/lib/metabox-autocomplete.js
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 // Translations autocomplete input box.
@@ -111,16 +111,16 @@ function initMetaboxAutoComplete() {
 	jQuery('.tr_lang').each(
 		function () {
 			var tr_lang = jQuery(this).attr('id').substring(8);
-			var td = jQuery(this).parent().parent().siblings('.lmat-edit-column');
+			var td = jQuery(this).parent().parent().siblings('.pll-edit-column');
 
 			jQuery(this).autocomplete(
 				{
 					minLength: 0,
-					source: ajaxurl + '?action=lmat_posts_not_translated' +
+					source: ajaxurl + '?action=pll_posts_not_translated' +
 						'&post_language=' + jQuery('.post_lang_choice').val() +
 						'&translation_language=' + tr_lang +
 						'&post_type=' + jQuery('#post_type').val() +
-						'&_lmat_nonce=' + jQuery('#_lmat_nonce').val(),
+						'&_pll_nonce=' + jQuery('#_pll_nonce').val(),
 					select: function (event, ui) {
 						jQuery('#htr_lang_' + tr_lang).val(ui.item.id);
 						// ui.item.link is built and come from server side and is well escaped when necessary
@@ -146,12 +146,12 @@ function initMetaboxAutoComplete() {
 
 ;// ./js/src/lib/filter-path-middleware.js
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
  * Filters requests for translatable entities.
- * This logic is shared across all Linguator plugins.
+ * This logic is shared across all Polylang plugins.
  *
  * @since 3.5
  *
@@ -170,7 +170,7 @@ const filterPathMiddleware = ( options, filteredRoutes, filter ) => {
 
 ;// ./js/src/block-editor.js
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 
@@ -190,11 +190,11 @@ wp.apiFetch.use(
 		 * If options.url is defined, this is not a REST request but a direct call to post.php for legacy metaboxes.
 		 * If `filteredRoutes` is not defined, return early.
 		 */
-		if ( 'undefined' !== typeof options.url || 'undefined' === typeof lmatFilteredRoutes ) {
+		if ( 'undefined' !== typeof options.url || 'undefined' === typeof pllFilteredRoutes ) {
 			return next( options );
 		}
 
-		return next( filter_path_middleware( options, lmatFilteredRoutes, addLanguageParameter ) );
+		return next( filter_path_middleware( options, pllFilteredRoutes, addLanguageParameter ) );
 	}
 );
 
@@ -209,7 +209,7 @@ function getCurrentLanguage() {
 	const lang = document.querySelector( '[name=post_lang_choice]' );
 
 	if ( null === lang ) {
-		return lmatDefaultLanguage;
+		return pllDefaultLanguage;
 	}
 
 	return lang.value;
@@ -294,7 +294,7 @@ jQuery(
 							lang:       selectedOption.value,
 							post_type:  $( '#post_type' ).val(),
 							post_id:    $( '#post_ID' ).val(),
-							_lmat_nonce: $( '#_lmat_nonce' ).val()
+							_pll_nonce: $( '#_pll_nonce' ).val()
 						}
 
 						// Update post language in database as soon as possible.

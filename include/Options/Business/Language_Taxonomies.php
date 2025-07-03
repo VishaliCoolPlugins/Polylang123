@@ -1,9 +1,9 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
-namespace WP_Syntex\Linguator\Options\Business;
+namespace WP_Syntex\Polylang\Options\Business;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -38,9 +38,9 @@ class Language_Taxonomies extends Abstract_Object_Types {
 	protected function get_object_types(): array {
 		/** @phpstan-var array<non-falsy-string> */
 		return array_diff(
-			LMAT()->model->translatable_objects->get_taxonomy_names( array( 'language' ) ),
+			PLL()->model->translatable_objects->get_taxonomy_names( array( 'language' ) ),
 			// Exclude the post and term language taxonomies from the list.
-			array( LMAT()->model->post->get_tax_language(), LMAT()->model->term->get_tax_language() )
+			array( PLL()->model->post->get_tax_language(), PLL()->model->term->get_tax_language() )
 		);
 	}
 
@@ -52,6 +52,6 @@ class Language_Taxonomies extends Abstract_Object_Types {
 	 * @return string
 	 */
 	protected function get_description(): string {
-		return __( 'List of language taxonomies used for custom DB tables.', 'linguator' );
+		return __( 'List of language taxonomies used for custom DB tables.', 'polylang' );
 	}
 }

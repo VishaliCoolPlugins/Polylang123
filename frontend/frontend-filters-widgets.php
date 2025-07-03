@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -8,18 +8,18 @@
  *
  * @since 3.1
  */
-class LMAT_Frontend_Filters_Widgets {
+class PLL_Frontend_Filters_Widgets {
 	/**
 	 * Internal non persistent cache object.
 	 *
-	 * @var LMAT_Cache<array>
+	 * @var PLL_Cache<array>
 	 */
 	public $cache;
 
 	/**
 	 * Current language.
 	 *
-	 * @var LMAT_Language|null
+	 * @var PLL_Language|null
 	 */
 	public $curlang;
 
@@ -28,11 +28,11 @@ class LMAT_Frontend_Filters_Widgets {
 	 *
 	 * @since 1.2
 	 *
-	 * @param object $linguator The Linguator object.
+	 * @param object $polylang The Polylang object.
 	 */
-	public function __construct( &$linguator ) {
-		$this->curlang = &$linguator->curlang;
-		$this->cache = new LMAT_Cache();
+	public function __construct( &$polylang ) {
+		$this->curlang = &$polylang->curlang;
+		$this->cache = new PLL_Cache();
 
 		add_filter( 'sidebars_widgets', array( $this, 'sidebars_widgets' ) );
 	}
@@ -79,7 +79,7 @@ class LMAT_Frontend_Filters_Widgets {
 	 */
 	public function handle_widget_in_sidebar_callback( $widget_data, $sidebars_widgets, $sidebar, $key ) {
 		// Remove the widget if not visible in the current language
-		if ( ! empty( $widget_data['settings'][ $widget_data['number'] ]['lmat_lang'] ) && $widget_data['settings'][ $widget_data['number'] ]['lmat_lang'] !== $this->curlang->slug ) {
+		if ( ! empty( $widget_data['settings'][ $widget_data['number'] ]['pll_lang'] ) && $widget_data['settings'][ $widget_data['number'] ]['pll_lang'] !== $this->curlang->slug ) {
 			unset( $sidebars_widgets[ $sidebar ][ $key ] );
 		}
 		return $sidebars_widgets;

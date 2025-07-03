@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -8,9 +8,9 @@
  *
  * @since 2.8
  */
-class LMAT_Yarpp {
+class PLL_Yarpp {
 	/**
-	 * Just makes YARPP aware of the language taxonomy ( after Linguator registered it ).
+	 * Just makes YARPP aware of the language taxonomy ( after Polylang registered it ).
 	 *
 	 * @since 1.0
 	 */

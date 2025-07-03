@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -8,12 +8,12 @@
  *
  * @since 1.2
  */
-class LMAT_Frontend_Links extends LMAT_Links {
+class PLL_Frontend_Links extends PLL_Links {
 
 	/**
 	 * Internal non persistent cache object.
 	 *
-	 * @var LMAT_Cache<string>
+	 * @var PLL_Cache<string>
 	 */
 	public $cache;
 
@@ -22,13 +22,13 @@ class LMAT_Frontend_Links extends LMAT_Links {
 	 *
 	 * @since 1.2
 	 *
-	 * @param object $linguator The Linguator object.
+	 * @param object $polylang The Polylang object.
 	 */
-	public function __construct( &$linguator ) {
-		parent::__construct( $linguator );
+	public function __construct( &$polylang ) {
+		parent::__construct( $polylang );
 
-		$this->curlang = &$linguator->curlang;
-		$this->cache = new LMAT_Cache();
+		$this->curlang = &$polylang->curlang;
+		$this->cache = new PLL_Cache();
 	}
 
 	/**
@@ -36,7 +36,7 @@ class LMAT_Frontend_Links extends LMAT_Links {
 	 *
 	 * @since 0.1
 	 *
-	 * @param LMAT_Language $language Language object.
+	 * @param PLL_Language $language Language object.
 	 * @return string
 	 */
 	public function get_translation_url( $language ) {
@@ -51,16 +51,16 @@ class LMAT_Frontend_Links extends LMAT_Links {
 		$queried_object_id = $wp_query->get_queried_object_id();
 
 		/**
-		 * Filters the translation url before Linguator attempts to find one.
-		 * Internally used by Linguator for the static front page and posts page.
+		 * Filters the translation url before Polylang attempts to find one.
+		 * Internally used by Polylang for the static front page and posts page.
 		 *
 		 * @since 1.8
 		 *
 		 * @param string       $url               Empty string or the url of the translation of the current page.
-		 * @param LMAT_Language $language          Language of the translation.
+		 * @param PLL_Language $language          Language of the translation.
 		 * @param int          $queried_object_id Queried object ID.
 		 */
-		if ( ! $url = apply_filters( 'lmat_pre_translation_url', '', $language, $queried_object_id ) ) {
+		if ( ! $url = apply_filters( 'pll_pre_translation_url', '', $language, $queried_object_id ) ) {
 			$qv = $wp_query->query_vars;
 
 			// Post and attachment
@@ -126,7 +126,7 @@ class LMAT_Frontend_Links extends LMAT_Links {
 						 * @param string $lang The language code of the translation
 						 * @param array  $args Arguments used to evaluated the number of posts in the archive
 						 */
-						if ( ! apply_filters( 'lmat_hide_archive_translation_url', ! $count, $language->slug, array( 'taxonomy' => $term->taxonomy ) ) ) {
+						if ( ! apply_filters( 'pll_hide_archive_translation_url', ! $count, $language->slug, array( 'taxonomy' => $term->taxonomy ) ) ) {
 							$url = get_term_link( $tr_term, $term->taxonomy );
 						}
 					}
@@ -140,7 +140,7 @@ class LMAT_Frontend_Links extends LMAT_Links {
 					$count = $this->model->count_posts( $language, $args );
 
 					/** This filter is documented in frontend/frontend-links.php */
-					if ( ! apply_filters( 'lmat_hide_archive_translation_url', ! $count, $language->slug, $args ) ) {
+					if ( ! apply_filters( 'pll_hide_archive_translation_url', ! $count, $language->slug, $args ) ) {
 						$url = $this->get_archive_url( $language );
 					}
 				}
@@ -154,7 +154,7 @@ class LMAT_Frontend_Links extends LMAT_Links {
 				$count = $this->model->count_posts( $language, $args );
 
 				/** This filter is documented in frontend/frontend-links.php */
-				if ( ! apply_filters( 'lmat_hide_archive_translation_url', ! $count, $language->slug, $args ) ) {
+				if ( ! apply_filters( 'pll_hide_archive_translation_url', ! $count, $language->slug, $args ) ) {
 					$url = $this->get_archive_url( $language );
 				}
 			}
@@ -168,14 +168,14 @@ class LMAT_Frontend_Links extends LMAT_Links {
 		$url = ! empty( $url ) && ! is_wp_error( $url ) ? $url : null;
 
 		/**
-		 * Filter the translation url of the current page before Linguator caches it
+		 * Filter the translation url of the current page before Polylang caches it
 		 *
 		 * @since 1.1.2
 		 *
 		 * @param null|string $url      The translation url, null if none was found
 		 * @param string      $language The language code of the translation
 		 */
-		$translation_url = (string) apply_filters( 'lmat_translation_url', $url, $language->slug );
+		$translation_url = (string) apply_filters( 'pll_translation_url', $url, $language->slug );
 
 		// Don't cache before template_redirect to avoid a conflict with Barrel + WP Bakery Page Builder
 		if ( did_action( 'template_redirect' ) ) {
@@ -191,11 +191,11 @@ class LMAT_Frontend_Links extends LMAT_Links {
 	 *
 	 * @since 1.2
 	 *
-	 * @param LMAT_Language $language An object representing a language.
+	 * @param PLL_Language $language An object representing a language.
 	 * @return string
 	 */
 	public function get_archive_url( $language ) {
-		$url = lmat_get_requested_url();
+		$url = pll_get_requested_url();
 		$url = $this->links_model->switch_language_in_link( $url, $language );
 		$url = $this->links_model->remove_paged_from_link( $url );
 
@@ -207,7 +207,7 @@ class LMAT_Frontend_Links extends LMAT_Links {
 		 * @param string $url      Url of the archive
 		 * @param object $language Language of the archive
 		 */
-		return apply_filters( 'lmat_get_archive_url', $url, $language );
+		return apply_filters( 'pll_get_archive_url', $url, $language );
 	}
 
 	/**
@@ -215,7 +215,7 @@ class LMAT_Frontend_Links extends LMAT_Links {
 	 *
 	 * @since 0.1
 	 *
-	 * @param LMAT_Language|string $language  Optional, defaults to current language.
+	 * @param PLL_Language|string $language  Optional, defaults to current language.
 	 * @param bool                $is_search Optional, whether we need the home url for a search form, defaults to false.
 	 */
 	public function get_home_url( $language = '', $is_search = false ) {

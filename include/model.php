@@ -1,10 +1,10 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
-use WP_Syntex\Linguator\Model;
-use WP_Syntex\Linguator\Options\Options;
+use WP_Syntex\Polylang\Model;
+use WP_Syntex\Polylang\Options\Options;
 
 /**
  * Setups the language and translations model based on WordPress taxonomies.
@@ -15,26 +15,26 @@ use WP_Syntex\Linguator\Options\Options;
  * @method array              get_languages_list(array $args = array())           Returns the list of available languages. See `Model\Languages::get_list()`.
  * @method bool               are_languages_ready()                               Tells if get_languages_list() can be used. See `Model\Languages::are_ready()`.
  * @method void               set_languages_ready()                               Sets the internal property `$languages_ready` to `true`, telling that get_languages_list() can be used. See `Model\Languages::set_ready()`.
- * @method LMAT_Language|false get_language(mixed $value)                          Returns the language by its term_id, tl_term_id, slug or locale. See `Model\Languages::get()`.
+ * @method PLL_Language|false get_language(mixed $value)                          Returns the language by its term_id, tl_term_id, slug or locale. See `Model\Languages::get()`.
  * @method true|WP_Error      add_language(array $args)                           Adds a new language and creates a default category for this language. See `Model\Languages::add()`.
  * @method bool               delete_language(int $lang_id)                       Deletes a language. See `Model\Languages::delete()`.
  * @method true|WP_Error      update_language(array $args)                        Updates language properties. See `Model\Languages::update()`.
- * @method LMAT_Language|false get_default_language()                              Returns the default language. See `Model\Languages::get_default()`.
+ * @method PLL_Language|false get_default_language()                              Returns the default language. See `Model\Languages::get_default()`.
  * @method void               update_default_lang(string $slug)                   Updates the default language. See `Model\Languages::update_default()`.
  * @method void               maybe_create_language_terms()                       Maybe adds the missing language terms for 3rd party language taxonomies. See `Model\Languages::maybe_create_terms()`.
  * @method string[]           get_translated_post_types(bool $filter = true)      Returns post types that need to be translated. See `Model\Post_Types::get_translated()`.
- * @method bool               is_translated_post_type(string|string[] $post_type) Returns true if Linguator manages languages and translations for this post type. See `Model\Post_Types::is_translated()`.
+ * @method bool               is_translated_post_type(string|string[] $post_type) Returns true if Polylang manages languages and translations for this post type. See `Model\Post_Types::is_translated()`.
  * @method string[]           get_translated_taxonomies(bool $filter = true)      Returns taxonomies that need to be translated. See `Model\Taxonomies::get_translated()`.
- * @method bool               is_translated_taxonomy(string|string[] $tax)        Returns true if Linguator manages languages and translations for this taxonomy. See `Model\Taxonomies::is_translated()`.
+ * @method bool               is_translated_taxonomy(string|string[] $tax)        Returns true if Polylang manages languages and translations for this taxonomy. See `Model\Taxonomies::is_translated()`.
  * @method string[]           get_filtered_taxonomies(bool $filter = true)        Return taxonomies that need to be filtered (post_format like). See `Model\Taxonomies::get_filtered()`.
- * @method bool               is_filtered_taxonomy(string|string[] $tax)          Returns true if Linguator filters this taxonomy per language. See `Model\Taxonomies::is_filtered()`.
+ * @method bool               is_filtered_taxonomy(string|string[] $tax)          Returns true if Polylang filters this taxonomy per language. See `Model\Taxonomies::is_filtered()`.
  * @method string[]           get_filtered_taxonomies_query_vars()                Returns the query vars of all filtered taxonomies. See `Model\Taxonomies::get_filtered_query_vars()`.
  */
-class LMAT_Model {
+class PLL_Model {
 	/**
 	 * Internal non persistent cache object.
 	 *
-	 * @var LMAT_Cache<mixed>
+	 * @var PLL_Cache<mixed>
 	 */
 	public $cache;
 
@@ -50,21 +50,21 @@ class LMAT_Model {
 	 *
 	 * @since 3.4
 	 *
-	 * @var LMAT_Translatable_Objects
+	 * @var PLL_Translatable_Objects
 	 */
 	public $translatable_objects;
 
 	/**
 	 * Translated post model.
 	 *
-	 * @var LMAT_Translated_Post
+	 * @var PLL_Translated_Post
 	 */
 	public $post;
 
 	/**
 	 * Translated term model.
 	 *
-	 * @var LMAT_Translated_Term
+	 * @var PLL_Translated_Term
 	 */
 	public $term;
 
@@ -76,14 +76,14 @@ class LMAT_Model {
 	public $languages;
 
 	/**
-	 * Model for taxonomies translated by Linguator.
+	 * Model for taxonomies translated by Polylang.
 	 *
 	 * @var Model\Post_Types
 	 */
 	public $post_types;
 
 	/**
-	 * Model for taxonomies filtered/translated by Linguator.
+	 * Model for taxonomies filtered/translated by Polylang.
 	 *
 	 * @var Model\Taxonomies
 	 */
@@ -97,16 +97,16 @@ class LMAT_Model {
 	 * @since 1.2
 	 * @since 3.7 Type of parameter `$options` changed from `array` to `Options`.
 	 *
-	 * @param Options $options Linguator options.
+	 * @param Options $options Polylang options.
 	 */
 	public function __construct( Options &$options ) {
 		$this->options              = &$options;
-		$this->cache                = new LMAT_Cache();
-		$this->translatable_objects = new LMAT_Translatable_Objects();
+		$this->cache                = new PLL_Cache();
+		$this->translatable_objects = new PLL_Translatable_Objects();
 		$this->languages            = new Model\Languages( $this->options, $this->translatable_objects, $this->cache );
 
-		$this->post = $this->translatable_objects->register( new LMAT_Translated_Post( $this ) ); // Translated post sub model.
-		$this->term = $this->translatable_objects->register( new LMAT_Translated_Term( $this ) ); // Translated term sub model.
+		$this->post = $this->translatable_objects->register( new PLL_Translated_Post( $this ) ); // Translated post sub model.
+		$this->term = $this->translatable_objects->register( new PLL_Translated_Term( $this ) ); // Translated term sub model.
 
 		$this->post_types = new Model\Post_Types( $this->post );
 		$this->taxonomies = new Model\Taxonomies( $this->term );
@@ -164,7 +164,7 @@ class LMAT_Model {
 		$debug = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions
 		trigger_error( // phpcs:ignore WordPress.PHP.DevelopmentFunctions
 			sprintf(
-				'Call to undefined function LMAT()->model->%1$s() in %2$s on line %3$s' . "\nError handler",
+				'Call to undefined function PLL()->model->%1$s() in %2$s on line %3$s' . "\nError handler",
 				esc_html( $name ),
 				esc_html( $debug[0]['file'] ?? '' ),
 				absint( $debug[0]['line'] ?? 0 )
@@ -213,11 +213,11 @@ class LMAT_Model {
 	 * @since 1.2
 	 *
 	 * @param string[]           $clauses The list of sql clauses in terms query.
-	 * @param LMAT_Language|false $lang    LMAT_Language object.
+	 * @param PLL_Language|false $lang    PLL_Language object.
 	 * @return string[]                   Modified list of clauses.
 	 */
 	public function terms_clauses( $clauses, $lang ) {
-		if ( ! empty( $lang ) && false === strpos( $clauses['join'], 'lmat_tr' ) ) {
+		if ( ! empty( $lang ) && false === strpos( $clauses['join'], 'pll_tr' ) ) {
 			$clauses['join'] .= $this->term->join_clause();
 			$clauses['where'] .= $this->term->where_clause( $lang );
 		}
@@ -234,7 +234,7 @@ class LMAT_Model {
 	 * @param string              $term_name The term name.
 	 * @param string              $taxonomy  Taxonomy name.
 	 * @param int                 $parent    Parent term id.
-	 * @param string|LMAT_Language $language  The language slug or object.
+	 * @param string|PLL_Language $language  The language slug or object.
 	 * @return int The `term_id` of the found term. 0 otherwise.
 	 *
 	 * @phpstan-return int<0, max>
@@ -269,10 +269,10 @@ class LMAT_Model {
 	 * Checks if a term slug exists in a given language, taxonomy, hierarchy.
 	 *
 	 * @since 1.9
-	 * @since 2.8 Moved from LMAT_Share_Term_Slug::term_exists() to LMAT_Model::term_exists_by_slug().
+	 * @since 2.8 Moved from PLL_Share_Term_Slug::term_exists() to PLL_Model::term_exists_by_slug().
 	 *
 	 * @param string              $slug     The term slug to test.
-	 * @param string|LMAT_Language $language The language slug or object.
+	 * @param string|PLL_Language $language The language slug or object.
 	 * @param string              $taxonomy Optional taxonomy name.
 	 * @param int                 $parent   Optional parent term id.
 	 * @return int The `term_id` of the found term. 0 otherwise.
@@ -308,7 +308,7 @@ class LMAT_Model {
 	 *
 	 * @since 1.2
 	 *
-	 * @param LMAT_Language $lang LMAT_Language instance.
+	 * @param PLL_Language $lang PLL_Language instance.
 	 * @param array        $q    {
 	 *   WP_Query arguments:
 	 *
@@ -356,17 +356,17 @@ class LMAT_Model {
 			$q['post_type'] = array( 'post' ); // We *need* a post type.
 		}
 
-		$cache_key = $this->cache->get_unique_key( 'lmat_count_posts_', $q );
+		$cache_key = $this->cache->get_unique_key( 'pll_count_posts_', $q );
 		$counts    = wp_cache_get( $cache_key, 'counts' );
 
 		if ( ! is_array( $counts ) ) {
 			$counts  = array();
-			$select  = "SELECT lmat_tr.term_taxonomy_id, COUNT( * ) AS num_posts FROM {$wpdb->posts}";
+			$select  = "SELECT pll_tr.term_taxonomy_id, COUNT( * ) AS num_posts FROM {$wpdb->posts}";
 			$join    = $this->post->join_clause();
 			$where   = sprintf( " WHERE post_status = '%s'", esc_sql( $q['post_status'] ) );
 			$where  .= sprintf( " AND {$wpdb->posts}.post_type IN ( '%s' )", implode( "', '", esc_sql( $q['post_type'] ) ) );
 			$where  .= $this->post->where_clause( $this->languages->get_list() );
-			$groupby = ' GROUP BY lmat_tr.term_taxonomy_id';
+			$groupby = ' GROUP BY pll_tr.term_taxonomy_id';
 
 			if ( ! empty( $q['m'] ) ) {
 				$q['m'] = '' . preg_replace( '|[^0-9]|', '', $q['m'] );
@@ -431,21 +431,21 @@ class LMAT_Model {
 	 *
 	 * @since 1.2
 	 *
-	 * @return LMAT_Links_Model
+	 * @return PLL_Links_Model
 	 */
-	public function get_links_model(): LMAT_Links_Model {
+	public function get_links_model(): PLL_Links_Model {
 		$c = array( 'Directory', 'Directory', 'Subdomain', 'Domain' );
-		$class = get_option( 'permalink_structure' ) ? 'LMAT_Links_' . $c[ $this->options['force_lang'] ] : 'LMAT_Links_Default';
+		$class = get_option( 'permalink_structure' ) ? 'PLL_Links_' . $c[ $this->options['force_lang'] ] : 'PLL_Links_Default';
 
 		/**
 		 * Filters the links model class to use.
-		 * /!\ this filter is fired *before* the $linguator object is available.
+		 * /!\ this filter is fired *before* the $polylang object is available.
 		 *
 		 * @since 2.1.1
 		 *
-		 * @param string $class A class name: LMAT_Links_Default, LMAT_Links_Directory, LMAT_Links_Subdomain, LMAT_Links_Domain.
+		 * @param string $class A class name: PLL_Links_Default, PLL_Links_Directory, PLL_Links_Subdomain, PLL_Links_Domain.
 		 */
-		$class = apply_filters( 'lmat_links_model', $class );
+		$class = apply_filters( 'pll_links_model', $class );
 
 		return new $class( $this );
 	}
@@ -458,7 +458,7 @@ class LMAT_Model {
 	 * @since 3.4 Added the `$types` parameter.
 	 *
 	 * @param int      $limit Optional. Max number of IDs to return. Defaults to -1 (no limit).
-	 * @param string[] $types Optional. Types to handle (@see LMAT_Translatable_Object::get_type()). Defaults to
+	 * @param string[] $types Optional. Types to handle (@see PLL_Translatable_Object::get_type()). Defaults to
 	 *                        an empty array (all types).
 	 * @return int[][]|false {
 	 *     IDs of objects without language.
@@ -479,7 +479,7 @@ class LMAT_Model {
 		 * @since 3.4 Added the `$types` parameter.
 		 *
 		 * @param int      $limit Max number of IDs to retrieve from the database.
-		 * @param string[] $types Types to handle (@see LMAT_Translatable_Object::get_type()). An empty array means all
+		 * @param string[] $types Types to handle (@see PLL_Translatable_Object::get_type()). An empty array means all
 		 *                        types.
 		 */
 		$limit   = apply_filters( 'get_objects_with_no_lang_limit', $limit, $types );
@@ -511,10 +511,10 @@ class LMAT_Model {
 		 *
 		 * @param int[][]|false $objects List of lists of object IDs, `false` if no IDs found.
 		 * @param int           $limit   Max number of IDs to retrieve from the database.
-		 * @param string[]      $types   Types to handle (@see LMAT_Translatable_Object::get_type()). An empty array
+		 * @param string[]      $types   Types to handle (@see PLL_Translatable_Object::get_type()). An empty array
 		 *                               means all types.
 		 */
-		return apply_filters( 'lmat_get_objects_with_no_lang', $objects, $limit, $types );
+		return apply_filters( 'pll_get_objects_with_no_lang', $objects, $limit, $types );
 	}
 
 	/**
@@ -553,16 +553,16 @@ class LMAT_Model {
 	 * Assigns the default language to objects in mass.
 	 *
 	 * @since 1.2
-	 * @since 3.4 Moved from LMAT_Admin_Model class.
+	 * @since 3.4 Moved from PLL_Admin_Model class.
 	 *            Removed `$limit` parameter, added `$lang` and `$types` parameters.
 	 *
-	 * @param LMAT_Language|null $lang  Optional. The language to assign to objects. Defaults to `null` (default language).
-	 * @param string[]          $types Optional. Types to handle (@see LMAT_Translatable_Object::get_type()). Defaults
+	 * @param PLL_Language|null $lang  Optional. The language to assign to objects. Defaults to `null` (default language).
+	 * @param string[]          $types Optional. Types to handle (@see PLL_Translatable_Object::get_type()). Defaults
 	 *                                 to an empty array (all types).
 	 * @return void
 	 */
 	public function set_language_in_mass( $lang = null, array $types = array() ): void {
-		if ( ! $lang instanceof LMAT_Language ) {
+		if ( ! $lang instanceof PLL_Language ) {
 			$lang = $this->languages->get_default();
 
 			if ( empty( $lang ) ) {

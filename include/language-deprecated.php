@@ -1,14 +1,14 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
- * Holds everything related to deprecated properties of `LMAT_Language`.
+ * Holds everything related to deprecated properties of `PLL_Language`.
  *
  * @since 3.4
  */
-abstract class LMAT_Language_Deprecated {
+abstract class PLL_Language_Deprecated {
 
 	/**
 	 * List of deprecated term properties and related arguments to use with `get_tax_prop()`.
@@ -78,7 +78,7 @@ abstract class LMAT_Language_Deprecated {
 	 * Throws a depreciation notice if someone tries to get one of the following properties:
 	 * `term_taxonomy_id`, `count`, `tl_term_id`, `tl_term_taxonomy_id` or `tl_count`.
 	 *
-	 * Backward compatibility with Linguator < 3.4.
+	 * Backward compatibility with Polylang < 3.4.
 	 *
 	 * @since 3.4
 	 *
@@ -143,7 +143,7 @@ abstract class LMAT_Language_Deprecated {
 	 * Checks for a deprecated property.
 	 * Is triggered by calling `isset()` or `empty()` on inaccessible (protected or private) or non-existing properties.
 	 *
-	 * Backward compatibility with Linguator < 3.4.
+	 * Backward compatibility with Polylang < 3.4.
 	 *
 	 * @since 3.4
 	 *
@@ -158,12 +158,12 @@ abstract class LMAT_Language_Deprecated {
 	 * Tells if the given term property is deprecated.
 	 *
 	 * @since 3.4
-	 * @see LMAT_Language::DEPRECATED_TERM_PROPERTIES for the list of deprecated properties.
+	 * @see PLL_Language::DEPRECATED_TERM_PROPERTIES for the list of deprecated properties.
 	 *
 	 * @param string $property A property name.
 	 * @return bool
 	 *
-	 * @phpstan-assert-if-true key-of<LMAT_Language::DEPRECATED_TERM_PROPERTIES> $property
+	 * @phpstan-assert-if-true key-of<PLL_Language::DEPRECATED_TERM_PROPERTIES> $property
 	 */
 	protected function is_deprecated_term_property( $property ) {
 		return array_key_exists( $property, self::DEPRECATED_TERM_PROPERTIES );
@@ -173,12 +173,12 @@ abstract class LMAT_Language_Deprecated {
 	 * Returns a deprecated term property's value.
 	 *
 	 * @since 3.4
-	 * @see LMAT_Language::DEPRECATED_TERM_PROPERTIES for the list of deprecated properties.
+	 * @see PLL_Language::DEPRECATED_TERM_PROPERTIES for the list of deprecated properties.
 	 *
 	 * @param string $property A property name.
 	 * @return int
 	 *
-	 * @phpstan-param key-of<LMAT_Language::DEPRECATED_TERM_PROPERTIES> $property
+	 * @phpstan-param key-of<PLL_Language::DEPRECATED_TERM_PROPERTIES> $property
 	 * @phpstan-return int<0, max>
 	 */
 	protected function get_deprecated_term_property( $property ) {
@@ -192,12 +192,12 @@ abstract class LMAT_Language_Deprecated {
 	 * Tells if the given URL property is deprecated.
 	 *
 	 * @since 3.4
-	 * @see LMAT_Language::DEPRECATED_URL_PROPERTIES for the list of deprecated properties.
+	 * @see PLL_Language::DEPRECATED_URL_PROPERTIES for the list of deprecated properties.
 	 *
 	 * @param string $property A property name.
 	 * @return bool
 	 *
-	 * @phpstan-assert-if-true key-of<LMAT_Language::DEPRECATED_URL_PROPERTIES> $property
+	 * @phpstan-assert-if-true key-of<PLL_Language::DEPRECATED_URL_PROPERTIES> $property
 	 */
 	protected function is_deprecated_url_property( $property ) {
 		return array_key_exists( $property, self::DEPRECATED_URL_PROPERTIES );
@@ -207,12 +207,12 @@ abstract class LMAT_Language_Deprecated {
 	 * Returns a deprecated URL property's value.
 	 *
 	 * @since 3.4
-	 * @see LMAT_Language::DEPRECATED_URL_PROPERTIES for the list of deprecated properties.
+	 * @see PLL_Language::DEPRECATED_URL_PROPERTIES for the list of deprecated properties.
 	 *
 	 * @param string $property A property name.
 	 * @return string
 	 *
-	 * @phpstan-param key-of<LMAT_Language::DEPRECATED_URL_PROPERTIES> $property
+	 * @phpstan-param key-of<PLL_Language::DEPRECATED_URL_PROPERTIES> $property
 	 * @phpstan-return non-empty-string
 	 */
 	protected function get_deprecated_url_property( $property ) {

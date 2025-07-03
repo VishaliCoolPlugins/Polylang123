@@ -1,11 +1,11 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
-namespace WP_Syntex\Linguator\Options\Business;
+namespace WP_Syntex\Polylang\Options\Business;
 
-use WP_Syntex\Linguator\Options\Primitive\Abstract_String;
+use WP_Syntex\Polylang\Options\Primitive\Abstract_String;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -36,7 +36,7 @@ class Version extends Abstract_String {
 	 * @return string
 	 */
 	protected function get_description(): string {
-		return __( "Linguator's version.", 'linguator' );
+		return __( "Polylang's version.", 'polylang' );
 	}
 
 	/**

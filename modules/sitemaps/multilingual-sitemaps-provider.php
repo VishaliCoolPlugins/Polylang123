@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -8,7 +8,7 @@
  *
  * @since 2.8
  */
-class LMAT_Multilingual_Sitemaps_Provider extends WP_Sitemaps_Provider {
+class PLL_Multilingual_Sitemaps_Provider extends WP_Sitemaps_Provider {
 	/**
 	 * The decorated sitemaps provider.
 	 *
@@ -19,20 +19,20 @@ class LMAT_Multilingual_Sitemaps_Provider extends WP_Sitemaps_Provider {
 	protected $provider;
 
 	/**
-	 * The LMAT_Links_Model instance.
+	 * The PLL_Links_Model instance.
 	 *
 	 * @since 2.8
 	 *
-	 * @var LMAT_Links_Model
+	 * @var PLL_Links_Model
 	 */
 	protected $links_model;
 
 	/**
-	 * The LMAT_Model instance.
+	 * The PLL_Model instance.
 	 *
 	 * @since 2.8
 	 *
-	 * @var LMAT_Model
+	 * @var PLL_Model
 	 */
 	protected $model;
 
@@ -52,7 +52,7 @@ class LMAT_Multilingual_Sitemaps_Provider extends WP_Sitemaps_Provider {
 	 * @since 2.8
 	 *
 	 * @param WP_Sitemaps_Provider $provider    An instance of a WP_Sitemaps_Provider child class.
-	 * @param LMAT_Links_Model      $links_model The LMAT_Links_Model instance.
+	 * @param PLL_Links_Model      $links_model The PLL_Links_Model instance.
 	 */
 	public function __construct( $provider, &$links_model ) {
 		$this->name = $provider->name;

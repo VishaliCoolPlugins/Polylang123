@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -9,9 +9,9 @@
  *
  * @since 1.2
  */
-class LMAT_Admin_Filters_Media extends LMAT_Admin_Filters_Post_Base {
+class PLL_Admin_Filters_Media extends PLL_Admin_Filters_Post_Base {
 	/**
-	 * @var LMAT_CRUD_Posts|null
+	 * @var PLL_CRUD_Posts|null
 	 */
 	public $posts;
 
@@ -20,12 +20,12 @@ class LMAT_Admin_Filters_Media extends LMAT_Admin_Filters_Post_Base {
 	 *
 	 * @since 1.2
 	 *
-	 * @param object $linguator The Linguator object.
+	 * @param object $polylang The Polylang object.
 	 */
-	public function __construct( &$linguator ) {
-		parent::__construct( $linguator );
+	public function __construct( &$polylang ) {
+		parent::__construct( $polylang );
 
-		$this->posts = &$linguator->posts;
+		$this->posts = &$polylang->posts;
 
 		// Adds the language field and translations tables in the 'Edit Media' panel.
 		add_filter( 'attachment_fields_to_edit', array( $this, 'attachment_fields_to_edit' ), 10, 2 );
@@ -55,9 +55,9 @@ class LMAT_Admin_Filters_Media extends LMAT_Admin_Filters_Post_Base {
 		$post_id = $post->ID;
 		$lang = $this->model->post->get_language( $post_id );
 
-		$dropdown = new LMAT_Walker_Dropdown();
+		$dropdown = new PLL_Walker_Dropdown();
 		$fields['language'] = array(
-			'label' => __( 'Language', 'linguator' ),
+			'label' => __( 'Language', 'polylang' ),
 			'input' => 'html',
 			'html'  => $dropdown->walk(
 				$this->model->get_languages_list(),

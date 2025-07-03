@@ -2,13 +2,13 @@
 /**
  * Loads the site health.
  *
- * @package Linguator
+ * @package Polylang
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Don't access directly.
 }
 
-if ( $linguator instanceof LMAT_Admin && $linguator->model->has_languages() ) {
-	$linguator->site_health = new LMAT_Admin_Site_Health( $linguator );
+if ( $polylang instanceof PLL_Admin && $polylang->model->has_languages() ) {
+	$polylang->site_health = new PLL_Admin_Site_Health( $polylang );
 }

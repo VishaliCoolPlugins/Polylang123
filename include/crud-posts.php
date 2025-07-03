@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -9,28 +9,28 @@
  *
  * @since 2.4
  */
-class LMAT_CRUD_Posts {
+class PLL_CRUD_Posts {
 	/**
-	 * @var LMAT_Model
+	 * @var PLL_Model
 	 */
 	protected $model;
 
 	/**
 	 * Preferred language to assign to a new post.
 	 *
-	 * @var LMAT_Language|null
+	 * @var PLL_Language|null
 	 */
 	protected $pref_lang;
 
 	/**
 	 * Current language.
 	 *
-	 * @var LMAT_Language|null
+	 * @var PLL_Language|null
 	 */
 	protected $curlang;
 
 	/**
-	 * Reference to the Linguator options array.
+	 * Reference to the Polylang options array.
 	 *
 	 * @var array
 	 */
@@ -41,13 +41,13 @@ class LMAT_CRUD_Posts {
 	 *
 	 * @since 2.4
 	 *
-	 * @param object $linguator The Linguator object.
+	 * @param object $polylang The Polylang object.
 	 */
-	public function __construct( &$linguator ) {
-		$this->options   = &$linguator->options;
-		$this->model     = &$linguator->model;
-		$this->pref_lang = &$linguator->pref_lang;
-		$this->curlang   = &$linguator->curlang;
+	public function __construct( &$polylang ) {
+		$this->options   = &$polylang->options;
+		$this->model     = &$polylang->model;
+		$this->pref_lang = &$polylang->pref_lang;
+		$this->curlang   = &$polylang->curlang;
 
 		add_action( 'save_post', array( $this, 'save_post' ), 10, 2 );
 		add_action( 'set_object_terms', array( $this, 'set_object_terms' ), 10, 4 );
@@ -56,7 +56,7 @@ class LMAT_CRUD_Posts {
 		add_action( 'post_updated', array( $this, 'force_tags_translation' ), 10, 3 );
 
 		// Specific for media
-		if ( $linguator->options['media_support'] ) {
+		if ( $polylang->options['media_support'] ) {
 			add_action( 'add_attachment', array( $this, 'set_default_language' ) );
 			add_action( 'delete_attachment', array( $this, 'delete_post' ) );
 			add_filter( 'wp_delete_file', array( $this, 'wp_delete_file' ) );
@@ -126,7 +126,7 @@ class LMAT_CRUD_Posts {
 			 * @param WP_Post $post         Post object.
 			 * @param int[]   $translations The list of translations post ids.
 			 */
-			do_action( 'lmat_save_post', $post_id, $post, $this->model->post->get_translations( $post_id ) );
+			do_action( 'pll_save_post', $post_id, $post, $this->model->post->get_translations( $post_id ) );
 		}
 	}
 
@@ -229,7 +229,7 @@ class LMAT_CRUD_Posts {
 	/**
 	 * Called when a post, page or media is deleted
 	 * Don't delete translations if this is a post revision thanks to AndyDeGroo who caught this bug
-	 * http://wordpress.org/support/topic/plugin-linguator-quick-edit-still-breaks-translation-linking-of-pages-in-072
+	 * http://wordpress.org/support/topic/plugin-polylang-quick-edit-still-breaks-translation-linking-of-pages-in-072
 	 *
 	 * @since 0.1
 	 *
@@ -278,14 +278,14 @@ class LMAT_CRUD_Posts {
 	 * Creates a media translation
 	 *
 	 * @since 1.8
-	 * @since 3.7 Deprecated in favor of LMAT_Translated_Post::create_media_translation().
+	 * @since 3.7 Deprecated in favor of PLL_Translated_Post::create_media_translation().
 	 *
 	 * @param int                 $post_id Original attachment id.
-	 * @param string|LMAT_Language $lang    New translation language.
+	 * @param string|PLL_Language $lang    New translation language.
 	 * @return int Attachment id of the translated media.
 	 */
 	public function create_media_translation( $post_id, $lang ) {
-		_deprecated_function( __METHOD__, '3.7', 'LMAT_Translated_Post::create_media_translation()' );
+		_deprecated_function( __METHOD__, '3.7', 'PLL_Translated_Post::create_media_translation()' );
 		return $this->model->post->create_media_translation( $post_id, $lang );
 	}
 
@@ -312,7 +312,7 @@ class LMAT_CRUD_Posts {
 
 		$term_ids = wp_list_pluck( $terms, 'term_id' );
 
-		// Let's ensure that `LMAT_CRUD_Posts::set_object_terms()` will do its job.
+		// Let's ensure that `PLL_CRUD_Posts::set_object_terms()` will do its job.
 		wp_set_post_terms( $post_id, $term_ids, 'post_tag' );
 	}
 
@@ -324,12 +324,12 @@ class LMAT_CRUD_Posts {
 	 *
 	 * @param WP_Term[]    $terms    List of terms to translate.
 	 * @param string       $taxonomy The terms' taxonomy.
-	 * @param LMAT_Language $language The language to translate the terms into.
+	 * @param PLL_Language $language The language to translate the terms into.
 	 * @return int[] List of `term_id`s.
 	 *
 	 * @phpstan-return array<positive-int>
 	 */
-	private function translate_terms( array $terms, string $taxonomy, LMAT_Language $language ): array {
+	private function translate_terms( array $terms, string $taxonomy, PLL_Language $language ): array {
 		$term_ids_translated = array();
 
 		foreach ( $terms as $term ) {
@@ -347,12 +347,12 @@ class LMAT_CRUD_Posts {
 	 *
 	 * @param WP_Term      $term     The term to translate.
 	 * @param string       $taxonomy The term's taxonomy.
-	 * @param LMAT_Language $language The language to translate the term into.
+	 * @param PLL_Language $language The language to translate the term into.
 	 * @return int A `term_id` on success, `0` on failure.
 	 *
 	 * @phpstan-return int<0, max>
 	 */
-	private function translate_term( WP_Term $term, string $taxonomy, LMAT_Language $language ): int {
+	private function translate_term( WP_Term $term, string $taxonomy, PLL_Language $language ): int {
 		// Check if the term is in the correct language or if a translation exists.
 		$tr_term_id = $this->model->term->get( $term->term_id, $language );
 
@@ -381,7 +381,7 @@ class LMAT_CRUD_Posts {
 		}
 
 		$lang_callback   = function ( $lang, $tax, $slug ) use ( $language, $term, $taxonomy ) {
-			if ( ! $lang instanceof LMAT_Language && $tax === $taxonomy && $slug === $term->slug ) {
+			if ( ! $lang instanceof PLL_Language && $tax === $taxonomy && $slug === $term->slug ) {
 				return $language;
 			}
 			return $lang;
@@ -392,8 +392,8 @@ class LMAT_CRUD_Posts {
 			}
 			return $parent_id;
 		};
-		add_filter( 'lmat_inserted_term_language', $lang_callback, 10, 3 );
-		add_filter( 'lmat_inserted_term_parent', $parent_callback, 10, 3 );
+		add_filter( 'pll_inserted_term_language', $lang_callback, 10, 3 );
+		add_filter( 'pll_inserted_term_parent', $parent_callback, 10, 3 );
 		$new_term_info = wp_insert_term(
 			$term->name,
 			$taxonomy,
@@ -402,8 +402,8 @@ class LMAT_CRUD_Posts {
 				'slug'   => $term->slug, // Useless but prevents the use of `sanitize_title()` and for consistency with `$lang_callback`.
 			)
 		);
-		remove_filter( 'lmat_inserted_term_language', $lang_callback );
-		remove_filter( 'lmat_inserted_term_parent', $parent_callback );
+		remove_filter( 'pll_inserted_term_language', $lang_callback );
+		remove_filter( 'pll_inserted_term_parent', $parent_callback );
 
 		if ( is_wp_error( $new_term_info ) ) {
 			// Term creation failed.

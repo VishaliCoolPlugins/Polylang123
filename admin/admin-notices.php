@@ -1,17 +1,17 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
  * A class to manage admin notices
  * displayed only to admin, based on 'manage_options' capability
- * and only on dashboard, plugins and Linguator admin pages
+ * and only on dashboard, plugins and Polylang admin pages
  *
  * @since 2.3.9
  * @since 2.7 Dismissed notices are stored in an option instead of a user meta
  */
-class LMAT_Admin_Notices {
+class PLL_Admin_Notices {
 	/**
 	 * Stores the plugin options.
 	 *
@@ -32,10 +32,10 @@ class LMAT_Admin_Notices {
 	 *
 	 * @since 2.3.9
 	 *
-	 * @param object $linguator The Linguator object.
+	 * @param object $polylang The Polylang object.
 	 */
-	public function __construct( $linguator ) {
-		$this->options = &$linguator->options;
+	public function __construct( $polylang ) {
+		$this->options = &$polylang->options;
 
 		add_action( 'admin_init', array( $this, 'hide_notice' ) );
 		add_action( 'admin_notices', array( $this, 'display_notices' ) );
@@ -74,18 +74,18 @@ class LMAT_Admin_Notices {
 	 * @return bool
 	 */
 	public static function is_dismissed( $notice ) {
-		$dismissed = get_option( 'lmat_dismissed_notices', array() );
+		$dismissed = get_option( 'pll_dismissed_notices', array() );
 
 		// Handle legacy user meta
-		$dismissed_meta = get_user_meta( get_current_user_id(), 'lmat_dismissed_notices', true );
+		$dismissed_meta = get_user_meta( get_current_user_id(), 'pll_dismissed_notices', true );
 		if ( is_array( $dismissed_meta ) ) {
 			if ( array_diff( $dismissed_meta, $dismissed ) ) {
 				$dismissed = array_merge( $dismissed, $dismissed_meta );
-				update_option( 'lmat_dismissed_notices', $dismissed );
+				update_option( 'pll_dismissed_notices', $dismissed );
 			}
 			if ( ! is_multisite() ) {
 				// Don't delete on multisite to avoid the notices to appear in other sites.
-				delete_user_meta( get_current_user_id(), 'lmat_dismissed_notices' );
+				delete_user_meta( get_current_user_id(), 'pll_dismissed_notices' );
 			}
 		}
 
@@ -111,7 +111,7 @@ class LMAT_Admin_Notices {
 		}
 
 		if ( empty( $allowed_screens ) ) {
-			$screen_id       = sanitize_title( __( 'Languages', 'linguator' ) );
+			$screen_id       = sanitize_title( __( 'Languages', 'polylang' ) );
 			$allowed_screens = array(
 				'dashboard',
 				'plugins',
@@ -129,7 +129,7 @@ class LMAT_Admin_Notices {
 		 * @param bool   $display Whether the notice should be displayed or not.
 		 * @param string $notice  The notice name.
 		 */
-		return apply_filters( 'lmat_can_display_notice', in_array( $screen->id, $allowed_screens, true ), $notice );
+		return apply_filters( 'pll_can_display_notice', in_array( $screen->id, $allowed_screens, true ), $notice );
 	}
 
 	/**
@@ -141,11 +141,11 @@ class LMAT_Admin_Notices {
 	 * @return void
 	 */
 	public static function dismiss( $notice ) {
-		$dismissed = get_option( 'lmat_dismissed_notices', array() );
+		$dismissed = get_option( 'pll_dismissed_notices', array() );
 
 		if ( ! in_array( $notice, $dismissed ) ) {
 			$dismissed[] = $notice;
-			update_option( 'lmat_dismissed_notices', array_unique( $dismissed ) );
+			update_option( 'pll_dismissed_notices', array_unique( $dismissed ) );
 		}
 	}
 
@@ -157,11 +157,11 @@ class LMAT_Admin_Notices {
 	 * @return void
 	 */
 	public function hide_notice() {
-		if ( isset( $_GET['lmat-hide-notice'], $_GET['_lmat_notice_nonce'] ) ) {
-			$notice = sanitize_key( $_GET['lmat-hide-notice'] );
-			check_admin_referer( $notice, '_lmat_notice_nonce' );
+		if ( isset( $_GET['pll-hide-notice'], $_GET['_pll_notice_nonce'] ) ) {
+			$notice = sanitize_key( $_GET['pll-hide-notice'] );
+			check_admin_referer( $notice, '_pll_notice_nonce' );
 			self::dismiss( $notice );
-			wp_safe_redirect( remove_query_arg( array( 'lmat-hide-notice', '_lmat_notice_nonce' ), wp_get_referer() ) );
+			wp_safe_redirect( remove_query_arg( array( 'pll-hide-notice', '_pll_notice_nonce' ), wp_get_referer() ) );
 			exit;
 		}
 	}
@@ -176,15 +176,15 @@ class LMAT_Admin_Notices {
 	public function display_notices() {
 		if ( current_user_can( 'manage_options' ) ) {
 			// Core notices
-			if ( defined( 'WOOCOMMERCE_VERSION' ) && ! defined( 'LMATWC_VERSION' ) && $this->can_display_notice( 'lmatwc' ) && ! static::is_dismissed( 'lmatwc' ) ) {
-				$this->lmatwc_notice();
+			if ( defined( 'WOOCOMMERCE_VERSION' ) && ! defined( 'PLLWC_VERSION' ) && $this->can_display_notice( 'pllwc' ) && ! static::is_dismissed( 'pllwc' ) ) {
+				$this->pllwc_notice();
 			}
 
-			if ( ! defined( 'LINGUATOR_PRO' ) && $this->can_display_notice( 'review' ) && ! static::is_dismissed( 'review' ) && ! empty( $this->options['first_activation'] ) && time() > $this->options['first_activation'] + 15 * DAY_IN_SECONDS ) {
+			if ( ! defined( 'POLYLANG_PRO' ) && $this->can_display_notice( 'review' ) && ! static::is_dismissed( 'review' ) && ! empty( $this->options['first_activation'] ) && time() > $this->options['first_activation'] + 15 * DAY_IN_SECONDS ) {
 				$this->review_notice();
 			}
 
-			$allowed_screen = sanitize_title( __( 'Languages', 'linguator' ) ) . '_page_mlang_strings';
+			$allowed_screen = sanitize_title( __( 'Languages', 'polylang' ) ) . '_page_mlang_strings';
 			if (
 				( ! empty( $this->options['previous_version'] ) && version_compare( $this->options['previous_version'], '3.7.0', '<' ) )
 				&& $this->can_display_notice( 'empty-strings-translations', (array) $allowed_screen )
@@ -197,7 +197,7 @@ class LMAT_Admin_Notices {
 			foreach ( static::get_notices() as $notice => $html ) {
 				if ( $this->can_display_notice( $notice ) && ! static::is_dismissed( $notice ) ) {
 					?>
-					<div class="lmat-notice notice notice-info">
+					<div class="pll-notice notice notice-info">
 						<?php
 						$this->dismiss_button( $notice );
 						echo wp_kses_post( $html );
@@ -220,29 +220,29 @@ class LMAT_Admin_Notices {
 	public function dismiss_button( $name ) {
 		printf(
 			'<a class="notice-dismiss" href="%s"><span class="screen-reader-text">%s</span></a>',
-			esc_url( wp_nonce_url( add_query_arg( 'lmat-hide-notice', $name ), $name, '_lmat_notice_nonce' ) ),
+			esc_url( wp_nonce_url( add_query_arg( 'pll-hide-notice', $name ), $name, '_pll_notice_nonce' ) ),
 			/* translators: accessibility text */
-			esc_html__( 'Dismiss this notice.', 'linguator' )
+			esc_html__( 'Dismiss this notice.', 'polylang' )
 		);
 	}
 
 	/**
-	 * Displays a notice if WooCommerce is activated without Linguator for WooCommerce
+	 * Displays a notice if WooCommerce is activated without Polylang for WooCommerce
 	 *
 	 * @since 2.3.9
 	 *
 	 * @return void
 	 */
-	private function lmatwc_notice() {
+	private function pllwc_notice() {
 		?>
-		<div class="lmat-notice notice notice-warning">
-		<?php $this->dismiss_button( 'lmatwc' ); ?>
+		<div class="pll-notice notice notice-warning">
+		<?php $this->dismiss_button( 'pllwc' ); ?>
 			<p>
 				<?php
 				printf(
 					/* translators: %1$s is link start tag, %2$s is link end tag. */
-					esc_html__( 'We have noticed that you are using Linguator with WooCommerce. To ensure compatibility, we recommend you use %1$sLinguator for WooCommerce%2$s.', 'linguator' ),
-					'<a href="https://linguator.pro/downloads/linguator-for-woocommerce/">',
+					esc_html__( 'We have noticed that you are using Polylang with WooCommerce. To ensure compatibility, we recommend you use %1$sPolylang for WooCommerce%2$s.', 'polylang' ),
+					'<a href="https://polylang.pro/downloads/polylang-for-woocommerce/">',
 					'</a>'
 				);
 				?>
@@ -260,14 +260,14 @@ class LMAT_Admin_Notices {
 	 */
 	private function review_notice() {
 		?>
-		<div class="lmat-notice notice notice-info">
+		<div class="pll-notice notice notice-info">
 		<?php $this->dismiss_button( 'review' ); ?>
 			<p>
 				<?php
 				printf(
 					/* translators: %1$s is link start tag, %2$s is link end tag. */
-					esc_html__( 'We have noticed that you have been using Linguator for some time. We hope you love it, and we would really appreciate it if you would %1$sgive us a 5 stars rating%2$s.', 'linguator' ),
-					'<a href="https://wordpress.org/support/plugin/linguator/reviews/?rate=5#new-post">',
+					esc_html__( 'We have noticed that you have been using Polylang for some time. We hope you love it, and we would really appreciate it if you would %1$sgive us a 5 stars rating%2$s.', 'polylang' ),
+					'<a href="https://wordpress.org/support/plugin/polylang/reviews/?rate=5#new-post">',
 					'</a>'
 				);
 				?>
@@ -285,10 +285,10 @@ class LMAT_Admin_Notices {
 	 */
 	private function empty_strings_translations_notice() {
 		?>
-		<div class="lmat-notice notice notice-info">
+		<div class="pll-notice notice notice-info">
 		<?php $this->dismiss_button( 'empty-strings-translations' ); ?>
 			<p>
-				<?php esc_html_e( 'Translations matching the original string are shown as empty in the table. Untranslated content remains unchanged.', 'linguator' ); ?>
+				<?php esc_html_e( 'Translations matching the original string are shown as empty in the table. Untranslated content remains unchanged.', 'polylang' ); ?>
 			</p>
 		</div>
 		<?php

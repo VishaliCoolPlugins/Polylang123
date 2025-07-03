@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -18,11 +18,11 @@
  *     }
  * >
  */
-class LMAT_WPML_Config {
+class PLL_WPML_Config {
 	/**
 	 * Singleton instance
 	 *
-	 * @var LMAT_WPML_Config|null
+	 * @var PLL_WPML_Config|null
 	 */
 	protected static $instance;
 
@@ -86,7 +86,7 @@ class LMAT_WPML_Config {
 	 *
 	 * @since 1.7
 	 *
-	 * @return LMAT_WPML_Config
+	 * @return PLL_WPML_Config
 	 */
 	public static function instance() {
 		if ( empty( self::$instance ) ) {
@@ -126,20 +126,20 @@ class LMAT_WPML_Config {
 			return;
 		}
 
-		add_filter( 'lmat_copy_post_metas', array( $this, 'copy_post_metas' ), 20, 2 );
-		add_filter( 'lmat_copy_term_metas', array( $this, 'copy_term_metas' ), 20, 2 );
-		add_filter( 'lmat_get_post_types', array( $this, 'translate_types' ), 10, 2 );
-		add_filter( 'lmat_get_taxonomies', array( $this, 'translate_taxonomies' ), 10, 2 );
+		add_filter( 'pll_copy_post_metas', array( $this, 'copy_post_metas' ), 20, 2 );
+		add_filter( 'pll_copy_term_metas', array( $this, 'copy_term_metas' ), 20, 2 );
+		add_filter( 'pll_get_post_types', array( $this, 'translate_types' ), 10, 2 );
+		add_filter( 'pll_get_taxonomies', array( $this, 'translate_taxonomies' ), 10, 2 );
 
 		// Export.
-		add_filter( 'lmat_post_metas_to_export', array( $this, 'post_metas_to_export' ) );
-		add_filter( 'lmat_term_metas_to_export', array( $this, 'term_metas_to_export' ) );
-		add_filter( 'lmat_post_meta_encodings', array( $this, 'add_post_meta_encodings' ), 20 );
-		add_filter( 'lmat_term_meta_encodings', array( $this, 'add_term_meta_encodings' ), 20 );
-		add_filter( 'lmat_blocks_xpath_rules', array( $this, 'translate_blocks' ) );
-		add_filter( 'lmat_blocks_rules_for_attributes', array( $this, 'translate_blocks_attributes' ) );
+		add_filter( 'pll_post_metas_to_export', array( $this, 'post_metas_to_export' ) );
+		add_filter( 'pll_term_metas_to_export', array( $this, 'term_metas_to_export' ) );
+		add_filter( 'pll_post_meta_encodings', array( $this, 'add_post_meta_encodings' ), 20 );
+		add_filter( 'pll_term_meta_encodings', array( $this, 'add_term_meta_encodings' ), 20 );
+		add_filter( 'pll_blocks_xpath_rules', array( $this, 'translate_blocks' ) );
+		add_filter( 'pll_blocks_rules_for_attributes', array( $this, 'translate_blocks_attributes' ) );
 
-		$matcher = new LMAT_Format_Util();
+		$matcher = new PLL_Format_Util();
 
 		foreach ( $this->xmls as $context => $xml ) {
 			$keys = $xml->xpath( 'admin-texts/key' );
@@ -166,7 +166,7 @@ class LMAT_WPML_Config {
 	}
 
 	/**
-	 * Returns all wpml-config.xml files in MU plugins, plugins, theme, child theme, and Linguator custom directory.
+	 * Returns all wpml-config.xml files in MU plugins, plugins, theme, child theme, and Polylang custom directory.
 	 *
 	 * @since 3.1
 	 *
@@ -227,7 +227,7 @@ class LMAT_WPML_Config {
 	 * Adds post meta keys to export.
 	 *
 	 * @since 3.3
-	 * @see   LMAT_Export_Metas
+	 * @see   PLL_Export_Metas
 	 *
 	 * @param  array $keys {
 	 *     A recursive array containing nested meta sub-keys to translate.
@@ -285,7 +285,7 @@ class LMAT_WPML_Config {
 	 * Note: sub-key translations are not currently supported by WPML.
 	 *
 	 * @since 3.3
-	 * @see   LMAT_Export_Metas
+	 * @see   PLL_Export_Metas
 	 *
 	 * @param  array $keys {
 	 *     An array containing meta keys to translate.
@@ -338,9 +338,9 @@ class LMAT_WPML_Config {
 	 *
 	 * @since 1.0
 	 *
-	 * @param string[] $types The list of post type names for which Linguator manages language and translations.
-	 * @param bool     $hide  True when displaying the list in Linguator settings.
-	 * @return string[] The list of post type names for which Linguator manages language and translations.
+	 * @param string[] $types The list of post type names for which Polylang manages language and translations.
+	 * @param bool     $hide  True when displaying the list in Polylang settings.
+	 * @return string[] The list of post type names for which Polylang manages language and translations.
 	 */
 	public function translate_types( $types, $hide ) {
 		foreach ( $this->xmls as $xml ) {
@@ -369,9 +369,9 @@ class LMAT_WPML_Config {
 	 *
 	 * @since 1.0
 	 *
-	 * @param string[] $taxonomies The list of taxonomy names for which Linguator manages language and translations.
-	 * @param bool     $hide       True when displaying the list in Linguator settings.
-	 * @return string[] The list of taxonomy names for which Linguator manages language and translations.
+	 * @param string[] $taxonomies The list of taxonomy names for which Polylang manages language and translations.
+	 * @param bool     $hide       True when displaying the list in Polylang settings.
+	 * @return string[] The list of taxonomy names for which Polylang manages language and translations.
 	 */
 	public function translate_taxonomies( $taxonomies, $hide ) {
 		foreach ( $this->xmls as $xml ) {
@@ -551,11 +551,11 @@ class LMAT_WPML_Config {
 	 */
 	protected function register_or_translate_option( $context, $name, $key ) {
 		$option_keys = $this->xml_to_array( $key );
-		new LMAT_Translate_Option( $name, reset( $option_keys ), array( 'context' => $context ) );
+		new PLL_Translate_Option( $name, reset( $option_keys ), array( 'context' => $context ) );
 	}
 
 	/**
-	 * Recursively transforms xml nodes to an array, ready for LMAT_Translate_Option.
+	 * Recursively transforms xml nodes to an array, ready for PLL_Translate_Option.
 	 *
 	 * @since 2.9
 	 * @since 3.3 Type-hinted the parameters `$key` and `$arr`.
@@ -701,7 +701,7 @@ class LMAT_WPML_Config {
 		$plugins = array();
 
 		if ( is_multisite() ) {
-			// Don't forget sitewide active plugins thanks to Reactorshop http://wordpress.org/support/topic/linguator-and-yoast-seo-plugin/page/2?replies=38#post-4801829.
+			// Don't forget sitewide active plugins thanks to Reactorshop http://wordpress.org/support/topic/polylang-and-yoast-seo-plugin/page/2?replies=38#post-4801829.
 			$sitewide_plugins = get_site_option( 'active_sitewide_plugins', array() );
 
 			if ( ! empty( $sitewide_plugins ) && is_array( $sitewide_plugins ) ) {
@@ -766,7 +766,7 @@ class LMAT_WPML_Config {
 	}
 
 	/**
-	 * Returns the wpml-config.xml file in Linguator custom directory.
+	 * Returns the wpml-config.xml file in Polylang custom directory.
 	 *
 	 * @since 3.3
 	 *
@@ -775,14 +775,14 @@ class LMAT_WPML_Config {
 	 * @phpstan-return array<string, string>
 	 */
 	private function get_custom_files() {
-		$file_path = LMAT_LOCAL_DIR . '/wpml-config.xml';
+		$file_path = PLL_LOCAL_DIR . '/wpml-config.xml';
 
 		if ( ! is_readable( $file_path ) ) {
 			return array();
 		}
 
 		return array(
-			'Linguator' => $file_path,
+			'Polylang' => $file_path,
 		);
 	}
 
@@ -818,7 +818,7 @@ class LMAT_WPML_Config {
 
 	/**
 	 * Checks whether access to a given directory is allowed.
-	 * This takes into account the PHP `open_basedir` restrictions, so that Linguator does not try to access directories
+	 * This takes into account the PHP `open_basedir` restrictions, so that Polylang does not try to access directories
 	 * it is not allowed to.
 	 *
 	 * Inspired by `WP_Automatic_Updater::is_allowed_dir()` and `wp-includes/ID3/getid3.php`.

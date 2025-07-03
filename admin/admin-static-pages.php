@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -8,9 +8,9 @@
  *
  * @since 1.8
  */
-class LMAT_Admin_Static_Pages extends LMAT_Static_Pages {
+class PLL_Admin_Static_Pages extends PLL_Static_Pages {
 	/**
-	 * @var LMAT_Admin_Links|null
+	 * @var PLL_Admin_Links|null
 	 */
 	protected $links;
 
@@ -19,18 +19,18 @@ class LMAT_Admin_Static_Pages extends LMAT_Static_Pages {
 	 *
 	 * @since 1.8
 	 *
-	 * @param object $linguator An array of attachment metadata.
+	 * @param object $polylang An array of attachment metadata.
 	 */
-	public function __construct( &$linguator ) {
-		parent::__construct( $linguator );
+	public function __construct( &$polylang ) {
+		parent::__construct( $polylang );
 
-		$this->links = &$linguator->links;
+		$this->links = &$polylang->links;
 
 		// Add post state for translations of the front page and posts page
 		add_filter( 'display_post_states', array( $this, 'display_post_states' ), 10, 2 );
 
 		// Refreshes the language cache when a static front page or page for for posts has been translated.
-		add_action( 'lmat_save_post', array( $this, 'lmat_save_post' ), 10, 3 );
+		add_action( 'pll_save_post', array( $this, 'pll_save_post' ), 10, 3 );
 
 		// Prevents WP resetting the option
 		add_filter( 'pre_update_option_show_on_front', array( $this, 'update_show_on_front' ), 10, 2 );
@@ -49,11 +49,11 @@ class LMAT_Admin_Static_Pages extends LMAT_Static_Pages {
 	 */
 	public function display_post_states( $post_states, $post ) {
 		if ( in_array( $post->ID, $this->model->get_languages_list( array( 'fields' => 'page_on_front' ) ) ) ) {
-			$post_states['page_on_front'] = __( 'Front Page', 'linguator' );
+			$post_states['page_on_front'] = __( 'Front Page', 'polylang' );
 		}
 
 		if ( in_array( $post->ID, $this->model->get_languages_list( array( 'fields' => 'page_for_posts' ) ) ) ) {
-			$post_states['page_for_posts'] = __( 'Posts Page', 'linguator' );
+			$post_states['page_for_posts'] = __( 'Posts Page', 'polylang' );
 		}
 
 		return $post_states;
@@ -69,7 +69,7 @@ class LMAT_Admin_Static_Pages extends LMAT_Static_Pages {
 	 * @param int[]   $translations Translations of the post being saved.
 	 * @return void
 	 */
-	public function lmat_save_post( $post_id, $post, $translations ) {
+	public function pll_save_post( $post_id, $post, $translations ) {
 		if ( in_array( $this->page_on_front, $translations ) || in_array( $this->page_for_posts, $translations ) ) {
 			$this->model->clean_languages_cache();
 		}
@@ -141,7 +141,7 @@ class LMAT_Admin_Static_Pages extends LMAT_Static_Pages {
 			if ( ! empty( $untranslated ) ) {
 				$message = sprintf(
 					/* translators: %s is a comma separated list of native language names */
-					esc_html__( 'You must translate your static front page in %s.', 'linguator' ),
+					esc_html__( 'You must translate your static front page in %s.', 'polylang' ),
 					implode( ', ', $untranslated ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				);
 			}

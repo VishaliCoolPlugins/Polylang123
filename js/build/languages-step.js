@@ -1,5 +1,5 @@
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 jQuery(
@@ -16,7 +16,7 @@ jQuery(
 		var dialog = $( '#dialog' ); // Dialog box for alerting the language selected has not been added to the list.
 
 		/**
-		 * Add a language in the list to create it in Linguator settings
+		 * Add a language in the list to create it in Polylang settings
 		 *
 		 * @param {object} language The language object
 		 */
@@ -32,7 +32,7 @@ jQuery(
 				.append( // phpcs:ignore WordPressVIPMinimum.JS.HTMLExecutingFunctions.append
 					$( '<span />' )
 					.addClass( 'screen-reader-text' )
-					.text( lmat_wizard_params.i18n_remove_language_icon )
+					.text( pll_wizard_params.i18n_remove_language_icon )
 				)
 			);
 			// see the comment and the hardcoded code above. languageTrashIconHtml and languageValueHtml are safe.
@@ -85,7 +85,7 @@ jQuery(
 		function showError( message ) {
 			messagesContainer.empty();
 			// html is hardcoded and use of jQuery text method which is safe to add message value.
-			// In addition message is i18n value which is initialized server side in LMAT_Wizard::add_step_languages and correctly escaped.
+			// In addition message is i18n value which is initialized server side in PLL_Wizard::add_step_languages and correctly escaped.
 			messagesContainer.prepend( $( '<p/>' ).addClass( 'error' ).text( message ) ); // phpcs:ignore WordPressVIPMinimum.JS.HTMLExecutingFunctions.prepend
 		}
 
@@ -165,9 +165,9 @@ jQuery(
 					// Put back the focus on the select language field after clicking on "Add language button".
 					focusOnField( $( '#lang_list-button' ) );
 				} else {
-					var message = lmat_wizard_params.i18n_no_language_selected;
+					var message = pll_wizard_params.i18n_no_language_selected;
 					if ( languagesMap.has( selectedOption.value ) ) {
-						message = lmat_wizard_params.i18n_language_already_added;
+						message = pll_wizard_params.i18n_language_already_added;
 					}
 					showError( message );
 					showFieldInError( languagesList.next( 'span.ui-selectmenu-button' ) );
@@ -188,11 +188,11 @@ jQuery(
 				var selectedLanguage = $( '#lang_list' ).val();
 				if ( languagesMap.size <= 0 && ! isLanguagesAlreadyDefined ) {
 					if ( '' === selectedLanguage ) {
-						showError( lmat_wizard_params.i18n_no_language_added );
+						showError( pll_wizard_params.i18n_no_language_added );
 						showFieldInError( languagesList.next( 'span.ui-selectmenu-button' ) );
 						focusOnField( $( '#lang_list-button' ) );
 					} else {
-						showError( lmat_wizard_params.i18n_add_language_needed );
+						showError( pll_wizard_params.i18n_add_language_needed );
 						showFieldInError( languagesList.next( 'span.ui-selectmenu-button' ) );
 						focusOnField( $( '#add-language' ) ); // Put the focus on the "Add language" button.
 					}
@@ -204,7 +204,7 @@ jQuery(
 					if ( ! languagesMap.has( selectedLanguage ) ) {
 						dialog.dialog( 'open' );
 					} else {
-						showError( lmat_wizard_params.i18n_language_already_added );
+						showError( pll_wizard_params.i18n_language_already_added );
 						showFieldInError( languagesList.next( 'span.ui-selectmenu-button' ) );
 						focusOnField( $( '#lang_list-button' ) );
 					}
@@ -218,8 +218,8 @@ jQuery(
 		var searchParams = new URLSearchParams( document.location.search );
 		if ( searchParams.has( 'activate_error' ) ) {
 			// If the error code exists, display it.
-			if ( undefined !== lmat_wizard_params[ searchParams.get( 'activate_error' ) ] ) {
-				showError( lmat_wizard_params[ searchParams.get( 'activate_error' ) ] );
+			if ( undefined !== pll_wizard_params[ searchParams.get( 'activate_error' ) ] ) {
+				showError( pll_wizard_params[ searchParams.get( 'activate_error' ) ] );
 			}
 		}
 
@@ -257,7 +257,7 @@ jQuery(
 				modal: true,
 				draggable: false,
 				resizable: false,
-				title: lmat_wizard_params.i18n_dialog_title,
+				title: pll_wizard_params.i18n_dialog_title,
 				minWidth: 600,
 				maxWidth: '100%',
 				open: function ( event, ui ) {
@@ -278,19 +278,19 @@ jQuery(
 				},
 				buttons: [
 				{
-					text: lmat_wizard_params.i18n_dialog_yes_button,
+					text: pll_wizard_params.i18n_dialog_yes_button,
 					click: function ( event ) {
 						confirmDialog( 'yes' );
 					}
 				},
 				{
-					text: lmat_wizard_params.i18n_dialog_no_button,
+					text: pll_wizard_params.i18n_dialog_no_button,
 					click: function ( event ) {
 						confirmDialog( 'no' );
 					}
 				},
 				{
-					text: lmat_wizard_params.i18n_dialog_ignore_button,
+					text: pll_wizard_params.i18n_dialog_ignore_button,
 					click: function ( event ) {
 						confirmDialog( 'ignore' );
 					}

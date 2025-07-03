@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -60,7 +60,7 @@ if ( ! function_exists( 'sanitize_locale_name' ) ) {
  *
  * @return bool True if the cache compatibility must be loaded
  */
-function lmat_is_cache_active() {
+function pll_is_cache_active() {
 	/**
 	 * Filters whether we should load the cache compatibility
 	 *
@@ -69,7 +69,7 @@ function lmat_is_cache_active() {
 	 * @bool $is_cache True if a known cache plugin is active
 	 *                 incl. WP Fastest Cache which doesn't use WP_CACHE
 	 */
-	return apply_filters( 'lmat_is_cache_active', ( defined( 'WP_CACHE' ) && WP_CACHE ) || defined( 'WPFC_MAIN_PATH' ) );
+	return apply_filters( 'pll_is_cache_active', ( defined( 'WP_CACHE' ) && WP_CACHE ) || defined( 'WPFC_MAIN_PATH' ) );
 }
 
 /**
@@ -79,7 +79,7 @@ function lmat_is_cache_active() {
  *
  * @return string Requested url
  */
-function lmat_get_requested_url() {
+function pll_get_requested_url() {
 	if ( isset( $_SERVER['HTTP_HOST'], $_SERVER['REQUEST_URI'] ) ) {
 		return set_url_scheme( sanitize_url( wp_unslash( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ) ) );
 	}
@@ -118,7 +118,7 @@ function lmat_get_requested_url() {
  *
  * @return bool True to use the block editor plugin.
  */
-function lmat_use_block_editor_plugin() {
+function pll_use_block_editor_plugin() {
 	/**
 	 * Filters whether we should load the block editor plugin or the legacy languages metabox.
 	 *
@@ -126,7 +126,7 @@ function lmat_use_block_editor_plugin() {
 	 *
 	 * @param bool $use_plugin True when loading the block editor plugin.
 	 */
-	return class_exists( 'WP_Syntex\Linguator_Pro\Editors\Screens\Abstract_Screen' ) && apply_filters( 'lmat_use_block_editor_plugin', ! defined( 'LMAT_USE_BLOCK_EDITOR_PLUGIN' ) || LMAT_USE_BLOCK_EDITOR_PLUGIN );
+	return class_exists( 'WP_Syntex\Polylang_Pro\Editors\Screens\Abstract_Screen' ) && apply_filters( 'pll_use_block_editor_plugin', ! defined( 'PLL_USE_BLOCK_EDITOR_PLUGIN' ) || PLL_USE_BLOCK_EDITOR_PLUGIN );
 }
 
 /**
@@ -139,7 +139,7 @@ function lmat_use_block_editor_plugin() {
  *
  * @phpstan-param non-falsy-string $constant_name
  */
-function lmat_has_constant( string $constant_name ): bool {
+function pll_has_constant( string $constant_name ): bool {
 	return defined( $constant_name ); // phpcs:ignore WordPressVIPMinimum.Constants.ConstantString.NotCheckingConstantName
 }
 
@@ -155,8 +155,8 @@ function lmat_has_constant( string $constant_name ): bool {
  * @phpstan-param non-falsy-string $constant_name
  * @phpstan-param int|float|string|bool|array|null $default
  */
-function lmat_get_constant( string $constant_name, $default = null ) {
-	if ( ! lmat_has_constant( $constant_name ) ) {
+function pll_get_constant( string $constant_name, $default = null ) {
+	if ( ! pll_has_constant( $constant_name ) ) {
 		return $default;
 	}
 
@@ -175,8 +175,8 @@ function lmat_get_constant( string $constant_name, $default = null ) {
  * @phpstan-param non-falsy-string $constant_name
  * @phpstan-param int|float|string|bool|array|null $value
  */
-function lmat_set_constant( string $constant_name, $value ): bool {
-	if ( lmat_has_constant( $constant_name ) ) {
+function pll_set_constant( string $constant_name, $value ): bool {
+	if ( pll_has_constant( $constant_name ) ) {
 		return false;
 	}
 
@@ -193,7 +193,7 @@ function lmat_set_constant( string $constant_name, $value ): bool {
  * @param string $plugin_name Plugin basename.
  * @return bool True if activated, false otherwise.
  */
-function lmat_is_plugin_active( string $plugin_name ) {
+function pll_is_plugin_active( string $plugin_name ) {
 	$sitewide_plugins     = get_site_option( 'active_sitewide_plugins' );
 	$sitewide_plugins     = ! empty( $sitewide_plugins ) && is_array( $sitewide_plugins ) ? array_keys( $sitewide_plugins ) : array();
 	$current_site_plugins = (array) get_option( 'active_plugins', array() );
@@ -212,7 +212,7 @@ function lmat_is_plugin_active( string $plugin_name ) {
  * @param WP_Error $error Error object.
  * @return void
  */
-function lmat_add_notice( WP_Error $error ) {
+function pll_add_notice( WP_Error $error ) {
 	if ( ! $error->has_errors() ) {
 		return;
 	}
@@ -232,6 +232,6 @@ function lmat_add_notice( WP_Error $error ) {
 			)
 		);
 
-		add_settings_error( 'linguator', $error_code, $message, $type );
+		add_settings_error( 'polylang', $error_code, $message, $type );
 	}
 }

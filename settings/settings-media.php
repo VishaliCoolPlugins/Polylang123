@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -8,7 +8,7 @@
  *
  * @since 1.8
  */
-class LMAT_Settings_Media extends LMAT_Settings_Module {
+class PLL_Settings_Media extends PLL_Settings_Module {
 	/**
 	 * Stores the display order priority.
 	 *
@@ -21,15 +21,15 @@ class LMAT_Settings_Media extends LMAT_Settings_Module {
 	 *
 	 * @since 1.8
 	 *
-	 * @param object $linguator linguator object
+	 * @param object $polylang polylang object
 	 */
-	public function __construct( &$linguator ) {
+	public function __construct( &$polylang ) {
 		parent::__construct(
-			$linguator,
+			$polylang,
 			array(
 				'module'        => 'media',
-				'title'         => __( 'Media', 'linguator' ),
-				'description'   => __( 'Activate languages and translations for media only if you need to translate the text attached to the media: the title, the alternative text, the caption, the description... Note that the file is not duplicated.', 'linguator' ),
+				'title'         => __( 'Media', 'polylang' ),
+				'description'   => __( 'Activate languages and translations for media only if you need to translate the text attached to the media: the title, the alternative text, the caption, the description... Note that the file is not duplicated.', 'polylang' ),
 				'active_option' => 'media_support',
 			)
 		);

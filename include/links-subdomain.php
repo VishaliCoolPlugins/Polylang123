@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -9,7 +9,7 @@
  *
  * @since 1.2
  */
-class LMAT_Links_Subdomain extends LMAT_Links_Abstract_Domain {
+class PLL_Links_Subdomain extends PLL_Links_Abstract_Domain {
 	/**
 	 * Stores whether the home url includes www. or not.
 	 * Either '://' or '://www.'.
@@ -23,7 +23,7 @@ class LMAT_Links_Subdomain extends LMAT_Links_Abstract_Domain {
 	 *
 	 * @since 1.7.4
 	 *
-	 * @param LMAT_Model $model Instance of LMAT_Model.
+	 * @param PLL_Model $model Instance of PLL_Model.
 	 */
 	public function __construct( &$model ) {
 		parent::__construct( $model );
@@ -37,11 +37,11 @@ class LMAT_Links_Subdomain extends LMAT_Links_Abstract_Domain {
 	 * @since 3.4 Accepts now a language slug.
 	 *
 	 * @param string                    $url      The url to modify.
-	 * @param LMAT_Language|string|false $language Language object or slug.
+	 * @param PLL_Language|string|false $language Language object or slug.
 	 * @return string The modified url.
 	 */
 	public function add_language_to_link( $url, $language ) {
-		if ( $language instanceof LMAT_Language ) {
+		if ( $language instanceof PLL_Language ) {
 			$language = $language->slug;
 		}
 

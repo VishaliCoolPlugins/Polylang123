@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -8,11 +8,11 @@
  *
  * @since 1.2
  */
-class LMAT_Admin_Filters_Post extends LMAT_Admin_Filters_Post_Base {
+class PLL_Admin_Filters_Post extends PLL_Admin_Filters_Post_Base {
 	/**
 	 * Current language (used to filter the content).
 	 *
-	 * @var LMAT_Language|null
+	 * @var PLL_Language|null
 	 */
 	public $curlang;
 
@@ -21,11 +21,11 @@ class LMAT_Admin_Filters_Post extends LMAT_Admin_Filters_Post_Base {
 	 *
 	 * @since 1.2
 	 *
-	 * @param object $linguator The Linguator object.
+	 * @param object $polylang The Polylang object.
 	 */
-	public function __construct( &$linguator ) {
-		parent::__construct( $linguator );
-		$this->curlang = &$linguator->curlang;
+	public function __construct( &$polylang ) {
+		parent::__construct( $polylang );
+		$this->curlang = &$polylang->curlang;
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
 		// Filters posts, pages and media by language
@@ -90,7 +90,7 @@ class LMAT_Admin_Filters_Post extends LMAT_Admin_Filters_Post_Base {
 
 				// Send all these data to javascript
 				if ( ! empty( $term_languages ) ) {
-					wp_localize_script( 'lmat_post', 'lmat_term_languages', $term_languages );
+					wp_localize_script( 'pll_post', 'pll_term_languages', $term_languages );
 				}
 			}
 		}
@@ -111,7 +111,7 @@ class LMAT_Admin_Filters_Post extends LMAT_Admin_Filters_Post_Base {
 
 			// Send all these data to javascript
 			if ( ! empty( $page_languages ) ) {
-				wp_localize_script( 'lmat_post', 'lmat_page_languages', $page_languages );
+				wp_localize_script( 'pll_post', 'pll_page_languages', $page_languages );
 			}
 		}
 	}
@@ -125,8 +125,8 @@ class LMAT_Admin_Filters_Post extends LMAT_Admin_Filters_Post_Base {
 	 * @return void
 	 */
 	public function parse_query( $query ) {
-		$lmat_query = new LMAT_Query( $query, $this->model );
-		$lmat_query->filter_query( $this->curlang );
+		$pll_query = new PLL_Query( $query, $this->model );
+		$pll_query->filter_query( $this->curlang );
 	}
 
 	/**
@@ -138,7 +138,7 @@ class LMAT_Admin_Filters_Post extends LMAT_Admin_Filters_Post_Base {
 	 */
 	public function edit_post() {
 		if ( isset( $_POST['post_lang_choice'], $_POST['post_ID'] ) && $post_id = (int) $_POST['post_ID'] ) { // phpcs:ignore WordPress.Security.NonceVerification
-			check_admin_referer( 'lmat_language', '_lmat_nonce' );
+			check_admin_referer( 'pll_language', '_pll_nonce' );
 
 			$post = get_post( $post_id );
 

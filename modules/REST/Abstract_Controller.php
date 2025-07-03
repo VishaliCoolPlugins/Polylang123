@@ -1,9 +1,9 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
-namespace WP_Syntex\Linguator\REST;
+namespace WP_Syntex\Polylang\REST;
 
 use WP_Error;
 use WP_REST_Controller;

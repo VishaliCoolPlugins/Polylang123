@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -8,17 +8,17 @@
  *
  * @since 1.8
  */
-class LMAT_Frontend_Filters_Links extends LMAT_Filters_Links {
+class PLL_Frontend_Filters_Links extends PLL_Filters_Links {
 
 	/**
-	 * @var LMAT_Frontend_Links|null
+	 * @var PLL_Frontend_Links|null
 	 */
 	public $links;
 
 	/**
 	 * Our internal non persistent cache object
 	 *
-	 * @var LMAT_Cache<string>
+	 * @var PLL_Cache<string>
 	 */
 	public $cache;
 
@@ -43,13 +43,13 @@ class LMAT_Frontend_Filters_Links extends LMAT_Filters_Links {
 	 *
 	 * @since 1.8
 	 *
-	 * @param object $linguator The Linguator object.
+	 * @param object $polylang The Polylang object.
 	 */
-	public function __construct( &$linguator ) {
-		parent::__construct( $linguator );
+	public function __construct( &$polylang ) {
+		parent::__construct( $polylang );
 
-		$this->curlang = &$linguator->curlang;
-		$this->cache = new LMAT_Cache();
+		$this->curlang = &$polylang->curlang;
+		$this->cache = new PLL_Cache();
 
 		// Rewrites author and date links to filter them by language
 		foreach ( array( 'feed_link', 'author_link', 'search_link', 'year_link', 'month_link', 'day_link' ) as $filter ) {
@@ -60,7 +60,7 @@ class LMAT_Frontend_Filters_Links extends LMAT_Filters_Links {
 		add_action( 'wp_head', array( $this, 'wp_head' ), 1 );
 
 		// Modifies the home url
-		if ( lmat_get_constant( 'LMAT_FILTER_HOME_URL', true ) ) {
+		if ( pll_get_constant( 'PLL_FILTER_HOME_URL', true ) ) {
 			add_filter( 'home_url', array( $this, 'home_url' ), 10, 2 );
 		}
 
@@ -162,7 +162,7 @@ class LMAT_Frontend_Filters_Links extends LMAT_Filters_Links {
 				$_link = $this->links_model->switch_language_in_link( $link, $this->curlang );
 
 				/** This filter is documented in include/filters-links.php */
-				$_link = apply_filters( 'lmat_term_link', $_link, $this->curlang, $term );
+				$_link = apply_filters( 'pll_term_link', $_link, $this->curlang, $term );
 			}
 
 			else {
@@ -241,7 +241,7 @@ class LMAT_Frontend_Filters_Links extends LMAT_Filters_Links {
 			 *
 			 * @param array $hreflangs Array of urls with language codes as keys
 			 */
-			$hreflangs = apply_filters( 'lmat_rel_hreflang_attributes', $hreflangs );
+			$hreflangs = apply_filters( 'pll_rel_hreflang_attributes', $hreflangs );
 
 			foreach ( $hreflangs as $lang => $url ) {
 				printf( '<link rel="alternate" href="%s" hreflang="%s" />' . "\n", esc_url( $url ), esc_attr( $lang ) );
@@ -284,7 +284,7 @@ class LMAT_Frontend_Filters_Links extends LMAT_Filters_Links {
 			}
 
 			/**
-			 * Filters the white list of the Linguator 'home_url' filter.
+			 * Filters the white list of the Polylang 'home_url' filter.
 			 *
 			 * @since 1.1.2
 			 *
@@ -292,7 +292,7 @@ class LMAT_Frontend_Filters_Links extends LMAT_Filters_Links {
 			 *                               and/or a 'function' key to decide which functions in
 			 *                               which files using home_url() calls must be filtered.
 			 */
-			$this->white_list = apply_filters( 'lmat_home_url_white_list', $white_list );
+			$this->white_list = apply_filters( 'pll_home_url_white_list', $white_list );
 		}
 
 		// We don't want to filter the home url in these cases.
@@ -303,7 +303,7 @@ class LMAT_Frontend_Filters_Links extends LMAT_Filters_Links {
 			);
 
 			/**
-			 * Filters the black list of the Linguator 'home_url' filter.
+			 * Filters the black list of the Polylang 'home_url' filter.
 			 *
 			 * @since 1.1.2
 			 *
@@ -311,7 +311,7 @@ class LMAT_Frontend_Filters_Links extends LMAT_Filters_Links {
 			 *                               and/or a 'function' key to decide which functions in
 			 *                               which files using home_url() calls must be filtered.
 			 */
-			$this->black_list = apply_filters( 'lmat_home_url_black_list', $black_list );
+			$this->black_list = apply_filters( 'pll_home_url_black_list', $black_list );
 		}
 
 		$traces = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions

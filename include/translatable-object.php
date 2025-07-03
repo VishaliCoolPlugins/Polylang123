@@ -1,9 +1,10 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
-use WP_Syntex\Linguator\Model\Languages;
-use WP_Syntex\Linguator\Options\Options;
+
+use WP_Syntex\Polylang\Model\Languages;
+use WP_Syntex\Polylang\Options\Options;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -18,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
  *     default_alias: non-empty-string
  * }
  */
-abstract class LMAT_Translatable_Object {
+abstract class PLL_Translatable_Object {
 	/**
 	 * Model for the languages.
 	 *
@@ -27,7 +28,7 @@ abstract class LMAT_Translatable_Object {
 	protected $languages;
 
 	/**
-	 * Linguator's options.
+	 * Polylang's options.
 	 *
 	 * @var Options
 	 */
@@ -36,7 +37,7 @@ abstract class LMAT_Translatable_Object {
 	/**
 	 * Internal non persistent cache object.
 	 *
-	 * @var LMAT_Cache<mixed>
+	 * @var PLL_Cache<mixed>
 	 */
 	protected $cache;
 
@@ -44,7 +45,7 @@ abstract class LMAT_Translatable_Object {
 	 * List of taxonomies to cache.
 	 *
 	 * @var string[]
-	 * @see LMAT_Translatable_Object::get_object_term()
+	 * @see PLL_Translatable_Object::get_object_term()
 	 *
 	 * @phpstan-var list<non-empty-string>
 	 */
@@ -93,9 +94,9 @@ abstract class LMAT_Translatable_Object {
 	 *
 	 * @since 3.4
 	 *
-	 * @param LMAT_Model $model Instance of `LMAT_Model`.
+	 * @param PLL_Model $model Instance of `PLL_Model`.
 	 */
-	public function __construct( LMAT_Model $model ) {
+	public function __construct( PLL_Model $model ) {
 		$this->languages      = $model->languages;
 		$this->options        = $model->options;
 		$this->cache          = $model->cache;
@@ -123,7 +124,7 @@ abstract class LMAT_Translatable_Object {
 				'public'    => false,
 				'query_var' => false,
 				'rewrite'   => false,
-				'_lmat'      => true,
+				'_pll'      => true,
 			)
 		);
 	}
@@ -171,7 +172,7 @@ abstract class LMAT_Translatable_Object {
 	 * @since 3.4
 	 *
 	 * @param int                     $id   Object ID.
-	 * @param LMAT_Language|string|int $lang Language (object, slug, or term ID).
+	 * @param PLL_Language|string|int $lang Language (object, slug, or term ID).
 	 * @return bool True when successfully assigned. False otherwise (or if the given language is already assigned to
 	 *              the object).
 	 */
@@ -206,7 +207,7 @@ abstract class LMAT_Translatable_Object {
 	 * @since 3.4 Renamed the parameter $post_id into $id.
 	 *
 	 * @param int $id Object ID.
-	 * @return LMAT_Language|false A `LMAT_Language` object. `false` if no language is associated to that object or if the
+	 * @return PLL_Language|false A `PLL_Language` object. `false` if no language is associated to that object or if the
 	 *                            ID is invalid.
 	 */
 	public function get_language( $id ) {
@@ -215,13 +216,14 @@ abstract class LMAT_Translatable_Object {
 		if ( empty( $id ) ) {
 			return false;
 		}
-		// Get the language and make sure it is a LMAT_Language object.
+
+		// Get the language and make sure it is a PLL_Language object.
 		$lang = $this->get_object_term( $id, $this->tax_language );
 
 		if ( empty( $lang ) ) {
 			return false;
 		}
-		
+
 		return $this->languages->get( $lang->term_id );
 	}
 
@@ -250,12 +252,12 @@ abstract class LMAT_Translatable_Object {
 	 * @since 1.2
 	 *
 	 * @param int    $id       Object ID.
-	 * @param string $taxonomy Linguator taxonomy depending if we are looking for a post (or term, or else) language.
+	 * @param string $taxonomy Polylang taxonomy depending if we are looking for a post (or term, or else) language.
 	 * @return WP_Term|false The term associated to the object in the requested taxonomy if it exists, `false` otherwise.
 	 */
 	public function get_object_term( $id, $taxonomy ) {
 		$id = $this->sanitize_int_id( $id );
-		
+
 		if ( empty( $id ) ) {
 			return false;
 		}
@@ -312,7 +314,7 @@ abstract class LMAT_Translatable_Object {
 			$alias = $db['default_alias'];
 		}
 
-		return " INNER JOIN {$wpdb->term_relationships} AS lmat_tr ON lmat_tr.object_id = {$alias}.{$db['id_column']}";
+		return " INNER JOIN {$wpdb->term_relationships} AS pll_tr ON pll_tr.object_id = {$alias}.{$db['id_column']}";
 	}
 
 	/**
@@ -320,18 +322,18 @@ abstract class LMAT_Translatable_Object {
 	 *
 	 * @since 1.2
 	 *
-	 * @param LMAT_Language|LMAT_Language[]|string|string[] $lang A `LMAT_Language` object, or a comma separated list of language slugs, or an array of language slugs or objects.
+	 * @param PLL_Language|PLL_Language[]|string|string[] $lang A `PLL_Language` object, or a comma separated list of language slugs, or an array of language slugs or objects.
 	 * @return string The WHERE clause.
 	 *
-	 * @phpstan-param LMAT_Language|LMAT_Language[]|non-empty-string|non-empty-string[] $lang
+	 * @phpstan-param PLL_Language|PLL_Language[]|non-empty-string|non-empty-string[] $lang
 	 */
 	public function where_clause( $lang ) {
 		/*
 		 * $lang is an object.
-		 * This is generally the case if the query is coming from Linguator.
+		 * This is generally the case if the query is coming from Polylang.
 		 */
-		if ( $lang instanceof LMAT_Language ) {
-			return ' AND lmat_tr.term_taxonomy_id = ' . absint( $lang->get_tax_prop( $this->tax_language, 'term_taxonomy_id' ) );
+		if ( $lang instanceof PLL_Language ) {
+			return ' AND pll_tr.term_taxonomy_id = ' . absint( $lang->get_tax_prop( $this->tax_language, 'term_taxonomy_id' ) );
 		}
 
 		/*
@@ -353,7 +355,7 @@ abstract class LMAT_Translatable_Object {
 			return '';
 		}
 
-		return ' AND lmat_tr.term_taxonomy_id IN ( ' . implode( ',', $languages_tt_ids ) . ' )';
+		return ' AND pll_tr.term_taxonomy_id IN ( ' . implode( ',', $languages_tt_ids ) . ' )';
 	}
 
 	/**
@@ -497,10 +499,10 @@ abstract class LMAT_Translatable_Object {
 	 * Assigns a language to object in mass.
 	 *
 	 * @since 1.2
-	 * @since 3.4 Moved from LMAT_Admin_Model class.
+	 * @since 3.4 Moved from PLL_Admin_Model class.
 	 *
 	 * @param int[]        $ids  Array of post ids or term ids.
-	 * @param LMAT_Language $lang Language to assign to the posts or terms.
+	 * @param PLL_Language $lang Language to assign to the posts or terms.
 	 * @return void
 	 */
 	public function set_language_in_mass( $ids, $lang ) {
@@ -539,21 +541,21 @@ abstract class LMAT_Translatable_Object {
 	 * Returns the description to use for the "language properties" in the REST API.
 	 *
 	 * @since 3.7
-	 * @see WP_Syntex\Linguator\REST\V2\Languages::get_item_schema()
+	 * @see WP_Syntex\Polylang\REST\V2\Languages::get_item_schema()
 	 *
 	 * @return string
 	 */
 	public function get_rest_description(): string {
 		/* translators: %s is the name of a database table. */
-		return sprintf( __( 'Language taxonomy properties for table %s.', 'linguator' ), $this->get_db_infos()['table'] );
+		return sprintf( __( 'Language taxonomy properties for table %s.', 'polylang' ), $this->get_db_infos()['table'] );
 	}
 
 	/**
 	 * Returns database-related information that can be used in some of this class methods.
 	 * These are specific to the table containing the objects.
 	 *
-	 * @see LMAT_Translatable_Object::join_clause()
-	 * @see LMAT_Translatable_Object::get_raw_objects_with_no_lang()
+	 * @see PLL_Translatable_Object::join_clause()
+	 * @see PLL_Translatable_Object::get_raw_objects_with_no_lang()
 	 *
 	 * @since 3.4.3
 	 *

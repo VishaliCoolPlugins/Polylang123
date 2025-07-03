@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 use Yoast\WP\SEO\Presenters\Abstract_Indexable_Presenter;
@@ -11,7 +11,7 @@ use Yoast\WP\SEO\Presenters\Abstract_Indexable_Presenter;
  *
  * @since 2.7.3
  */
-final class LMAT_WPSEO_OGP extends Abstract_Indexable_Presenter {
+final class PLL_WPSEO_OGP extends Abstract_Indexable_Presenter {
 	/**
 	 * Facebook locale
 	 *

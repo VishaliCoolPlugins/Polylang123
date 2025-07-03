@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -8,7 +8,7 @@
  *
  * @since 1.8
  */
-class LMAT_Settings_Url extends LMAT_Settings_Module {
+class PLL_Settings_Url extends PLL_Settings_Module {
 	/**
 	 * Stores the display order priority.
 	 *
@@ -28,19 +28,19 @@ class LMAT_Settings_Url extends LMAT_Settings_Module {
 	 *
 	 * @since 1.8
 	 *
-	 * @param object $linguator The Linguator object.
+	 * @param object $polylang The Polylang object.
 	 */
-	public function __construct( &$linguator ) {
+	public function __construct( &$polylang ) {
 		parent::__construct(
-			$linguator,
+			$polylang,
 			array(
 				'module'      => 'url',
-				'title'       => __( 'URL modifications', 'linguator' ),
-				'description' => __( 'Decide how your URLs will look like.', 'linguator' ),
+				'title'       => __( 'URL modifications', 'polylang' ),
+				'description' => __( 'Decide how your URLs will look like.', 'polylang' ),
 			)
 		);
 
-		$this->page_on_front = &$linguator->static_pages->page_on_front;
+		$this->page_on_front = &$polylang->static_pages->page_on_front;
 	}
 
 	/**
@@ -51,23 +51,23 @@ class LMAT_Settings_Url extends LMAT_Settings_Module {
 	 * @return void
 	 */
 	protected function force_lang() {
-		if ( 'yes' === get_option( 'lmat_language_from_content_available' ) ) {
+		if ( 'yes' === get_option( 'pll_language_from_content_available' ) ) {
 			?>
-			<p class="description"><?php esc_html_e( 'Some themes or plugins may not be fully compatible with the language defined by the content or by domains.', 'linguator' ); ?></p>
+			<p class="description"><?php esc_html_e( 'Some themes or plugins may not be fully compatible with the language defined by the content or by domains.', 'polylang' ); ?></p>
 			<label>
 				<?php
 				printf(
 					'<input name="force_lang" type="radio" value="0" %s /> %s',
 					checked( $this->options['force_lang'], 0, false ),
-					esc_html__( 'The language is set from content', 'linguator' )
+					esc_html__( 'The language is set from content', 'polylang' )
 				);
 				?>
 			</label>
-			<p class="description"><?php esc_html_e( 'Posts, pages, categories and tags URLs will not be modified.', 'linguator' ); ?></p>
+			<p class="description"><?php esc_html_e( 'Posts, pages, categories and tags URLs will not be modified.', 'polylang' ); ?></p>
 			<?php
 		} else {
 			?>
-			<p class="description"><?php esc_html_e( 'Some themes or plugins may not be fully compatible with the language defined by domains.', 'linguator' ); ?></p>
+			<p class="description"><?php esc_html_e( 'Some themes or plugins may not be fully compatible with the language defined by domains.', 'polylang' ); ?></p>
 			<?php
 		}
 		?>
@@ -76,39 +76,39 @@ class LMAT_Settings_Url extends LMAT_Settings_Module {
 			printf(
 				'<input name="force_lang" type="radio" value="1" %s/> %s',
 				checked( $this->options['force_lang'], 1, false ),
-				( $this->links_model->using_permalinks ? esc_html__( 'The language is set from the directory name in pretty permalinks', 'linguator' ) : esc_html__( 'The language is set from the code in the URL', 'linguator' ) )
+				( $this->links_model->using_permalinks ? esc_html__( 'The language is set from the directory name in pretty permalinks', 'polylang' ) : esc_html__( 'The language is set from the code in the URL', 'polylang' ) )
 			);
 			?>
 		</label>
-		<p class="description"><?php echo esc_html__( 'Example:', 'linguator' ) . ' <code>' . esc_html( home_url( $this->links_model->using_permalinks ? 'en/my-post/' : '?lang=en&p=1' ) ) . '</code>'; ?></p>
+		<p class="description"><?php echo esc_html__( 'Example:', 'polylang' ) . ' <code>' . esc_html( home_url( $this->links_model->using_permalinks ? 'en/my-post/' : '?lang=en&p=1' ) ) . '</code>'; ?></p>
 		<label>
 			<?php
 			printf(
 				'<input name="force_lang" type="radio" value="2" %s %s/> %s',
 				disabled( $this->links_model->using_permalinks, false, false ),
 				checked( $this->options['force_lang'], 2, false ),
-				esc_html__( 'The language is set from the subdomain name in pretty permalinks', 'linguator' )
+				esc_html__( 'The language is set from the subdomain name in pretty permalinks', 'polylang' )
 			);
 			?>
 		</label>
-		<p class="description"><?php echo esc_html__( 'Example:', 'linguator' ) . ' <code>' . esc_html( str_replace( array( '://', 'www.' ), array( '://en.', '' ), home_url( 'my-post/' ) ) ) . '</code>'; ?></p>
+		<p class="description"><?php echo esc_html__( 'Example:', 'polylang' ) . ' <code>' . esc_html( str_replace( array( '://', 'www.' ), array( '://en.', '' ), home_url( 'my-post/' ) ) ) . '</code>'; ?></p>
 		<label>
 			<?php
 			printf(
 				'<input name="force_lang" type="radio" value="3" %s %s/> %s',
 				disabled( $this->links_model->using_permalinks, false, false ),
 				checked( $this->options['force_lang'], 3, false ),
-				esc_html__( 'The language is set from different domains', 'linguator' )
+				esc_html__( 'The language is set from different domains', 'polylang' )
 			);
 			?>
 		</label>
-		<table id="lmat-domains-table" class="form-table" <?php echo 3 == $this->options['force_lang'] ? '' : 'style="display: none;"'; ?>>
+		<table id="pll-domains-table" class="form-table" <?php echo 3 == $this->options['force_lang'] ? '' : 'style="display: none;"'; ?>>
 			<?php
 			foreach ( $this->model->get_languages_list() as  $lg ) {
 				$url = $this->options['domains'][ $lg->slug ] ?? ( $lg->is_default ? $this->links_model->home : '' );
 				printf(
-					'<tr><td><label for="lmat-domain[%1$s]">%2$s</label></td>' .
-					'<td><input name="domains[%1$s]" id="lmat-domain[%1$s]" type="text" value="%3$s" class="regular-text code" aria-required="true" /></td></tr>',
+					'<tr><td><label for="pll-domain[%1$s]">%2$s</label></td>' .
+					'<td><input name="domains[%1$s]" id="pll-domain[%1$s]" type="text" value="%3$s" class="regular-text code" aria-required="true" /></td></tr>',
 					esc_attr( $lg->slug ),
 					esc_attr( $lg->name ),
 					esc_url( $url )
@@ -133,7 +133,7 @@ class LMAT_Settings_Url extends LMAT_Settings_Module {
 			printf(
 				'<input name="hide_default" type="checkbox" value="1" %s /> %s',
 				checked( $this->options['hide_default'], true, false ),
-				esc_html__( 'Hide URL language information for default language', 'linguator' )
+				esc_html__( 'Hide URL language information for default language', 'polylang' )
 			);
 			?>
 		</label>
@@ -157,13 +157,13 @@ class LMAT_Settings_Url extends LMAT_Settings_Module {
 				checked( $this->options['rewrite'], true, false ),
 				sprintf(
 					/* translators: %s is a URL slug: `/language/`. */
-					esc_html__( 'Remove %s in pretty permalinks', 'linguator' ),
+					esc_html__( 'Remove %s in pretty permalinks', 'polylang' ),
 					'<code>/language/</code>'
 				)
 			);
 			?>
 		</label>
-		<p class="description"><?php echo esc_html__( 'Example:', 'linguator' ) . ' <code>' . esc_html( home_url( 'en/' ) ) . '</code>'; ?></p>
+		<p class="description"><?php echo esc_html__( 'Example:', 'polylang' ) . ' <code>' . esc_html( home_url( 'en/' ) ) . '</code>'; ?></p>
 		<label>
 			<?php
 			printf(
@@ -172,13 +172,13 @@ class LMAT_Settings_Url extends LMAT_Settings_Module {
 				checked( $this->options['rewrite'], false, false ),
 				sprintf(
 					/* translators: %s is a URL slug: `/language/`. */
-					esc_html__( 'Keep %s in pretty permalinks', 'linguator' ),
+					esc_html__( 'Keep %s in pretty permalinks', 'polylang' ),
 					'<code>/language/</code>'
 				)
 			);
 			?>
 		</label>
-		<p class="description"><?php echo esc_html__( 'Example:', 'linguator' ) . ' <code>' . esc_html( home_url( 'language/en/' ) ) . '</code>'; ?></p>
+		<p class="description"><?php echo esc_html__( 'Example:', 'polylang' ) . ' <code>' . esc_html( home_url( 'language/en/' ) ) . '</code>'; ?></p>
 		<?php
 	}
 
@@ -196,7 +196,7 @@ class LMAT_Settings_Url extends LMAT_Settings_Module {
 			printf(
 				'<input name="redirect_lang" type="checkbox" value="1" %s/> %s',
 				checked( $this->options['redirect_lang'], true, false ),
-				esc_html__( 'The front page URL contains the language code instead of the page name or page id', 'linguator' )
+				esc_html__( 'The front page URL contains the language code instead of the page name or page id', 'polylang' )
 			);
 			?>
 		</label>
@@ -204,11 +204,11 @@ class LMAT_Settings_Url extends LMAT_Settings_Module {
 			<?php
 			// That's nice to display the right home urls but don't forget that the page on front may have no language yet
 			$lang = $this->model->post->get_language( $this->page_on_front );
-			/** @var LMAT_Language $lang */
+			/** @var PLL_Language $lang */
 			$lang = $lang ?: $this->model->get_default_language();
 			printf(
 				/* translators: %1$s example url when the option is active. %2$s example url when the option is not active */
-				esc_html__( 'Example: %1$s instead of %2$s', 'linguator' ),
+				esc_html__( 'Example: %1$s instead of %2$s', 'polylang' ),
 				'<code>' . esc_html( $this->links_model->home_url( $lang ) ) . '</code>',
 				'<code>' . esc_html( _get_page_link( $this->page_on_front ) ) . '</code>'
 			);
@@ -226,20 +226,20 @@ class LMAT_Settings_Url extends LMAT_Settings_Module {
 	 */
 	public function form() {
 		?>
-		<div class="lmat-settings-url-col">
-			<fieldset class="lmat-col-left lmat-url" id="lmat-force-lang">
+		<div class="pll-settings-url-col">
+			<fieldset class="pll-col-left pll-url" id="pll-force-lang">
 				<?php $this->force_lang(); ?>
 			</fieldset>
 		</div>
 
-		<div class="lmat-settings-url-col">
-			<fieldset class="lmat-col-right lmat-url" id="lmat-hide-default" <?php echo 3 > $this->options['force_lang'] ? '' : 'style="display: none;"'; ?>>
+		<div class="pll-settings-url-col">
+			<fieldset class="pll-col-right pll-url" id="pll-hide-default" <?php echo 3 > $this->options['force_lang'] ? '' : 'style="display: none;"'; ?>>
 			<?php $this->hide_default(); ?>
 			</fieldset>
 			<?php
 			if ( $this->links_model->using_permalinks ) {
 				?>
-				<fieldset class="lmat-col-right lmat-url" id="lmat-rewrite" <?php echo 2 > $this->options['force_lang'] ? '' : 'style="display: none;"'; ?>>
+				<fieldset class="pll-col-right pll-url" id="pll-rewrite" <?php echo 2 > $this->options['force_lang'] ? '' : 'style="display: none;"'; ?>>
 				<?php $this->rewrite(); ?>
 				</fieldset>
 				<?php
@@ -247,7 +247,7 @@ class LMAT_Settings_Url extends LMAT_Settings_Module {
 
 			if ( $this->page_on_front ) {
 				?>
-				<fieldset class="lmat-col-right lmat-url" id="lmat-redirect-lang" <?php echo 2 > $this->options['force_lang'] ? '' : 'style="display: none;"'; ?>>
+				<fieldset class="pll-col-right pll-url" id="pll-redirect-lang" <?php echo 2 > $this->options['force_lang'] ? '' : 'style="display: none;"'; ?>>
 				<?php $this->redirect_lang(); ?>
 				</fieldset>
 				<?php

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -8,14 +8,14 @@
  *
  * @since 2.5
  */
-class LMAT_Admin_Block_Editor {
+class PLL_Admin_Block_Editor {
 	/**
-	 * @var LMAT_Model
+	 * @var PLL_Model
 	 */
 	protected $model;
 
 	/**
-	 * @var LMAT_Filter_REST_Routes
+	 * @var PLL_Filter_REST_Routes
 	 */
 	public $filter_rest_routes;
 
@@ -24,14 +24,14 @@ class LMAT_Admin_Block_Editor {
 	 *
 	 * @since 2.5
 	 *
-	 * @param LMAT_Admin $linguator The Linguator object.
+	 * @param PLL_Admin $polylang The Polylang object.
 	 */
-	public function __construct( &$linguator ) {
-		$this->model              = &$linguator->model;
-		$this->filter_rest_routes = new LMAT_Filter_REST_Routes( $linguator->model );
+	public function __construct( &$polylang ) {
+		$this->model              = &$polylang->model;
+		$this->filter_rest_routes = new PLL_Filter_REST_Routes( $polylang->model );
 
 		add_filter( 'block_editor_rest_api_preload_paths', array( $this, 'filter_preload_paths' ), 50, 2 );
-		add_action( 'admin_enqueue_scripts', array( $this, 'add_block_editor_inline_script' ), 15 ); // After `LMAT_Admin_Base::admin_enqueue_scripts()` to ensure `lmat_block-editor`script is enqueued.
+		add_action( 'admin_enqueue_scripts', array( $this, 'add_block_editor_inline_script' ), 15 ); // After `PLL_Admin_Base::admin_enqueue_scripts()` to ensure `pll_block-editor`script is enqueued.
 	}
 
 	/**
@@ -79,7 +79,7 @@ class LMAT_Admin_Block_Editor {
 	 * @return void
 	 */
 	public function add_block_editor_inline_script() {
-		$handle = 'lmat_block-editor';
+		$handle = 'pll_block-editor';
 
 		if ( wp_script_is( $handle, 'enqueued' ) ) {
 			$this->filter_rest_routes->add_inline_script( $handle );

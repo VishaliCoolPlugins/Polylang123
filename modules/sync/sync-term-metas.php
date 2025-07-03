@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -8,18 +8,18 @@
  *
  * @since 2.3
  */
-class LMAT_Sync_Term_Metas extends LMAT_Sync_Metas {
+class PLL_Sync_Term_Metas extends PLL_Sync_Metas {
 
 	/**
 	 * Constructor.
 	 *
 	 * @since 2.3
 	 *
-	 * @param object $linguator The Linguator object.
+	 * @param object $polylang The Polylang object.
 	 */
-	public function __construct( &$linguator ) {
+	public function __construct( &$polylang ) {
 		$this->meta_type = 'term';
 
-		parent::__construct( $linguator );
+		parent::__construct( $polylang );
 	}
 }

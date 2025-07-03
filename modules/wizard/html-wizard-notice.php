@@ -2,7 +2,7 @@
 /**
  * Displays the wizard notice content
  *
- * @package Linguator
+ * @package Polylang
  *
  * @since 2.7
  */
@@ -23,14 +23,14 @@ $wizard_url = add_query_arg(
 	<?php
 	printf(
 		/* translators: %s is the plugin name */
-		esc_html__( 'Welcome to %s', 'linguator' ),
-		esc_html( LINGUATOR )
+		esc_html__( 'Welcome to %s', 'polylang' ),
+		esc_html( POLYLANG )
 	);
 	?>
 	</strong>
 	<?php
 	echo ' &#8211; ';
-	esc_html_e( 'You&lsquo;re almost ready to translate your contents!', 'linguator' );
+	esc_html_e( 'You&lsquo;re almost ready to translate your contents!', 'polylang' );
 	?>
 </p>
 <p class="buttons">
@@ -38,12 +38,12 @@ $wizard_url = add_query_arg(
 		href="<?php echo esc_url( $wizard_url ); ?>"
 		class="button button-primary"
 	>
-		<?php esc_html_e( 'Run the Setup Wizard', 'linguator' ); ?>
+		<?php esc_html_e( 'Run the Setup Wizard', 'polylang' ); ?>
 	</a>
 	<a
 		class="button button-secondary skip"
-		href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'lmat-hide-notice', 'wizard' ), 'wizard', '_lmat_notice_nonce' ) ); ?>"
+		href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'pll-hide-notice', 'wizard' ), 'wizard', '_pll_notice_nonce' ) ); ?>"
 	>
-		<?php esc_html_e( 'Skip setup', 'linguator' ); ?>
+		<?php esc_html_e( 'Skip setup', 'polylang' ); ?>
 	</a>
 </p>

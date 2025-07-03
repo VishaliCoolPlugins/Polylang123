@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -9,7 +9,7 @@
  *
  * @since 2.8
  */
-class LMAT_No_Category_Base {
+class PLL_No_Category_Base {
 	/**
 	 * Setups actions.
 	 *

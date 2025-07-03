@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -8,7 +8,7 @@
  *
  * @since 1.8
  */
-class LMAT_Admin_Links extends LMAT_Links {
+class PLL_Admin_Links extends PLL_Links {
 
 	/**
 	 * Returns the html markup for a new translation link.
@@ -16,7 +16,7 @@ class LMAT_Admin_Links extends LMAT_Links {
 	 * @since 2.6
 	 *
 	 * @param string       $link     The new translation link.
-	 * @param LMAT_Language $language The language of the new translation.
+	 * @param PLL_Language $language The language of the new translation.
 	 * @return string
 	 */
 	protected function new_translation_link( $link, $language ) {
@@ -24,10 +24,10 @@ class LMAT_Admin_Links extends LMAT_Links {
 
 		if ( $link ) {
 			/* translators: accessibility text, %s is a native language name */
-			$hint = sprintf( __( 'Add a translation in %s', 'linguator' ), $language->name );
+			$hint = sprintf( __( 'Add a translation in %s', 'polylang' ), $language->name );
 
 			$str = sprintf(
-				'<a href="%1$s" title="%2$s" class="lmat_icon_add"><span class="screen-reader-text">%3$s</span></a>',
+				'<a href="%1$s" title="%2$s" class="pll_icon_add"><span class="screen-reader-text">%3$s</span></a>',
 				esc_url( $link ),
 				esc_attr( $hint ),
 				esc_html( $hint )
@@ -43,15 +43,15 @@ class LMAT_Admin_Links extends LMAT_Links {
 	 * @since 2.6
 	 *
 	 * @param string       $link     The translation link.
-	 * @param LMAT_Language $language The language of the translation.
+	 * @param PLL_Language $language The language of the translation.
 	 * @return string
 	 */
 	public function edit_translation_link( $link, $language ) {
 		return $link ? sprintf(
-			'<a href="%1$s" class="lmat_icon_edit"><span class="screen-reader-text">%2$s</span></a>',
+			'<a href="%1$s" class="pll_icon_edit"><span class="screen-reader-text">%2$s</span></a>',
 			esc_url( $link ),
 			/* translators: accessibility text, %s is a native language name */
-			esc_html( sprintf( __( 'Edit the translation in %s', 'linguator' ), $language->name ) )
+			esc_html( sprintf( __( 'Edit the translation in %s', 'polylang' ), $language->name ) )
 		) : '';
 	}
 
@@ -61,7 +61,7 @@ class LMAT_Admin_Links extends LMAT_Links {
 	 * @since 1.5
 	 *
 	 * @param int          $post_id  The source post id.
-	 * @param LMAT_Language $language The language of the new translation.
+	 * @param PLL_Language $language The language of the new translation.
 	 * @param string       $context  Optional. Defaults to 'display' which encodes '&' to '&amp;'.
 	 *                               Otherwise, preserves '&'.
 	 * @return string
@@ -118,10 +118,10 @@ class LMAT_Admin_Links extends LMAT_Links {
 		 * @since 1.8
 		 *
 		 * @param string       $link     The new post translation link.
-		 * @param LMAT_Language $language The language of the new translation.
+		 * @param PLL_Language $language The language of the new translation.
 		 * @param int          $post_id  The source post id.
 		 */
-		return apply_filters( 'lmat_get_new_post_translation_link', $link, $language, $post_id );
+		return apply_filters( 'pll_get_new_post_translation_link', $link, $language, $post_id );
 	}
 
 	/**
@@ -130,7 +130,7 @@ class LMAT_Admin_Links extends LMAT_Links {
 	 * @since 1.8
 	 *
 	 * @param int          $post_id  The source post id.
-	 * @param LMAT_Language $language The language of the new translation.
+	 * @param PLL_Language $language The language of the new translation.
 	 * @return string
 	 */
 	public function new_post_translation_link( $post_id, $language ) {
@@ -160,7 +160,7 @@ class LMAT_Admin_Links extends LMAT_Links {
 	 * @param int          $term_id   Source term id.
 	 * @param string       $taxonomy  Taxonomy name.
 	 * @param string       $post_type Post type name.
-	 * @param LMAT_Language $language  The language of the new translation.
+	 * @param PLL_Language $language  The language of the new translation.
 	 * @return string
 	 */
 	public function get_new_term_translation_link( $term_id, $taxonomy, $post_type, $language ) {
@@ -184,12 +184,12 @@ class LMAT_Admin_Links extends LMAT_Links {
 		 * @since 1.8
 		 *
 		 * @param string       $link      The new term translation link.
-		 * @param LMAT_Language $language  The language of the new translation.
+		 * @param PLL_Language $language  The language of the new translation.
 		 * @param int          $term_id   The source term id.
 		 * @param string       $taxonomy  Taxonomy name.
 		 * @param string       $post_type Post type name.
 		 */
-		return apply_filters( 'lmat_get_new_term_translation_link', $link, $language, $term_id, $taxonomy, $post_type );
+		return apply_filters( 'pll_get_new_term_translation_link', $link, $language, $term_id, $taxonomy, $post_type );
 	}
 
 	/**
@@ -200,7 +200,7 @@ class LMAT_Admin_Links extends LMAT_Links {
 	 * @param int          $term_id   Source term id.
 	 * @param string       $taxonomy  Taxonomy name.
 	 * @param string       $post_type Post type name.
-	 * @param LMAT_Language $language  The language of the new translation.
+	 * @param PLL_Language $language  The language of the new translation.
 	 * @return string
 	 */
 	public function new_term_translation_link( $term_id, $taxonomy, $post_type, $language ) {
@@ -232,10 +232,10 @@ class LMAT_Admin_Links extends LMAT_Links {
 	 * @param string $post_type A post type.
 	 * @return array {
 	 *     @type WP_Post      $from_post The source post.
-	 *     @type LMAT_Language $new_lang  The target language.
+	 *     @type PLL_Language $new_lang  The target language.
 	 * }
 	 *
-	 * @phpstan-return array{}|array{from_post: WP_Post, new_lang: LMAT_Language}|never
+	 * @phpstan-return array{}|array{from_post: WP_Post, new_lang: PLL_Language}|never
 	 */
 	public function get_data_from_new_post_translation_request( string $post_type ): array {
 		if ( 'attachment' === $post_type ) {
@@ -266,10 +266,10 @@ class LMAT_Admin_Links extends LMAT_Links {
 	 *
 	 * @return array {
 	 *     @type WP_Post      $from_post The source media.
-	 *     @type LMAT_Language $new_lang  The target language.
+	 *     @type PLL_Language $new_lang  The target language.
 	 * }
 	 *
-	 * @phpstan-return array{}|array{from_post: WP_Post, new_lang: LMAT_Language}|never
+	 * @phpstan-return array{}|array{from_post: WP_Post, new_lang: PLL_Language}|never
 	 */
 	public function get_data_from_new_media_translation_request(): array {
 		if ( ! $this->options['media_support'] ) {
@@ -293,10 +293,10 @@ class LMAT_Admin_Links extends LMAT_Links {
 	 * @param string $lang_slug The new translation language provided
 	 * @return array {
 	 *     @type WP_Post      $from_post The source post.
-	 *     @type LMAT_Language $new_lang  The target language.
+	 *     @type PLL_Language $new_lang  The target language.
 	 * }
 	 *
-	 * @phpstan-return array{}|array{from_post: WP_Post, new_lang: LMAT_Language}|never
+	 * @phpstan-return array{}|array{from_post: WP_Post, new_lang: PLL_Language}|never
 	 */
 	private function get_objects_from_new_post_translation_request( int $post_id, string $lang_slug ): array {
 		if ( $post_id <= 0 || empty( $lang_slug ) ) {

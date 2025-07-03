@@ -1,19 +1,19 @@
 <?php return array(
     'root' => array(
-        'name' => 'wp-syntex/linguator',
-        'pretty_version' => 'dev-main',
-        'version' => 'dev-main',
-        'reference' => 'febe844f4534f024746c8bb2d1e6a0a4fe5065ed',
+        'name' => 'wpsyntex/polylang',
+        'pretty_version' => '3.7.x-dev',
+        'version' => '3.7.9999999.9999999-dev',
+        'reference' => 'e95bce23e1bd18aa9f20867f67647516f0f0a132',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'dev' => true,
+        'dev' => false,
     ),
     'versions' => array(
-        'wp-syntex/linguator' => array(
-            'pretty_version' => 'dev-main',
-            'version' => 'dev-main',
-            'reference' => 'febe844f4534f024746c8bb2d1e6a0a4fe5065ed',
+        'wpsyntex/polylang' => array(
+            'pretty_version' => '3.7.x-dev',
+            'version' => '3.7.9999999.9999999-dev',
+            'reference' => 'e95bce23e1bd18aa9f20867f67647516f0f0a132',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

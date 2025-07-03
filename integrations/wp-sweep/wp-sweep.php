@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -8,7 +8,7 @@
  *
  * @since 2.8
  */
-class LMAT_WP_Sweep {
+class PLL_WP_Sweep {
 	/**
 	 * Setups actions.
 	 *
@@ -44,13 +44,13 @@ class LMAT_WP_Sweep {
 		$_term_ids = array();
 
 		foreach ( $excluded_term_ids as $excluded_term_id ) {
-			$_term_ids = array_merge( $_term_ids, array_values( lmat_get_term_translations( $excluded_term_id ) ) );
+			$_term_ids = array_merge( $_term_ids, array_values( pll_get_term_translations( $excluded_term_id ) ) );
 		}
 
 		$excluded_term_ids = array_merge( $excluded_term_ids, $_term_ids );
 
 		// Add the terms of our languages.
-		foreach ( LMAT()->model->get_languages_list() as $language ) {
+		foreach ( PLL()->model->get_languages_list() as $language ) {
 			$excluded_term_ids = array_merge(
 				$excluded_term_ids,
 				array_values( $language->get_tax_props( 'term_id' ) )

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -10,7 +10,7 @@
  *
  * @since 3.0
  */
-class LMAT_Accept_Language {
+class PLL_Accept_Language {
 	public const SUBTAG_PATTERNS = array(
 		'language' => '(\b[a-z]{2,3}|[a-z]{4}|[a-z]{5-8}\b)',
 		'language-extension' => '(?:-(\b[a-z]{3}){1,3}\b)?',
@@ -40,7 +40,7 @@ class LMAT_Accept_Language {
 	protected $quality;
 
 	/**
-	 * LMAT_Accept_Language constructor.
+	 * PLL_Accept_Language constructor.
 	 *
 	 * @since 3.0
 	 *
@@ -58,7 +58,7 @@ class LMAT_Accept_Language {
 	 * @since 3.0
 	 *
 	 * @param string[] $matches Expects first entry to be full match, following entries to be subtags and last entry to be quality factor.
-	 * @return LMAT_Accept_Language
+	 * @return PLL_Accept_Language
 	 */
 	public static function from_array( $matches ) {
 		$subtags = array_combine(
@@ -67,7 +67,7 @@ class LMAT_Accept_Language {
 		);
 		$quality = count( $matches ) === 9 ? $matches[8] : 1.0;
 
-		return new LMAT_Accept_Language( $subtags, $quality );
+		return new PLL_Accept_Language( $subtags, $quality );
 	}
 
 	/**
@@ -103,7 +103,7 @@ class LMAT_Accept_Language {
 	 *
 	 * @since 3.0
 	 *
-	 * @param string $name A valid subtag name, {@see LMAT_Accept_Language::SUBTAG_PATTERNS} for available subtag names.
+	 * @param string $name A valid subtag name, {@see PLL_Accept_Language::SUBTAG_PATTERNS} for available subtag names.
 	 * @return string
 	 */
 	public function get_subtag( $name ) {

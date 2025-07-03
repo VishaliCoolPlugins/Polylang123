@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -8,17 +8,17 @@
  *
  * @since 1.2
  */
-class LMAT_Admin_Filters extends LMAT_Filters {
+class PLL_Admin_Filters extends PLL_Filters {
 
 	/**
 	 * Constructor: setups filters and actions.
 	 *
 	 * @since 1.2
 	 *
-	 * @param object $linguator The Linguator object.
+	 * @param object $polylang The Polylang object.
 	 */
-	public function __construct( &$linguator ) {
-		parent::__construct( $linguator );
+	public function __construct( &$polylang ) {
+		parent::__construct( $polylang );
 
 		// Language management for users
 		add_action( 'personal_options_update', array( $this, 'personal_options_update' ) );
@@ -100,8 +100,8 @@ class LMAT_Admin_Filters extends LMAT_Filters {
 	 */
 	public function admin_body_class( $classes ) {
 		if ( ! empty( $this->curlang ) ) {
-			$classes .= ' lmat-dir-' . ( $this->curlang->is_rtl ? 'rtl' : 'ltr' );
-			$classes .= ' lmat-lang-' . $this->curlang->slug;
+			$classes .= ' pll-dir-' . ( $this->curlang->is_rtl ? 'rtl' : 'ltr' );
+			$classes .= ' pll-lang-' . $this->curlang->slug;
 		}
 		return $classes;
 	}
@@ -119,7 +119,7 @@ class LMAT_Admin_Filters extends LMAT_Filters {
 		$page_for_privacy_policy = get_option( 'wp_page_for_privacy_policy' );
 
 		if ( $page_for_privacy_policy && in_array( $post->ID, $this->model->post->get_translations( $page_for_privacy_policy ) ) ) {
-			$post_states['page_for_privacy_policy'] = __( 'Privacy Policy Page', 'linguator' );
+			$post_states['page_for_privacy_policy'] = __( 'Privacy Policy Page', 'polylang' );
 		}
 
 		return $post_states;

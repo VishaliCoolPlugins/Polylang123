@@ -1,16 +1,16 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
- * LMAT_Language factory.
+ * PLL_Language factory.
  *
  * @since 3.4
  *
- * @phpstan-import-type LanguageData from LMAT_Language
+ * @phpstan-import-type LanguageData from PLL_Language
  */
-class LMAT_Language_Factory {
+class PLL_Language_Factory {
 	/**
 	 * Predefined languages.
 	 *
@@ -21,7 +21,7 @@ class LMAT_Language_Factory {
 	private static $languages;
 
 	/**
-	 * Linguator's options.
+	 * Polylang's options.
 	 *
 	 * @var array
 	 */
@@ -44,15 +44,15 @@ class LMAT_Language_Factory {
 	 *
 	 * @since 3.4
 	 *
-	 * @param array $language_data Language object properties stored as an array. See `LMAT_Language::__construct()`
+	 * @param array $language_data Language object properties stored as an array. See `PLL_Language::__construct()`
 	 *                             for information on accepted properties.
 	 *
-	 * @return LMAT_Language A language object if given data pass sanitization.
+	 * @return PLL_Language A language object if given data pass sanitization.
 	 *
 	 * @phpstan-param LanguageData $language_data
 	 */
 	public function get( $language_data ) {
-		return new LMAT_Language( $this->sanitize_data( $language_data ) );
+		return new PLL_Language( $this->sanitize_data( $language_data ) );
 	}
 
 	/**
@@ -63,7 +63,7 @@ class LMAT_Language_Factory {
 	 * @param WP_Term[] $terms List of language terms, with the language taxonomy names as array keys.
 	 *                         `language` is a mandatory key for the object to be created,
 	 *                         `term_language` should be too in a fully operational environment.
-	 * @return LMAT_Language|null Language object on success, `null` on failure.
+	 * @return PLL_Language|null Language object on success, `null` on failure.
 	 *
 	 * @phpstan-param array{language?:WP_Term}&array<string, WP_Term> $terms
 	 */
@@ -136,7 +136,7 @@ class LMAT_Language_Factory {
 		 * @phpstan-param array<non-empty-string, mixed> $additional_data
 		 * @phpstan-param non-empty-array<non-empty-string, mixed> $data
 		 */
-		$additional_data = apply_filters( 'lmat_additional_language_data', $additional_data, $data );
+		$additional_data = apply_filters( 'pll_additional_language_data', $additional_data, $data );
 
 		$allowed_additional_data = array(
 			'home_url'       => '',
@@ -147,7 +147,7 @@ class LMAT_Language_Factory {
 
 		$data = array_merge( $data, array_intersect_key( $additional_data, $allowed_additional_data ) );
 
-		return new LMAT_Language( $this->sanitize_data( $data ) );
+		return new PLL_Language( $this->sanitize_data( $data ) );
 	}
 
 	/**
@@ -156,7 +156,7 @@ class LMAT_Language_Factory {
 	 *
 	 * @since 3.4
 	 *
-	 * @param array $data Data to process. See `LMAT_Language::__construct()` for information on accepted data.
+	 * @param array $data Data to process. See `PLL_Language::__construct()` for information on accepted data.
 	 * @return array Sanitized Data.
 	 *
 	 * @phpstan-return LanguageData
@@ -197,7 +197,7 @@ class LMAT_Language_Factory {
 	 */
 	private function get_languages() {
 		if ( empty( self::$languages ) ) {
-			self::$languages = include LINGUATOR_DIR . '/settings/languages.php';
+			self::$languages = include POLYLANG_DIR . '/settings/languages.php';
 		}
 
 		return self::$languages;
@@ -208,7 +208,7 @@ class LMAT_Language_Factory {
 	 * Creates flag_url and flag language properties. Also takes care of custom flag.
 	 *
 	 * @since 1.2
-	 * @since 3.4 Moved from `LMAT_Language`to `LMAT_Language_Factory` and renamed
+	 * @since 3.4 Moved from `PLL_Language`to `PLL_Language_Factory` and renamed
 	 *            in favor of `get_flag()` (formerly `set_flag()`).
 	 *
 	 * @param string $flag_code Flag code.
@@ -232,14 +232,14 @@ class LMAT_Language_Factory {
 	 */
 	private function get_flag( $flag_code, $name, $slug, $locale ) {
 		$flags = array(
-			'flag' => LMAT_Language::get_flag_information( $flag_code ),
+			'flag' => PLL_Language::get_flag_information( $flag_code ),
 		);
 
 		// Custom flags?
 		$directories = array(
-			LMAT_LOCAL_DIR,
-			get_stylesheet_directory() . '/linguator',
-			get_template_directory() . '/linguator',
+			PLL_LOCAL_DIR,
+			get_stylesheet_directory() . '/polylang',
+			get_template_directory() . '/polylang',
 		);
 
 		foreach ( $directories as $dir ) {
@@ -266,7 +266,7 @@ class LMAT_Language_Factory {
 		 * }
 		 * @param string     $code Flag code.
 		 */
-		$flags['custom_flag'] = apply_filters( 'lmat_custom_flag', empty( $flags['custom_flag'] ) ? null : $flags['custom_flag'], $flag_code );
+		$flags['custom_flag'] = apply_filters( 'pll_custom_flag', empty( $flags['custom_flag'] ) ? null : $flags['custom_flag'], $flag_code );
 
 		if ( ! empty( $flags['custom_flag']['url'] ) ) {
 			if ( empty( $flags['custom_flag']['src'] ) ) {
@@ -288,7 +288,7 @@ class LMAT_Language_Factory {
 		 * @param string $slug   The language code.
 		 * @param string $locale The language locale.
 		 */
-		$title  = apply_filters( 'lmat_flag_title', $name, $slug, $locale );
+		$title  = apply_filters( 'pll_flag_title', $name, $slug, $locale );
 		$return = array();
 
 		/**
@@ -319,8 +319,8 @@ class LMAT_Language_Factory {
 			 * @param string $slug Language code.
 			 */
 			$return[ $key ] = apply_filters(
-				'lmat_get_flag',
-				LMAT_Language::get_flag_html( $flag, $title, $name ),
+				'pll_get_flag',
+				PLL_Language::get_flag_html( $flag, $title, $name ),
 				$slug
 			);
 		}

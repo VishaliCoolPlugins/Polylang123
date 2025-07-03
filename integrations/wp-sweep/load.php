@@ -2,7 +2,7 @@
 /**
  * Loads the integration with WP Sweep.
  *
- * @package Linguator
+ * @package Polylang
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -13,8 +13,8 @@ add_action(
 	'plugins_loaded',
 	function () {
 		if ( defined( 'WP_SWEEP_VERSION' ) ) {
-			LMAT_Integrations::instance()->wp_sweep = new LMAT_WP_Sweep();
-			LMAT_Integrations::instance()->wp_sweep->init();
+			PLL_Integrations::instance()->wp_sweep = new PLL_WP_Sweep();
+			PLL_Integrations::instance()->wp_sweep->init();
 		}
 	},
 	0

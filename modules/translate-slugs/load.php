@@ -2,18 +2,18 @@
 /**
  * Loads the settings module for translated slugs.
  *
- * @package Linguator
+ * @package Polylang
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Don't access directly
 }
 
-if ( $linguator->model->has_languages() ) {
+if ( $polylang->model->has_languages() ) {
 	add_filter(
-		'lmat_settings_modules',
+		'pll_settings_modules',
 		function ( $modules ) {
-			$modules[] = 'LMAT_Settings_Preview_Translate_Slugs';
+			$modules[] = 'PLL_Settings_Preview_Translate_Slugs';
 			return $modules;
 		}
 	);

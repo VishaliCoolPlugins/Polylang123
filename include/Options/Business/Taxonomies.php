@@ -1,9 +1,9 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
-namespace WP_Syntex\Linguator\Options\Business;
+namespace WP_Syntex\Polylang\Options\Business;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -38,7 +38,7 @@ class Taxonomies extends Abstract_Object_Types {
 	protected function get_object_types(): array {
 		$public_taxonomies = get_taxonomies( array( '_builtin' => false ) );
 		/** @phpstan-var array<non-falsy-string> */
-		return array_diff( $public_taxonomies, get_taxonomies( array( '_lmat' => true ) ) );
+		return array_diff( $public_taxonomies, get_taxonomies( array( '_pll' => true ) ) );
 	}
 
 	/**
@@ -49,6 +49,6 @@ class Taxonomies extends Abstract_Object_Types {
 	 * @return string
 	 */
 	protected function get_description(): string {
-		return __( 'List of taxonomies to translate.', 'linguator' );
+		return __( 'List of taxonomies to translate.', 'polylang' );
 	}
 }

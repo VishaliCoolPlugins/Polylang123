@@ -1,44 +1,44 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
- * Class LMAT_Admin_Site_Health to add debug info in WP Site Health.
+ * Class PLL_Admin_Site_Health to add debug info in WP Site Health.
  *
  * @see https://make.wordpress.org/core/2019/04/25/site-health-check-in-5-2/ since WordPress 5.2
  *
  * @since 2.8
  */
-class LMAT_Admin_Site_Health {
+class PLL_Admin_Site_Health {
 	/**
-	 * A reference to the LMAT_Model instance.
+	 * A reference to the PLL_Model instance.
 	 *
 	 * @since 2.8
 	 *
-	 * @var LMAT_Model
+	 * @var PLL_Model
 	 */
 	protected $model;
 
 	/**
-	 * A reference to the LMAT_Admin_Static_Pages instance.
+	 * A reference to the PLL_Admin_Static_Pages instance.
 	 *
 	 * @since 2.8
 	 *
-	 * @var LMAT_Admin_Static_Pages|null
+	 * @var PLL_Admin_Static_Pages|null
 	 */
 	protected $static_pages;
 
 	/**
-	 * LMAT_Admin_Site_Health constructor.
+	 * PLL_Admin_Site_Health constructor.
 	 *
 	 * @since 2.8
 	 *
-	 * @param object $linguator The Linguator object.
+	 * @param object $polylang The Polylang object.
 	 */
-	public function __construct( &$linguator ) {
-		$this->model = &$linguator->model;
-		$this->static_pages = &$linguator->static_pages;
+	public function __construct( &$polylang ) {
+		$this->model = &$polylang->model;
+		$this->static_pages = &$polylang->static_pages;
 
 		// Information tab.
 		add_filter( 'debug_information', array( $this, 'info_options' ), 15 );
@@ -119,68 +119,68 @@ class LMAT_Admin_Site_Health {
 		switch ( $key ) {
 			case 'browser':
 				if ( ! $value ) {
-					$value = '0: ' . __( 'Detect browser language deactivated', 'linguator' );
+					$value = '0: ' . __( 'Detect browser language deactivated', 'polylang' );
 					break;
 				}
-				$value = '1: ' . __( 'Detect browser language activated', 'linguator' );
+				$value = '1: ' . __( 'Detect browser language activated', 'polylang' );
 				break;
 			case 'rewrite':
 				if ( $value ) {
 					$value = '1: ' . sprintf(
 						/* translators: %s is a URL slug: `/language/`. */
-						__( 'Remove %s in pretty permalinks', 'linguator' ),
+						__( 'Remove %s in pretty permalinks', 'polylang' ),
 						'`/language/`'
 					);
 					break;
 				}
 				$value = '0: ' . sprintf(
 					/* translators: %s is a URL slug: `/language/`. */
-					__( 'Keep %s in pretty permalinks', 'linguator' ),
+					__( 'Keep %s in pretty permalinks', 'polylang' ),
 					'`/language/`'
 				);
 				break;
 			case 'hide_default':
 				if ( $value ) {
-					$value = '1: ' . __( 'Hide URL language information for default language', 'linguator' );
+					$value = '1: ' . __( 'Hide URL language information for default language', 'polylang' );
 					break;
 				}
-				$value = '0: ' . __( 'Display URL language information for default language', 'linguator' );
+				$value = '0: ' . __( 'Display URL language information for default language', 'polylang' );
 				break;
 			case 'force_lang':
 				switch ( $value ) {
 					case '0':
-						$value = '0: ' . __( 'The language is set from content', 'linguator' );
+						$value = '0: ' . __( 'The language is set from content', 'polylang' );
 						break;
 					case '1':
-						$value = '1: ' . __( 'The language is set from the directory name in pretty permalinks', 'linguator' );
+						$value = '1: ' . __( 'The language is set from the directory name in pretty permalinks', 'polylang' );
 						break;
 					case '2':
-						$value = '2: ' . __( 'The language is set from the subdomain name in pretty permalinks', 'linguator' );
+						$value = '2: ' . __( 'The language is set from the subdomain name in pretty permalinks', 'polylang' );
 						break;
 					case '3':
-						$value = '3: ' . __( 'The language is set from different domains', 'linguator' );
+						$value = '3: ' . __( 'The language is set from different domains', 'polylang' );
 						break;
 				}
 				break;
 			case 'redirect_lang':
 				if ( $value ) {
-					$value = '1: ' . __( 'The front page URL contains the language code instead of the page name or page id', 'linguator' );
+					$value = '1: ' . __( 'The front page URL contains the language code instead of the page name or page id', 'polylang' );
 					break;
 				}
-				$value = '0: ' . __( 'The front page URL contains the page name or page id instead of the language code', 'linguator' );
+				$value = '0: ' . __( 'The front page URL contains the page name or page id instead of the language code', 'polylang' );
 
 				break;
 			case 'media_support':
 				if ( ! $value ) {
-					$value = '0: ' . __( 'The media are not translated', 'linguator' );
+					$value = '0: ' . __( 'The media are not translated', 'polylang' );
 					break;
 				}
-				$value = '1: ' . __( 'The media are translated', 'linguator' );
+				$value = '1: ' . __( 'The media are translated', 'polylang' );
 				break;
 
 			case 'sync':
 				if ( empty( $value ) ) {
-					$value = '0: ' . __( 'Synchronization disabled', 'linguator' );
+					$value = '0: ' . __( 'Synchronization disabled', 'polylang' );
 				}
 				break;
 		}
@@ -189,7 +189,7 @@ class LMAT_Admin_Site_Health {
 	}
 
 	/**
-	 * Add Linguator Options to Site Health Information tab.
+	 * Add Polylang Options to Site Health Information tab.
 	 *
 	 * @since 2.8
 	 *
@@ -254,9 +254,9 @@ class LMAT_Admin_Site_Health {
 			}
 		}
 
-		$debug_info['lmat_options'] = array(
+		$debug_info['pll_options'] = array(
 			/* translators: placeholder is the plugin name */
-			'label'  => sprintf( __( '%s options', 'linguator' ), LINGUATOR ),
+			'label'  => sprintf( __( '%s options', 'polylang' ), POLYLANG ),
 			'fields' => $fields,
 		);
 
@@ -264,7 +264,7 @@ class LMAT_Admin_Site_Health {
 	}
 
 	/**
-	 * Adds Linguator Languages settings to Site Health Information tab.
+	 * Adds Polylang Languages settings to Site Health Information tab.
 	 *
 	 * @since 2.8
 	 *
@@ -297,11 +297,11 @@ class LMAT_Admin_Site_Health {
 				}
 			}
 
-			$debug_info[ 'lmat_language_' . $language->slug ] = array(
+			$debug_info[ 'pll_language_' . $language->slug ] = array(
 				/* translators: %1$s placeholder is the language name, %2$s is the language code */
-				'label'  => sprintf( __( 'Language: %1$s - %2$s', 'linguator' ), $language->name, $language->slug ),
+				'label'  => sprintf( __( 'Language: %1$s - %2$s', 'polylang' ), $language->name, $language->slug ),
 				/* translators: placeholder is the flag image */
-				'description' => sprintf( esc_html__( 'Flag used in the language switcher: %s', 'linguator' ), $this->get_flag( $language ) ),
+				'description' => sprintf( esc_html__( 'Flag used in the language switcher: %s', 'polylang' ), $this->get_flag( $language ) ),
 				'fields' => $fields,
 			);
 		}
@@ -344,12 +344,12 @@ class LMAT_Admin_Site_Health {
 	 *
 	 * @since 2.8
 	 *
-	 * @param LMAT_Language $language Language object.
+	 * @param PLL_Language $language Language object.
 	 * @return string
 	 */
 	protected function get_flag( $language ) {
 		$flag = $language->get_display_flag();
-		return empty( $flag ) ? '<span>' . esc_html__( 'Undefined', 'linguator' ) . '</span>' : $flag;
+		return empty( $flag ) ? '<span>' . esc_html__( 'Undefined', 'polylang' ) . '</span>' : $flag;
 	}
 
 	/**
@@ -363,8 +363,8 @@ class LMAT_Admin_Site_Health {
 	public function status_tests( $tests ) {
 		// Add the test only if the homepage displays static page.
 		if ( 'page' === get_option( 'show_on_front' ) && get_option( 'page_on_front' ) ) {
-			$tests['direct']['lmat_homepage'] = array(
-				'label' => esc_html__( 'Homepage translated', 'linguator' ),
+			$tests['direct']['pll_homepage'] = array(
+				'label' => esc_html__( 'Homepage translated', 'polylang' ),
 				'test'  => array( $this, 'homepage_test' ),
 			);
 		}
@@ -380,32 +380,32 @@ class LMAT_Admin_Site_Health {
 	 */
 	public function homepage_test() {
 		$result = array(
-			'label'       => __( 'All languages have a translated homepage', 'linguator' ),
+			'label'       => __( 'All languages have a translated homepage', 'polylang' ),
 			'status'      => 'good',
 			'badge'       => array(
-				'label' => LINGUATOR,
+				'label' => POLYLANG,
 				'color' => 'blue',
 			),
 			'description' => sprintf(
 				'<p>%s</p>',
-				esc_html__( 'It is mandatory to translate the static front page in all languages.', 'linguator' )
+				esc_html__( 'It is mandatory to translate the static front page in all languages.', 'polylang' )
 			),
 			'actions'     => '',
-			'test'        => 'lmat_homepage',
+			'test'        => 'pll_homepage',
 		);
 
 		$message = $this->static_pages->get_must_translate_message();
 
 		if ( ! empty( $message ) ) {
 			$result['status']      = 'critical';
-			$result['label']       = __( 'The homepage is not translated in all languages', 'linguator' );
+			$result['label']       = __( 'The homepage is not translated in all languages', 'polylang' );
 			$result['description'] = sprintf( '<p>%s</p>', $message );
 		}
 		return $result;
 	}
 
 	/**
-	 * Add Linguator Warnings to Site Health Information tab.
+	 * Add Polylang Warnings to Site Health Information tab.
 	 *
 	 * @since 3.1
 	 *
@@ -419,34 +419,34 @@ class LMAT_Admin_Site_Health {
 		$posts_no_lang = $this->get_post_ids_without_lang();
 
 		if ( ! empty( $posts_no_lang ) ) {
-			$fields['post-no-lang']['label'] = __( 'Posts without language', 'linguator' );
+			$fields['post-no-lang']['label'] = __( 'Posts without language', 'polylang' );
 			$fields['post-no-lang']['value'] = $this->format_array( $posts_no_lang );
 		}
 
 		$terms_no_lang = $this->get_term_ids_without_lang();
 
 		if ( ! empty( $terms_no_lang ) ) {
-			$fields['term-no-lang']['label'] = __( 'Terms without language', 'linguator' );
+			$fields['term-no-lang']['label'] = __( 'Terms without language', 'polylang' );
 			$fields['term-no-lang']['value'] = $this->format_array( $terms_no_lang );
 		}
 
 		// Add WPML files.
-		$wpml_files = LMAT_WPML_Config::instance()->get_files();
+		$wpml_files = PLL_WPML_Config::instance()->get_files();
 		if ( ! empty( $wpml_files ) ) {
 			$fields['wpml']['label'] = 'wpml-config.xml files';
 			$fields['wpml']['value'] = $wpml_files;
 
 			if ( ! extension_loaded( 'simplexml' ) ) {
-				$fields['simplexml']['label'] = __( 'PHP SimpleXML extension', 'linguator' );
-				$fields['simplexml']['value'] = __( 'Not loaded. Contact your host provider.', 'linguator' );
+				$fields['simplexml']['label'] = __( 'PHP SimpleXML extension', 'polylang' );
+				$fields['simplexml']['value'] = __( 'Not loaded. Contact your host provider.', 'polylang' );
 			}
 		}
 
 		// Create the section.
 		if ( ! empty( $fields ) ) {
-			$debug_info['lmat_warnings'] = array(
+			$debug_info['pll_warnings'] = array(
 				/* translators: placeholder is the plugin name */
-				'label'  => sprintf( __( '%s information', 'linguator' ), LINGUATOR ),
+				'label'  => sprintf( __( '%s information', 'polylang' ), POLYLANG ),
 				'fields' => $fields,
 			);
 		}
@@ -510,13 +510,13 @@ class LMAT_Admin_Site_Health {
 	 * Requires the simplexml PHP module when a wpml-config.xml has been found.
 	 *
 	 * @since 3.1
-	 * @since 3.2 Moved from LMAT_WPML_Config
+	 * @since 3.2 Moved from PLL_WPML_Config
 	 *
 	 * @param array $modules An associative array of modules to test for.
 	 * @return array
 	 */
 	public function site_status_test_php_modules( $modules ) {
-		$files = LMAT_WPML_Config::instance()->get_files();
+		$files = PLL_WPML_Config::instance()->get_files();
 		if ( ! empty( $files ) ) {
 			$modules['simplexml'] = array(
 				'extension' => 'simplexml',

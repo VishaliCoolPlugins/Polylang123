@@ -1,16 +1,16 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
-namespace WP_Syntex\Linguator\REST;
+namespace WP_Syntex\Polylang\REST;
 
 defined( 'ABSPATH' ) || exit;
 
 add_action(
-	'lmat_init',
-	function ( $linguator ) {
-		$linguator->rest = new API( $linguator->model );
-		add_action( 'rest_api_init', array( $linguator->rest, 'init' ) );
+	'pll_init',
+	function ( $polylang ) {
+		$polylang->rest = new API( $polylang->model );
+		add_action( 'rest_api_init', array( $polylang->rest, 'init' ) );
 	}
 );

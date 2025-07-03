@@ -1,35 +1,35 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
- * Some common code for LMAT_Admin_Filters_Post and LMAT_Admin_Filters_Media
+ * Some common code for PLL_Admin_Filters_Post and PLL_Admin_Filters_Media
  *
  * @since 1.5
  */
-abstract class LMAT_Admin_Filters_Post_Base {
+abstract class PLL_Admin_Filters_Post_Base {
 	/**
-	 * @var LMAT_Model
+	 * @var PLL_Model
 	 */
 	public $model;
 
 	/**
-	 * @var LMAT_Admin_Links
+	 * @var PLL_Admin_Links
 	 */
 	public $links;
 
 	/**
 	 * Language selected in the admin language filter.
 	 *
-	 * @var LMAT_Language|null
+	 * @var PLL_Language|null
 	 */
 	public $filter_lang;
 
 	/**
 	 * Preferred language to assign to new contents.
 	 *
-	 * @var LMAT_Language|null
+	 * @var PLL_Language|null
 	 */
 	public $pref_lang;
 
@@ -38,12 +38,12 @@ abstract class LMAT_Admin_Filters_Post_Base {
 	 *
 	 * @since 1.2
 	 *
-	 * @param object $linguator The Linguator object.
+	 * @param object $polylang The Polylang object.
 	 */
-	public function __construct( &$linguator ) {
-		$this->links = &$linguator->links;
-		$this->model = &$linguator->model;
-		$this->pref_lang = &$linguator->pref_lang;
+	public function __construct( &$polylang ) {
+		$this->links = &$polylang->links;
+		$this->model = &$polylang->model;
+		$this->pref_lang = &$polylang->pref_lang;
 	}
 
 	/**
@@ -57,7 +57,7 @@ abstract class LMAT_Admin_Filters_Post_Base {
 	 */
 	protected function save_translations( $post_id, $arr ) {
 		// Security check as 'wp_insert_post' can be called from outside WP admin.
-		check_admin_referer( 'lmat_language', '_lmat_nonce' );
+		check_admin_referer( 'pll_language', '_pll_nonce' );
 
 		$translations = $this->model->post->save_translations( $post_id, $arr );
 		return $translations;

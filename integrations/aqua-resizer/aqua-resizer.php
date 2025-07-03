@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -8,14 +8,14 @@
  *
  * @since 2.8
  */
-class LMAT_Aqua_Resizer {
+class PLL_Aqua_Resizer {
 	/**
 	 * Setups filters.
 	 *
 	 * @since 2.8
 	 */
 	public function init() {
-		add_filter( 'lmat_home_url_black_list', array( $this, 'home_url_black_list' ) );
+		add_filter( 'pll_home_url_black_list', array( $this, 'home_url_black_list' ) );
 	}
 
 	/**

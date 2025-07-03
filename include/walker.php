@@ -1,17 +1,17 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
  * A class for displaying various tree-like language structures.
  *
- * Extend the `LMAT_Walker` class to use it, and implement some of the methods from `Walker`.
+ * Extend the `PLL_Walker` class to use it, and implement some of the methods from `Walker`.
  * See: {https://developer.wordpress.org/reference/classes/walker/#methods}.
  *
  * @since 3.4
  */
-class LMAT_Walker extends Walker {
+class PLL_Walker extends Walker {
 	/**
 	 * Database fields to use.
 	 *
@@ -25,9 +25,9 @@ class LMAT_Walker extends Walker {
 	 * Overrides Walker::display_element as it expects an object with a parent property.
 	 *
 	 * @since 1.2
-	 * @since 3.4 Refactored and moved in `LMAT_Walker`.
+	 * @since 3.4 Refactored and moved in `PLL_Walker`.
 	 *
-	 * @param LMAT_Language|stdClass $element           Data object. `LMAT_language` in our case.
+	 * @param PLL_Language|stdClass $element           Data object. `PLL_language` in our case.
 	 * @param array                 $children_elements List of elements to continue traversing.
 	 * @param int                   $max_depth         Max depth to traverse.
 	 * @param int                   $depth             Depth of current element.
@@ -36,7 +36,7 @@ class LMAT_Walker extends Walker {
 	 * @return void
 	 */
 	public function display_element( $element, &$children_elements, $max_depth, $depth, $args, &$output ) {
-		if ( $element instanceof LMAT_Language ) {
+		if ( $element instanceof PLL_Language ) {
 			$element = $element->to_std_class();
 
 			// Sets the w3c locale as the main locale.
@@ -49,7 +49,7 @@ class LMAT_Walker extends Walker {
 	}
 
 	/**
-	 * Sets `LMAT_Walker::walk()` arguments as it should
+	 * Sets `PLL_Walker::walk()` arguments as it should
 	 * and triggers an error in case of misuse of them.
 	 *
 	 * @since 3.4
@@ -64,7 +64,7 @@ class LMAT_Walker extends Walker {
 			return;
 		}
 
-		// Backward compatibility with Linguator < 2.6.7
+		// Backward compatibility with Polylang < 2.6.7
 		_doing_it_wrong(
 			self::class . '::walk()',
 			'The method expects an integer as second parameter.',

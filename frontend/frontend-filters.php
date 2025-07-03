@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -8,16 +8,16 @@
  *
  * @since 1.2
  */
-class LMAT_Frontend_Filters extends LMAT_Filters {
+class PLL_Frontend_Filters extends PLL_Filters {
 	/**
 	 * Constructor: setups filters and actions
 	 *
 	 * @since 1.2
 	 *
-	 * @param object $linguator The Linguator object.
+	 * @param object $polylang The Polylang object.
 	 */
-	public function __construct( &$linguator ) {
-		parent::__construct( $linguator );
+	public function __construct( &$polylang ) {
+		parent::__construct( $polylang );
 
 		// Filters the WordPress locale
 		add_filter( 'locale', array( $this, 'get_locale' ) );
@@ -38,13 +38,13 @@ class LMAT_Frontend_Filters extends LMAT_Filters {
 
 		// Strings translation ( must be applied before WordPress applies its default formatting filters )
 		foreach ( array( 'widget_text', 'widget_title' ) as $filter ) {
-			add_filter( $filter, 'lmat__', 1 );
+			add_filter( $filter, 'pll__', 1 );
 		}
 
 		// Translates biography
 		add_filter( 'get_user_metadata', array( $this, 'get_user_metadata' ), 10, 4 );
 
-		if ( Linguator::is_ajax_on_front() ) {
+		if ( Polylang::is_ajax_on_front() ) {
 			add_filter( 'load_textdomain_mofile', array( $this, 'load_textdomain_mofile' ) );
 		}
 	}
@@ -132,7 +132,7 @@ class LMAT_Frontend_Filters extends LMAT_Filters {
 	 * @return string modified WHERE clause
 	 */
 	public function getarchives_where( $sql, $r ) {
-		if ( ! $this->curlang instanceof LMAT_Language ) {
+		if ( ! $this->curlang instanceof PLL_Language ) {
 			return $sql;
 		}
 
@@ -154,7 +154,7 @@ class LMAT_Frontend_Filters extends LMAT_Filters {
 	 * @return bool|array false if we hide the widget, unmodified $instance otherwise
 	 */
 	public function widget_display_callback( $instance ) {
-		return ! empty( $instance['lmat_lang'] ) && $instance['lmat_lang'] != $this->curlang->slug ? false : $instance;
+		return ! empty( $instance['pll_lang'] ) && $instance['pll_lang'] != $this->curlang->slug ? false : $instance;
 	}
 
 	/**
@@ -166,7 +166,7 @@ class LMAT_Frontend_Filters extends LMAT_Filters {
 	 * @return array
 	 */
 	public function widget_media_instance( $instance ) {
-		if ( empty( $instance['lmat_lang'] ) && $instance['attachment_id'] && $tr_id = lmat_get_post( $instance['attachment_id'] ) ) {
+		if ( empty( $instance['pll_lang'] ) && $instance['attachment_id'] && $tr_id = pll_get_post( $instance['attachment_id'] ) ) {
 			$instance['attachment_id'] = $tr_id;
 			$attachment = get_post( $tr_id );
 

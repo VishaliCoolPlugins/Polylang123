@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -8,11 +8,11 @@
  *
  * @since 1.2
  */
-class LMAT_Frontend_Nav_Menu extends LMAT_Nav_Menu {
+class PLL_Frontend_Nav_Menu extends PLL_Nav_Menu {
 	/**
 	 * Current language.
 	 *
-	 * @var LMAT_Language|null|false
+	 * @var PLL_Language|null|false
 	 */
 	public $curlang;
 
@@ -21,12 +21,12 @@ class LMAT_Frontend_Nav_Menu extends LMAT_Nav_Menu {
 	 *
 	 * @since 1.2
 	 *
-	 * @param object $linguator The Linguator object.
+	 * @param object $polylang The Polylang object.
 	 */
-	public function __construct( &$linguator ) {
-		parent::__construct( $linguator );
+	public function __construct( &$polylang ) {
+		parent::__construct( $polylang );
 
-		$this->curlang = &$linguator->curlang;
+		$this->curlang = &$polylang->curlang;
 
 		// Split the language switcher menu item in several language menu items
 		add_filter( 'wp_get_nav_menu_items', array( $this, 'wp_get_nav_menu_items' ), 20 ); // after the customizer menus
@@ -106,22 +106,22 @@ class LMAT_Frontend_Nav_Menu extends LMAT_Nav_Menu {
 		$offset = 0;
 
 		foreach ( $items as $item ) {
-			if ( $options = get_post_meta( $item->ID, '_lmat_menu_item', true ) ) {
+			if ( $options = get_post_meta( $item->ID, '_pll_menu_item', true ) ) {
 				/** This filter is documented in include/switcher.php */
-				$options = apply_filters( 'lmat_the_languages_args', $options ); // Honor the filter here for 'show_flags', 'show_names' and 'dropdown'.
+				$options = apply_filters( 'pll_the_languages_args', $options ); // Honor the filter here for 'show_flags', 'show_names' and 'dropdown'.
 
-				$switcher = new LMAT_Switcher();
+				$switcher = new PLL_Switcher();
 				$args = array_merge( array( 'raw' => 1 ), $options );
 
 				/** @var array */
-				$the_languages = $switcher->the_languages( LMAT()->links, $args );
+				$the_languages = $switcher->the_languages( PLL()->links, $args );
 
 				// parent item for dropdown
 				if ( ! empty( $options['dropdown'] ) ) {
 					$name = isset( $options['display_names_as'] ) && 'slug' === $options['display_names_as'] ? $this->curlang->slug : $this->curlang->name;
 					$item->title = $this->get_item_title( $this->curlang->get_display_flag( empty( $options['show_names'] ) ? 'alt' : 'no-alt' ), $name, $options );
 					$item->attr_title = '';
-					$item->classes = array( 'lmat-parent-menu-item' );
+					$item->classes = array( 'pll-parent-menu-item' );
 					$item->menu_order += $offset;
 					$new_items[] = $item;
 					++$offset;

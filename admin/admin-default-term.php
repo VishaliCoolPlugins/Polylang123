@@ -1,15 +1,15 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
  * Manages filters and actions related to default terms.
  *
  * @since 3.1
- * @since 3.7 Extends `LMAT_Default_Term`, most of the code is moved to it.
+ * @since 3.7 Extends `PLL_Default_Term`, most of the code is moved to it.
  */
-class LMAT_Admin_Default_Term extends LMAT_Default_Term {
+class PLL_Admin_Default_Term extends PLL_Default_Term {
 
 	/**
 	 * Setups filters and actions needed.
@@ -24,7 +24,7 @@ class LMAT_Admin_Default_Term extends LMAT_Default_Term {
 		foreach ( $this->taxonomies as $taxonomy ) {
 			if ( 'category' === $taxonomy ) {
 				// Adds the language column in the 'Terms' table.
-				add_filter( 'lmat_first_language_term_column', array( $this, 'first_language_column' ), 10, 2 );
+				add_filter( 'pll_first_language_term_column', array( $this, 'first_language_column' ), 10, 2 );
 			}
 		}
 	}

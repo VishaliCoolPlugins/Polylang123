@@ -1,13 +1,13 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
-namespace WP_Syntex\Linguator\Options\Business;
+namespace WP_Syntex\Polylang\Options\Business;
 
 use WP_Error;
-use WP_Syntex\Linguator\Options\Primitive\Abstract_Boolean;
-use WP_Syntex\Linguator\Options\Options;
+use WP_Syntex\Polylang\Options\Primitive\Abstract_Boolean;
+use WP_Syntex\Polylang\Options\Options;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -43,8 +43,8 @@ class Browser extends Abstract_Boolean {
 	 * @return bool|WP_Error The sanitized value. An instance of `WP_Error` in case of blocking error.
 	 */
 	protected function sanitize( $value, Options $options ) {
-		if ( 3 === $options->get( 'force_lang' ) && ! class_exists( 'LMAT_Xdata_Domain', true ) ) {
-			// Cannot share cookies between domains without Linguator Pro.
+		if ( 3 === $options->get( 'force_lang' ) && ! class_exists( 'PLL_Xdata_Domain', true ) ) {
+			// Cannot share cookies between domains without Polylang Pro.
 			return false;
 		}
 
@@ -63,7 +63,7 @@ class Browser extends Abstract_Boolean {
 	protected function get_description(): string {
 		return sprintf(
 			/* translators: %1$s and %2$s are "true/false" values. */
-			__( 'Detect preferred browser language on front page: %1$s to detect, %2$s to not detect.', 'linguator' ),
+			__( 'Detect preferred browser language on front page: %1$s to detect, %2$s to not detect.', 'polylang' ),
 			'`true`',
 			'`false`'
 		);

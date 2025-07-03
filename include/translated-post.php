@@ -1,9 +1,9 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
-use WP_Syntex\Linguator\Options\Options;
+use WP_Syntex\Polylang\Options\Options;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -12,10 +12,10 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 1.8
  *
- * @phpstan-import-type DBInfoWithType from LMAT_Translatable_Object_With_Types_Interface
+ * @phpstan-import-type DBInfoWithType from PLL_Translatable_Object_With_Types_Interface
  */
-class LMAT_Translated_Post extends LMAT_Translated_Object implements LMAT_Translatable_Object_With_Types_Interface {
-	use LMAT_Translatable_Object_With_Types_Trait;
+class PLL_Translated_Post extends PLL_Translated_Object implements PLL_Translatable_Object_With_Types_Interface {
+	use PLL_Translatable_Object_With_Types_Trait;
 
 	/**
 	 * Taxonomy name for the languages.
@@ -59,9 +59,9 @@ class LMAT_Translated_Post extends LMAT_Translated_Object implements LMAT_Transl
 	 *
 	 * @since 1.8
 	 *
-	 * @param LMAT_Model $model Instance of `LMAT_Model`.
+	 * @param PLL_Model $model Instance of `PLL_Model`.
 	 */
-	public function __construct( LMAT_Model $model ) {
+	public function __construct( PLL_Model $model ) {
 		parent::__construct( $model );
 
 		// Keep hooks in constructor for backward compatibility.
@@ -87,7 +87,7 @@ class LMAT_Translated_Post extends LMAT_Translated_Object implements LMAT_Transl
 				'publicly_queryable' => true, // Since WP 4.5.
 				'query_var'          => 'lang', // See `add_language_taxonomy_query_var()`.
 				'rewrite'            => false, // Rewrite rules are added through filters when needed.
-				'_lmat'               => true, // Linguator taxonomy.
+				'_pll'               => true, // Polylang taxonomy.
 			)
 		);
 
@@ -149,7 +149,7 @@ class LMAT_Translated_Post extends LMAT_Translated_Object implements LMAT_Transl
 	 * @since 3.4
 	 *
 	 * @param bool $filter True if we should return only valid registered object types.
-	 * @return string[] Object type names for which Linguator manages languages.
+	 * @return string[] Object type names for which Polylang manages languages.
 	 *
 	 * @phpstan-return array<non-empty-string, non-empty-string>
 	 */
@@ -179,9 +179,9 @@ class LMAT_Translated_Post extends LMAT_Translated_Object implements LMAT_Transl
 			 * @since 0.8
 			 *
 			 * @param string[] $post_types  List of post type names (as array keys and values).
-			 * @param bool     $is_settings True when displaying the list of custom post types in Linguator settings.
+			 * @param bool     $is_settings True when displaying the list of custom post types in Polylang settings.
 			 */
-			$post_types = (array) apply_filters( 'lmat_get_post_types', $post_types, false );
+			$post_types = (array) apply_filters( 'pll_get_post_types', $post_types, false );
 
 			if ( did_action( 'after_setup_theme' ) && ! doing_action( 'switch_blog' ) ) {
 				$this->cache->set( 'post_types', $post_types );
@@ -193,7 +193,7 @@ class LMAT_Translated_Post extends LMAT_Translated_Object implements LMAT_Transl
 	}
 
 	/**
-	 * Returns true if Linguator manages languages for this object type.
+	 * Returns true if Polylang manages languages for this object type.
 	 *
 	 * @since 3.4
 	 *
@@ -316,10 +316,10 @@ class LMAT_Translated_Post extends LMAT_Translated_Object implements LMAT_Transl
 	 * Creates a media translation
 	 *
 	 * @since 1.8
-	 * @since 3.7 Moved from LMAT_CRUD_Posts.
+	 * @since 3.7 Moved from PLL_CRUD_Posts.
 	 *
 	 * @param int                 $post_id Original attachment id.
-	 * @param string|LMAT_Language $lang    New translation language.
+	 * @param string|PLL_Language $lang    New translation language.
 	 * @return int Attachment id of the translated media.
 	 */
 	public function create_media_translation( $post_id, $lang ) {
@@ -340,7 +340,7 @@ class LMAT_Translated_Post extends LMAT_Translated_Object implements LMAT_Transl
 		}
 
 		// Create a new attachment ( translate attachment parent if exists ).
-		add_filter( 'lmat_enable_duplicate_media', '__return_false', 99 ); // Avoid a conflict with automatic duplicate at upload.
+		add_filter( 'pll_enable_duplicate_media', '__return_false', 99 ); // Avoid a conflict with automatic duplicate at upload.
 		unset( $post['ID'] ); // Will force the creation.
 		if ( ! empty( $post['post_parent'] ) ) {
 			$post['post_parent'] = (int) $this->get_translation( $post['post_parent'], $lang->slug );
@@ -348,10 +348,10 @@ class LMAT_Translated_Post extends LMAT_Translated_Object implements LMAT_Transl
 		$post['tax_input'] = array( 'language' => array( $lang->slug ) ); // Assigns the language.
 
 		// Loads the strings translations with the attachment's target language.
-		LMAT()->load_strings_translations( $lang->slug );
+		PLL()->load_strings_translations( $lang->slug );
 
 		$tr_id = wp_insert_attachment( wp_slash( $post ) );
-		remove_filter( 'lmat_enable_duplicate_media', '__return_false', 99 ); // Restore automatic duplicate at upload.
+		remove_filter( 'pll_enable_duplicate_media', '__return_false', 99 ); // Restore automatic duplicate at upload.
 
 		// Copy metadata.
 		$data = wp_get_attachment_metadata( $post_id, true ); // Unfiltered.
@@ -384,11 +384,11 @@ class LMAT_Translated_Post extends LMAT_Translated_Object implements LMAT_Transl
 		 * @param int    $tr_id   Post id of the new media translation.
 		 * @param string $slug    Language code of the new translation.
 		 */
-		do_action( 'lmat_translate_media', $post_id, $tr_id, $lang->slug );
+		do_action( 'pll_translate_media', $post_id, $tr_id, $lang->slug );
 
 		// Restores the strings translations with the current language.
-		if ( LMAT()->curlang instanceof LMAT_Language ) {
-			LMAT()->load_strings_translations( LMAT()->curlang->slug );
+		if ( PLL()->curlang instanceof PLL_Language ) {
+			PLL()->load_strings_translations( PLL()->curlang->slug );
 		}
 
 		return $tr_id;
@@ -400,12 +400,12 @@ class LMAT_Translated_Post extends LMAT_Translated_Object implements LMAT_Transl
 	 * @since 2.6
 	 *
 	 * @param string       $type            Post type.
-	 * @param LMAT_Language $untranslated_in The language the posts must not be translated in.
-	 * @param LMAT_Language $lang            Language of the searched posts.
+	 * @param PLL_Language $untranslated_in The language the posts must not be translated in.
+	 * @param PLL_Language $lang            Language of the searched posts.
 	 * @param string       $search          Limit the results to the posts matching this string.
 	 * @return WP_Post[] Array of posts.
 	 */
-	public function get_untranslated( $type, LMAT_Language $untranslated_in, LMAT_Language $lang, $search = '' ) {
+	public function get_untranslated( $type, PLL_Language $untranslated_in, PLL_Language $lang, $search = '' ) {
 		global $wpdb;
 
 		$args = array( 'numberposts' => 20 ); // Limit to 20 posts by default.
@@ -418,7 +418,7 @@ class LMAT_Translated_Post extends LMAT_Translated_Object implements LMAT_Transl
 		 *
 		 * @param array $args WP_Query arguments
 		 */
-		$args = apply_filters( 'lmat_ajax_posts_not_translated_args', $args );
+		$args = apply_filters( 'pll_ajax_posts_not_translated_args', $args );
 
 		$limit             = $args['numberposts'];
 		$search_like       = '%' . $wpdb->esc_like( $search ) . '%';
@@ -468,20 +468,20 @@ class LMAT_Translated_Post extends LMAT_Translated_Object implements LMAT_Transl
 	 * Returns the description to use for the "language properties" in the REST API.
 	 *
 	 * @since 3.7
-	 * @see WP_Syntex\Linguator\REST\V2\Languages::get_item_schema()
+	 * @see WP_Syntex\Polylang\REST\V2\Languages::get_item_schema()
 	 *
 	 * @return string
 	 */
 	public function get_rest_description(): string {
-		return __( 'Language taxonomy properties for post types.', 'linguator' );
+		return __( 'Language taxonomy properties for post types.', 'polylang' );
 	}
 
 	/**
 	 * Returns database-related information that can be used in some of this class methods.
 	 * These are specific to the table containing the objects.
 	 *
-	 * @see LMAT_Translatable_Object::join_clause()
-	 * @see LMAT_Translatable_Object::get_raw_objects_with_no_lang()
+	 * @see PLL_Translatable_Object::join_clause()
+	 * @see PLL_Translatable_Object::get_raw_objects_with_no_lang()
 	 *
 	 * @since 3.4.3
 	 *
@@ -513,10 +513,10 @@ class LMAT_Translated_Post extends LMAT_Translated_Object implements LMAT_Transl
 	 *
 	 *     @type string[] $translations The translation group to assign to the post with language slug as keys and post ID as values.
 	 * }
-	 * @param LMAT_Language $language The post language object.
+	 * @param PLL_Language $language The post language object.
 	 * @return int|WP_Error The post ID on success. The value `WP_Error` on failure.
 	 */
-	public function insert( array $postarr, LMAT_Language $language ) {
+	public function insert( array $postarr, PLL_Language $language ) {
 		$post_id = wp_insert_post( $postarr, true );
 		if ( is_wp_error( $post_id ) ) {
 			// Something went wrong!
@@ -541,7 +541,7 @@ class LMAT_Translated_Post extends LMAT_Translated_Object implements LMAT_Transl
 	 *     Optional. An array of elements that make up a post to update.
 	 *     @See wp_insert_post() for accepted arguments.
 	 *
-	 *     @type LMAT_Language|string $lang         The post language object or slug.
+	 *     @type PLL_Language|string $lang         The post language object or slug.
 	 *     @type string[]            $translations The translation group to assign to the post with language slug as keys and post ID as values.
 	 * }
 	 * @return int|WP_Error The post ID on success. The value `WP_Error` on failure.
@@ -550,12 +550,12 @@ class LMAT_Translated_Post extends LMAT_Translated_Object implements LMAT_Transl
 		if ( ! empty( $postarr['lang'] ) ) {
 			$post = get_post( $postarr['ID'] );
 			if ( ! $post instanceof WP_Post ) {
-				return new WP_Error( 'invalid_post', __( 'Invalid post ID.', 'linguator' ) );
+				return new WP_Error( 'invalid_post', __( 'Invalid post ID.', 'polylang' ) );
 			}
 
 			$language = $this->languages->get( $postarr['lang'] );
-			if ( ! $language instanceof LMAT_Language ) {
-				return new WP_Error( 'invalid_language', __( 'Please provide a valid language.', 'linguator' ) );
+			if ( ! $language instanceof PLL_Language ) {
+				return new WP_Error( 'invalid_language', __( 'Please provide a valid language.', 'polylang' ) );
 			}
 
 			$this->set_language( $postarr['ID'], $language );

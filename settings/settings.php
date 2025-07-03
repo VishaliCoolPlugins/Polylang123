@@ -1,19 +1,19 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * A class for the Linguator settings pages, accessible from @see LMAT().
+ * A class for the Polylang settings pages, accessible from @see PLL().
  *
  * @since 1.2
  */
-class LMAT_Settings extends LMAT_Admin_Base {
+class PLL_Settings extends PLL_Admin_Base {
 
 	/**
-	 * @var LMAT_Admin_Model
+	 * @var PLL_Admin_Model
 	 */
 	public $model;
 
@@ -27,7 +27,7 @@ class LMAT_Settings extends LMAT_Admin_Base {
 	/**
 	 * Array of modules classes.
 	 *
-	 * @var LMAT_Settings_Module[]|null
+	 * @var PLL_Settings_Module[]|null
 	 */
 	protected $modules;
 
@@ -36,7 +36,7 @@ class LMAT_Settings extends LMAT_Admin_Base {
 	 *
 	 * @since 1.2
 	 *
-	 * @param LMAT_Links_Model $links_model Reference to the links model.
+	 * @param PLL_Links_Model $links_model Reference to the links model.
 	 */
 	public function __construct( &$links_model ) {
 		parent::__construct( $links_model );
@@ -45,7 +45,7 @@ class LMAT_Settings extends LMAT_Admin_Base {
 			$this->active_tab = 'mlang' === $_GET['page'] ? 'lang' : substr( sanitize_key( $_GET['page'] ), 6 ); // phpcs:ignore WordPress.Security.NonceVerification
 		}
 
-		LMAT_Admin_Strings::init();
+		PLL_Admin_Strings::init();
 
 		add_action( 'admin_init', array( $this, 'register_settings_modules' ) );
 
@@ -54,8 +54,8 @@ class LMAT_Settings extends LMAT_Admin_Base {
 		add_action( 'load-languages_page_mlang_strings', array( $this, 'load_page_strings' ) );
 
 		// Saves the per-page value in screen options.
-		add_filter( 'set_screen_option_lmat_lang_per_page', array( $this, 'set_screen_option' ), 10, 3 );
-		add_filter( 'set_screen_option_lmat_strings_per_page', array( $this, 'set_screen_option' ), 10, 3 );
+		add_filter( 'set_screen_option_pll_lang_per_page', array( $this, 'set_screen_option' ), 10, 3 );
+		add_filter( 'set_screen_option_pll_strings_per_page', array( $this, 'set_screen_option' ), 10, 3 );
 	}
 
 	/**
@@ -70,14 +70,14 @@ class LMAT_Settings extends LMAT_Admin_Base {
 
 		if ( $this->model->has_languages() ) {
 			$modules = array(
-				'LMAT_Settings_Url',
-				'LMAT_Settings_Browser',
-				'LMAT_Settings_Media',
-				'LMAT_Settings_CPT',
+				'PLL_Settings_Url',
+				'PLL_Settings_Browser',
+				'PLL_Settings_Media',
+				'PLL_Settings_CPT',
 			);
 		}
 
-		$modules[] = 'LMAT_Settings_Licenses';
+		$modules[] = 'PLL_Settings_Licenses';
 
 		/**
 		 * Filter the list of setting modules
@@ -86,10 +86,10 @@ class LMAT_Settings extends LMAT_Admin_Base {
 		 *
 		 * @param array $modules the list of module classes
 		 */
-		$modules = apply_filters( 'lmat_settings_modules', $modules );
+		$modules = apply_filters( 'pll_settings_modules', $modules );
 
 		foreach ( $modules as $key => $class ) {
-			$key = is_numeric( $key ) ? strtolower( str_replace( 'LMAT_Settings_', '', $class ) ) : $key;
+			$key = is_numeric( $key ) ? strtolower( str_replace( 'PLL_Settings_', '', $class ) ) : $key;
 			$this->modules[ $key ] = new $class( $this );
 		}
 	}
@@ -113,10 +113,10 @@ class LMAT_Settings extends LMAT_Admin_Base {
 	 * @return void
 	 */
 	public function load_page() {
-		if ( ! defined( 'LMAT_DISPLAY_ABOUT' ) || LMAT_DISPLAY_ABOUT ) {
+		if ( ! defined( 'PLL_DISPLAY_ABOUT' ) || PLL_DISPLAY_ABOUT ) {
 			add_meta_box(
-				'lmat-about-box',
-				__( 'About Linguator', 'linguator' ),
+				'pll-about-box',
+				__( 'About Polylang', 'polylang' ),
 				array( $this, 'metabox_about' ),
 				'toplevel_page_mlang',
 				'normal'
@@ -126,9 +126,9 @@ class LMAT_Settings extends LMAT_Admin_Base {
 		add_screen_option(
 			'per_page',
 			array(
-				'label'   => __( 'Languages', 'linguator' ),
+				'label'   => __( 'Languages', 'polylang' ),
 				'default' => 10,
-				'option'  => 'lmat_lang_per_page',
+				'option'  => 'pll_lang_per_page',
 			)
 		);
 
@@ -146,9 +146,9 @@ class LMAT_Settings extends LMAT_Admin_Base {
 		add_screen_option(
 			'per_page',
 			array(
-				'label'   => __( 'Strings translations', 'linguator' ),
+				'label'   => __( 'Strings translations', 'polylang' ),
 				'default' => 10,
-				'option'  => 'lmat_strings_per_page',
+				'option'  => 'pll_strings_per_page',
 			)
 		);
 	}
@@ -182,16 +182,16 @@ class LMAT_Settings extends LMAT_Admin_Base {
 				$errors = $this->model->add_language( $_POST );
 
 				if ( is_wp_error( $errors ) ) {
-						lmat_add_notice( $errors );
+						pll_add_notice( $errors );
 				} else {
-					lmat_add_notice( new WP_Error( 'lmat_languages_created', __( 'Language added.', 'linguator' ), 'success' ) );
+					pll_add_notice( new WP_Error( 'pll_languages_created', __( 'Language added.', 'polylang' ), 'success' ) );
 					$locale = sanitize_locale_name( $_POST['locale'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 
 					if ( 'en_US' !== $locale && current_user_can( 'install_languages' ) ) {
 						// Attempts to install the language pack
 						require_once ABSPATH . 'wp-admin/includes/translation-install.php';
 						if ( ! wp_download_language_pack( $locale ) ) {
-							lmat_add_notice( new WP_Error( 'lmat_download_mo', __( 'The language was created, but the WordPress language file was not downloaded. Please install it manually.', 'linguator' ), 'warning' ) );
+							pll_add_notice( new WP_Error( 'pll_download_mo', __( 'The language was created, but the WordPress language file was not downloaded. Please install it manually.', 'polylang' ), 'warning' ) );
 						}
 
 						// Force checking for themes and plugins translations updates
@@ -206,7 +206,7 @@ class LMAT_Settings extends LMAT_Admin_Base {
 				check_admin_referer( 'delete-lang' );
 
 				if ( ! empty( $_GET['lang'] ) && $this->model->delete_language( (int) $_GET['lang'] ) ) {
-					lmat_add_notice( new WP_Error( 'lmat_languages_deleted', __( 'Language deleted.', 'linguator' ), 'success' ) );
+					pll_add_notice( new WP_Error( 'pll_languages_deleted', __( 'Language deleted.', 'polylang' ), 'success' ) );
 				}
 
 				self::redirect(); // To refresh the page ( possible thanks to the $_GET['noheader']=true )
@@ -217,9 +217,9 @@ class LMAT_Settings extends LMAT_Admin_Base {
 				$errors = $this->model->update_language( $_POST );
 
 				if ( is_wp_error( $errors ) ) {
-					lmat_add_notice( $errors );
+					pll_add_notice( $errors );
 				} else {
-					lmat_add_notice( new WP_Error( 'lmat_languages_updated', __( 'Language updated.', 'linguator' ), 'success' ) );
+					pll_add_notice( new WP_Error( 'pll_languages_updated', __( 'Language updated.', 'polylang' ), 'success' ) );
 				}
 
 				self::redirect(); // To refresh the page ( possible thanks to the $_GET['noheader']=true )
@@ -244,7 +244,7 @@ class LMAT_Settings extends LMAT_Admin_Base {
 				break;
 
 			case 'activate':
-				check_admin_referer( 'lmat_activate' );
+				check_admin_referer( 'pll_activate' );
 				if ( isset( $_GET['module'] ) ) {
 					$module = sanitize_key( $_GET['module'] );
 					if ( isset( $this->modules[ $module ] ) ) {
@@ -255,7 +255,7 @@ class LMAT_Settings extends LMAT_Admin_Base {
 				break;
 
 			case 'deactivate':
-				check_admin_referer( 'lmat_deactivate' );
+				check_admin_referer( 'pll_deactivate' );
 				if ( isset( $_GET['module'] ) ) {
 					$module = sanitize_key( $_GET['module'] );
 					if ( isset( $this->modules[ $module ] ) ) {
@@ -267,7 +267,7 @@ class LMAT_Settings extends LMAT_Admin_Base {
 
 			default:
 				/**
-				 * Fires when a non default action has been sent to Linguator settings
+				 * Fires when a non default action has been sent to Polylang settings
 				 *
 				 * @since 1.8
 				 */
@@ -288,18 +288,18 @@ class LMAT_Settings extends LMAT_Admin_Base {
 		switch ( $this->active_tab ) {
 			case 'lang':
 				// Prepare the list table of languages
-				$list_table = new LMAT_Table_Languages();
+				$list_table = new PLL_Table_Languages();
 				$list_table->prepare_items( $this->model->get_languages_list() );
 				break;
 
 			case 'strings':
-				$string_table = new LMAT_Table_String( $this->model->get_languages_list() );
+				$string_table = new PLL_Table_String( $this->model->get_languages_list() );
 				$string_table->prepare_items();
 				break;
 		}
 
 		// Handle user input
-		$action = isset( $_REQUEST['lmat_action'] ) ? sanitize_key( $_REQUEST['lmat_action'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
+		$action = isset( $_REQUEST['pll_action'] ) ? sanitize_key( $_REQUEST['pll_action'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
 		if ( 'edit' === $action && ! empty( $_GET['lang'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			// phpcs:ignore WordPress.Security.NonceVerification, VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 			$edit_lang = $this->model->get_language( (int) $_GET['lang'] );
@@ -323,10 +323,10 @@ class LMAT_Settings extends LMAT_Admin_Base {
 
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-		wp_enqueue_script( 'lmat_settings', plugins_url( '/js/build/settings' . $suffix . '.js', LINGUATOR_ROOT_FILE ), array( 'jquery', 'wp-ajax-response', 'postbox', 'jquery-ui-selectmenu', 'wp-hooks' ), LINGUATOR_VERSION, true );
-		wp_localize_script( 'lmat_settings', 'lmat_settings', array( 'dismiss_notice' => esc_html__( 'Dismiss this notice.', 'linguator' ) ) );
+		wp_enqueue_script( 'pll_settings', plugins_url( '/js/build/settings' . $suffix . '.js', POLYLANG_ROOT_FILE ), array( 'jquery', 'wp-ajax-response', 'postbox', 'jquery-ui-selectmenu', 'wp-hooks' ), POLYLANG_VERSION, true );
+		wp_localize_script( 'pll_settings', 'pll_settings', array( 'dismiss_notice' => esc_html__( 'Dismiss this notice.', 'polylang' ) ) );
 
-		wp_enqueue_style( 'lmat_selectmenu', plugins_url( '/css/build/selectmenu' . $suffix . '.css', LINGUATOR_ROOT_FILE ), array(), LINGUATOR_VERSION );
+		wp_enqueue_style( 'pll_selectmenu', plugins_url( '/css/build/selectmenu' . $suffix . '.css', POLYLANG_ROOT_FILE ), array(), POLYLANG_VERSION );
 	}
 
 	/**
@@ -340,9 +340,9 @@ class LMAT_Settings extends LMAT_Admin_Base {
 		if ( ! empty( $this->options['default_lang'] ) && $this->model->get_objects_with_no_lang( 1 ) ) {
 			printf(
 				'<div class="error"><p>%s <a href="%s">%s</a></p></div>',
-				esc_html__( 'There are posts, pages, categories or tags without language.', 'linguator' ),
-				esc_url( wp_nonce_url( '?page=mlang&lmat_action=content-default-lang&noheader=true', 'content-default-lang' ) ),
-				esc_html__( 'You can set them all to the default language.', 'linguator' )
+				esc_html__( 'There are posts, pages, categories or tags without language.', 'polylang' ),
+				esc_url( wp_nonce_url( '?page=mlang&pll_action=content-default-lang&noheader=true', 'content-default-lang' ) ),
+				esc_html__( 'You can set them all to the default language.', 'polylang' )
 			);
 		}
 	}
@@ -357,13 +357,13 @@ class LMAT_Settings extends LMAT_Admin_Base {
 	 * @return void
 	 */
 	public static function redirect( $args = array() ) {
-		$errors = get_settings_errors( 'linguator' );
+		$errors = get_settings_errors( 'polylang' );
 		if ( ! empty( $errors ) ) {
 			set_transient( 'settings_errors', $errors, 30 );
 			$args['settings-updated'] = 1;
 		}
-		// Remove possible 'lmat_action' and 'lang' query args from the referer before redirecting
-		wp_safe_redirect( add_query_arg( $args, remove_query_arg( array( 'lmat_action', 'lang' ), wp_get_referer() ) ) );
+		// Remove possible 'pll_action' and 'lang' query args from the referer before redirecting
+		wp_safe_redirect( add_query_arg( $args, remove_query_arg( array( 'pll_action', 'lang' ), wp_get_referer() ) ) );
 		exit;
 	}
 
@@ -404,17 +404,19 @@ class LMAT_Settings extends LMAT_Admin_Base {
 		 *
 		 * @since 1.7.10
 		 * @since 2.3 The languages arrays use associative keys instead of numerical keys
-		 * @see https://github.com/linguator/linguator/blob/2.8.2/settings/languages.php the list of predefined languages
+		 * @see https://github.com/polylang/polylang/blob/2.8.2/settings/languages.php the list of predefined languages
 		 *
 		 * @param array $languages
 		 */
-		$languages = apply_filters( 'lmat_predefined_languages', $languages );
+		$languages = apply_filters( 'pll_predefined_languages', $languages );
+
 		// Keep only languages with all necessary information
 		foreach ( $languages as $k => $lang ) {
 			if ( ! isset( $lang['code'], $lang['locale'], $lang['name'], $lang['dir'], $lang['flag'] ) ) {
 				unset( $languages[ $k ] );
 			}
 		}
+
 		return $languages;
 	}
 }

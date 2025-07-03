@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -9,7 +9,7 @@
  *
  * @since 1.2
  */
-class LMAT_Choose_Lang_Content extends LMAT_Choose_Lang {
+class PLL_Choose_Lang_Content extends PLL_Choose_Lang {
 
 	/**
 	 * Defers the language choice to the 'wp' action (when the content is known)
@@ -21,12 +21,12 @@ class LMAT_Choose_Lang_Content extends LMAT_Choose_Lang {
 	public function init() {
 		parent::init();
 
-		if ( ! did_action( 'lmat_language_defined' ) ) {
+		if ( ! did_action( 'pll_language_defined' ) ) {
 			// Set the languages from content
 			add_action( 'wp', array( $this, 'wp' ), 5 ); // Priority 5 for post types and taxonomies registered in wp hook with default priority
 
 			// If no language found, choose the preferred one
-			add_filter( 'lmat_get_current_language', array( $this, 'lmat_get_current_language' ) );
+			add_filter( 'pll_get_current_language', array( $this, 'pll_get_current_language' ) );
 		}
 	}
 
@@ -35,7 +35,7 @@ class LMAT_Choose_Lang_Content extends LMAT_Choose_Lang {
 	 *
 	 * @since 1.2
 	 *
-	 * @param LMAT_Language $curlang Current language.
+	 * @param PLL_Language $curlang Current language.
 	 * @return void
 	 */
 	protected function set_language( $curlang ) {
@@ -48,7 +48,7 @@ class LMAT_Choose_Lang_Content extends LMAT_Choose_Lang {
 	 *
 	 * @since 1.2
 	 *
-	 * @return LMAT_Language|false detected language, false if none was found
+	 * @return PLL_Language|false detected language, false if none was found
 	 */
 	protected function get_language_from_content() {
 		// No language set for 404
@@ -94,9 +94,9 @@ class LMAT_Choose_Lang_Content extends LMAT_Choose_Lang {
 		 *
 		 * @since 0.9
 		 *
-		 * @param LMAT_Language|false $lang Language object or false if none was found.
+		 * @param PLL_Language|false $lang Language object or false if none was found.
 		 */
-		return apply_filters( 'lmat_get_current_language', $lang ?? false );
+		return apply_filters( 'pll_get_current_language', $lang ?? false );
 	}
 
 	/**
@@ -153,14 +153,14 @@ class LMAT_Choose_Lang_Content extends LMAT_Choose_Lang {
 	}
 
 	/**
-	 * If no language is found by {@see LMAT_Choose_Lang_Content::get_language_from_content()}, returns the preferred one.
+	 * If no language is found by {@see PLL_Choose_Lang_Content::get_language_from_content()}, returns the preferred one.
 	 *
 	 * @since 0.9
 	 *
-	 * @param LMAT_Language|false $lang Language found by {@see LMAT_Choose_Lang_Content::get_language_from_content()}.
-	 * @return LMAT_Language|false
+	 * @param PLL_Language|false $lang Language found by {@see PLL_Choose_Lang_Content::get_language_from_content()}.
+	 * @return PLL_Language|false
 	 */
-	public function lmat_get_current_language( $lang ) {
+	public function pll_get_current_language( $lang ) {
 		return ! $lang ? $this->get_preferred_language() : $lang;
 	}
 }

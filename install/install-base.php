@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -8,7 +8,7 @@
  *
  * @since 1.7
  */
-class LMAT_Install_Base {
+class PLL_Install_Base {
 	/**
 	 * The plugin basename.
 	 *

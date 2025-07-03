@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
@@ -41,7 +41,7 @@
  *     is_default: bool
  * }
  */
-class LMAT_Language extends LMAT_Language_Deprecated {
+class PLL_Language extends PLL_Language_Deprecated {
 
 	/**
 	 * Language name. Ex: English.
@@ -141,7 +141,7 @@ class LMAT_Language extends LMAT_Language_Deprecated {
 	public $host;
 
 	/**
-	 * ID of the page on front in this language (set from lmat_additional_language_data filter).
+	 * ID of the page on front in this language (set from pll_additional_language_data filter).
 	 *
 	 * @var int
 	 *
@@ -150,7 +150,7 @@ class LMAT_Language extends LMAT_Language_Deprecated {
 	public $page_on_front = 0;
 
 	/**
-	 * ID of the page for posts in this language (set from lmat_additional_language_data filter).
+	 * ID of the page for posts in this language (set from pll_additional_language_data filter).
 	 *
 	 * @var int
 	 *
@@ -378,17 +378,17 @@ class LMAT_Language extends LMAT_Language_Deprecated {
 			'src' => '',
 		);
 
-		// Linguator builtin flags.
-		if ( ! empty( $code ) && is_readable( LINGUATOR_DIR . ( $file = '/flags/' . $code . '.png' ) ) ) {
-			$default_flag['url'] = plugins_url( $file, LINGUATOR_FILE );
+		// Polylang builtin flags.
+		if ( ! empty( $code ) && is_readable( POLYLANG_DIR . ( $file = '/flags/' . $code . '.png' ) ) ) {
+			$default_flag['url'] = plugins_url( $file, POLYLANG_FILE );
 
 			// If base64 encoded flags are preferred.
-			if ( lmat_get_constant( 'LMAT_ENCODED_FLAGS', true ) ) {
-				$imagesize = getimagesize( LINGUATOR_DIR . $file );
+			if ( pll_get_constant( 'PLL_ENCODED_FLAGS', true ) ) {
+				$imagesize = getimagesize( POLYLANG_DIR . $file );
 				if ( is_array( $imagesize ) ) {
 					list( $default_flag['width'], $default_flag['height'] ) = $imagesize;
 				}
-				$file_contents       = file_get_contents( LINGUATOR_DIR . $file ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+				$file_contents       = file_get_contents( POLYLANG_DIR . $file ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 				$default_flag['src'] = 'data:image/png;base64,' . base64_encode( $file_contents ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 			}
 		}
@@ -408,7 +408,7 @@ class LMAT_Language extends LMAT_Language_Deprecated {
 		 * }
 		 * @param string $code Flag code.
 		 */
-		$flag = apply_filters( 'lmat_flag', $default_flag, $code );
+		$flag = apply_filters( 'pll_flag', $default_flag, $code );
 
 		$flag['url'] = sanitize_url( $flag['url'] );
 
@@ -507,9 +507,9 @@ class LMAT_Language extends LMAT_Language_Deprecated {
 		 * @since 3.4.4
 		 *
 		 * @param string       $flag_url Flag URL.
-		 * @param LMAT_Language $language Current `LMAT_language` instance.
+		 * @param PLL_Language $language Current `PLL_language` instance.
 		 */
-		return apply_filters( 'lmat_language_flag_url', $flag_url, $this );
+		return apply_filters( 'pll_language_flag_url', $flag_url, $this );
 	}
 
 	/**
@@ -566,11 +566,11 @@ class LMAT_Language extends LMAT_Language_Deprecated {
 	}
 
 	/**
-	 * Converts current `LMAT_language` into a `stdClass` object. Mostly used to allow dynamic properties.
+	 * Converts current `PLL_language` into a `stdClass` object. Mostly used to allow dynamic properties.
 	 *
 	 * @since 3.4
 	 *
-	 * @return stdClass Converted `LMAT_Language` object.
+	 * @return stdClass Converted `PLL_Language` object.
 	 */
 	public function to_std_class() {
 		return (object) $this->to_array();
@@ -598,16 +598,16 @@ class LMAT_Language extends LMAT_Language_Deprecated {
 	 * @return string Language home URL.
 	 */
 	public function get_home_url() {
-		if ( ! lmat_get_constant( 'LMAT_CACHE_LANGUAGES', true ) || ! lmat_get_constant( 'LMAT_CACHE_HOME_URL', true ) ) {
+		if ( ! pll_get_constant( 'PLL_CACHE_LANGUAGES', true ) || ! pll_get_constant( 'PLL_CACHE_HOME_URL', true ) ) {
 			/**
-			 * Filters current `LMAT_Language` instance `home_url` property.
+			 * Filters current `PLL_Language` instance `home_url` property.
 			 *
 			 * @since 3.4.4
 			 *
 			 * @param string $home_url         The `home_url` prop.
-			 * @param array  $language Current Array of `LMAT_Language` properties.
+			 * @param array  $language Current Array of `PLL_Language` properties.
 			 */
-			return apply_filters( 'lmat_language_home_url', $this->home_url, $this->to_array( 'db' ) );
+			return apply_filters( 'pll_language_home_url', $this->home_url, $this->to_array( 'db' ) );
 		}
 
 		return $this->home_url;
@@ -621,16 +621,16 @@ class LMAT_Language extends LMAT_Language_Deprecated {
 	 * @return string Language search URL.
 	 */
 	public function get_search_url() {
-		if ( ! lmat_get_constant( 'LMAT_CACHE_LANGUAGES', true ) || ! lmat_get_constant( 'LMAT_CACHE_HOME_URL', true ) ) {
+		if ( ! pll_get_constant( 'PLL_CACHE_LANGUAGES', true ) || ! pll_get_constant( 'PLL_CACHE_HOME_URL', true ) ) {
 			/**
-			 * Filters current `LMAT_Language` instance `search_url` property.
+			 * Filters current `PLL_Language` instance `search_url` property.
 			 *
 			 * @since 3.4.4
 			 *
 			 * @param string $search_url        The `search_url` prop.
-			 * @param array  $language Current Array of `LMAT_Language` properties.
+			 * @param array  $language Current Array of `PLL_Language` properties.
 			 */
-			return apply_filters( 'lmat_language_search_url', $this->search_url, $this->to_array( 'db' ) );
+			return apply_filters( 'pll_language_search_url', $this->search_url, $this->to_array( 'db' ) );
 		}
 
 		return $this->search_url;
@@ -643,7 +643,7 @@ class LMAT_Language extends LMAT_Language_Deprecated {
 	 * @since 3.4
 	 *
 	 * @param string $property A property name. A composite value can be used for language term property values, in the
-	 *                         form of `{language_taxonomy_name}:{property_name}` (see {@see LMAT_Language::get_tax_prop()}
+	 *                         form of `{language_taxonomy_name}:{property_name}` (see {@see PLL_Language::get_tax_prop()}
 	 *                         for the possible values). Ex: `term_language:term_taxonomy_id`.
 	 * @return string|int|bool|string[] The requested property for the language, `false` if the property doesn't exist.
 	 *

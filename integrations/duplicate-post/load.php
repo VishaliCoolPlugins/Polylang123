@@ -2,7 +2,7 @@
 /**
  * Loads the integration with Duplicate Post.
  *
- * @package Linguator
+ * @package Polylang
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -13,8 +13,8 @@ add_action(
 	'plugins_loaded',
 	function () {
 		if ( defined( 'DUPLICATE_POST_CURRENT_VERSION' ) ) {
-			LMAT_Integrations::instance()->duplicate_post = new LMAT_Duplicate_Post();
-			LMAT_Integrations::instance()->duplicate_post->init();
+			PLL_Integrations::instance()->duplicate_post = new PLL_Duplicate_Post();
+			PLL_Integrations::instance()->duplicate_post->init();
 		}
 	},
 	0

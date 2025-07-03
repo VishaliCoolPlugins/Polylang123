@@ -1,32 +1,32 @@
 <?php
 /**
- * @package Linguator
+ * @package Polylang
  */
 
 /**
- * Class LMAT_Widgets_Filters
+ * Class PLL_Widgets_Filters
  *
  * @since 3.0
  *
  * Add new options to {@see https://developer.wordpress.org/reference/classes/wp_widget/ WP_Widget} and saves them.
  */
-class LMAT_Filters_Widgets_Options {
+class PLL_Filters_Widgets_Options {
 
 	/**
-	 * @var LMAT_Model
+	 * @var PLL_Model
 	 */
 	public $model;
 
 	/**
-	 * LMAT_Widgets_Filters constructor.
+	 * PLL_Widgets_Filters constructor.
 	 *
-	 * @since 3.0 Moved actions from LMAT_Admin_Filters.
+	 * @since 3.0 Moved actions from PLL_Admin_Filters.
 	 *
-	 * @param LMAT_Base $linguator The Linguator object.
+	 * @param PLL_Base $polylang The Polylang object.
 	 * @return void
 	 */
-	public function __construct( $linguator ) {
-		$this->model = $linguator->model;
+	public function __construct( $polylang ) {
+		$this->model = $polylang->model;
 
 		add_action( 'in_widget_form', array( $this, 'in_widget_form' ), 10, 3 );
 		add_filter( 'widget_update_callback', array( $this, 'widget_update_callback' ), 10, 2 );
@@ -35,8 +35,8 @@ class LMAT_Filters_Widgets_Options {
 	/**
 	 * Add the language filter field to the widgets options form.
 	 *
-	 * @since 3.0 Moved LMAT_Admin_Filters.
-	 * @since 3.1 Rename lang_choice field name and id to lmat_lang as the widget setting.
+	 * @since 3.0 Moved PLL_Admin_Filters.
+	 * @since 3.1 Rename lang_choice field name and id to pll_lang as the widget setting.
 	 *
 	 * @param WP_Widget $widget   The widget instance (passed by reference).
 	 * @param null      $return   Return null if new fields are added.
@@ -46,26 +46,26 @@ class LMAT_Filters_Widgets_Options {
 	 * @phpstan-param WP_Widget<array<string, mixed>> $widget
 	 */
 	public function in_widget_form( $widget, $return, $instance ) {
-		$dropdown = new LMAT_Walker_Dropdown();
+		$dropdown = new PLL_Walker_Dropdown();
 
 		$dropdown_html = $dropdown->walk(
 			array_merge(
-				array( (object) array( 'slug' => 0, 'name' => __( 'All languages', 'linguator' ) ) ),
+				array( (object) array( 'slug' => 0, 'name' => __( 'All languages', 'polylang' ) ) ),
 				$this->model->get_languages_list()
 			),
 			-1,
 			array(
-				'id' => $widget->get_field_id( 'lmat_lang' ),
-				'name' => $widget->get_field_name( 'lmat_lang' ),
-				'class' => 'tags-input lmat-lang-choice',
-				'selected' => empty( $instance['lmat_lang'] ) ? '' : $instance['lmat_lang'],
+				'id' => $widget->get_field_id( 'pll_lang' ),
+				'name' => $widget->get_field_name( 'pll_lang' ),
+				'class' => 'tags-input pll-lang-choice',
+				'selected' => empty( $instance['pll_lang'] ) ? '' : $instance['pll_lang'],
 			)
 		);
 
 		printf(
 			'<p><label for="%1$s">%2$s %3$s</label></p>',
-			esc_attr( $widget->get_field_id( 'lmat_lang' ) ),
-			esc_html__( 'The widget is displayed for:', 'linguator' ),
+			esc_attr( $widget->get_field_id( 'pll_lang' ) ),
+			esc_html__( 'The widget is displayed for:', 'polylang' ),
 			$dropdown_html // phpcs:ignore WordPress.Security.EscapeOutput
 		);
 	}
@@ -75,7 +75,7 @@ class LMAT_Filters_Widgets_Options {
 	 * Saves the language associated to the widget.
 	 *
 	 * @since 0.3
-	 * @since 3.0 Moved from LMAT_Admin_Filters.
+	 * @since 3.0 Moved from PLL_Admin_Filters.
 	 * @since 3.1 Remove unused $old_instance and $widget parameters.
 	 *
 	 * @param array $instance     The current Widget's options.
@@ -83,10 +83,10 @@ class LMAT_Filters_Widgets_Options {
 	 * @return array Widget options.
 	 */
 	public function widget_update_callback( $instance, $new_instance ) {
-		if ( ! empty( $new_instance['lmat_lang'] ) && $lang = $this->model->get_language( $new_instance['lmat_lang'] ) ) {
-			$instance['lmat_lang'] = $lang->slug;
+		if ( ! empty( $new_instance['pll_lang'] ) && $lang = $this->model->get_language( $new_instance['pll_lang'] ) ) {
+			$instance['pll_lang'] = $lang->slug;
 		} else {
-			unset( $instance['lmat_lang'] );
+			unset( $instance['pll_lang'] );
 		}
 
 		return $instance;
